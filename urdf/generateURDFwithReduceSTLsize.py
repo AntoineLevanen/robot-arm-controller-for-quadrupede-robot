@@ -8,7 +8,7 @@ build URDF file and reduce the size of STL file
 """
 
 # folder path
-dir_path = r'/home/alevanen/Documents/StageM1/sassa'
+dir_path = r'/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot'
 
 launchBullet = False
 
@@ -29,7 +29,8 @@ try:
     for currentArgument, currentValue in arguments:
 
         if currentArgument in ("-h", "--Help"):
-            print ("use -b to launch Bullet")
+            print("use -b to launch Bullet")
+            print("use -c to clear caches")
             sys.exit(2)
             
         elif currentArgument in ("-b", "--Bullet"):

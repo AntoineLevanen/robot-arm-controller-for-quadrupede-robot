@@ -1,13 +1,13 @@
 {
     "configuration": "default",
     "documentId": "061760026d204032b779c261",
-    "documentMicroversion": "439efa002f5b4513aed1a4cd",
+    "documentMicroversion": "1f143d291810a714ae5636e9",
     "elementId": "9bdd41e93d54f7a07c7921a8",
     "fullConfiguration": "default",
-    "id": "MFBtN58BZR5wb0y5s",
+    "id": "MjYrD5mjbcqgeaEYq",
     "isStandardContent": false,
-    "name": "2408 <1>",
-    "partId": "JpD",
+    "name": "gripperBase <1>",
+    "partId": "JyD",
     "suppressed": false,
     "type": "Part"
 }

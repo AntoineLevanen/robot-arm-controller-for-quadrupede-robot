@@ -1,13 +1,13 @@
 {
     "configuration": "default",
     "documentId": "061760026d204032b779c261",
-    "documentMicroversion": "439efa002f5b4513aed1a4cd",
-    "elementId": "56b8510628e7ea2d983917dd",
+    "documentMicroversion": "1f143d291810a714ae5636e9",
+    "elementId": "9bdd41e93d54f7a07c7921a8",
     "fullConfiguration": "default",
-    "id": "MdIF7wKq+aKSp9FMj",
+    "id": "MgFnRTv3F8bCHXsAf",
     "isStandardContent": false,
-    "name": "angle_motor_connect <1>",
-    "partId": "JHD",
+    "name": "gripper <3>",
+    "partId": "RBBD",
     "suppressed": false,
     "type": "Part"
 }

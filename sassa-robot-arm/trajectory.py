@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline as Spline
 from numpy import sin, cos
+from geomdl import BSpline
 
 class sinTrajectory:
 
@@ -26,7 +27,6 @@ class sinTrajectory:
     def acc(self, idx, t):
         self.d2q.flat[idx] = -self.omega**2 * self.amplitude * np.sin(self.omega * t)
         return self.d2q
-
 
 class Trajectory:
 
@@ -110,6 +110,25 @@ class CircleTrajectory:
 
         return [[self.x[i], self.y[i], self.z[i]], [self.dx[i], self.dy[i], self.dz[i]], [self.d2x[i], self.d2y[i], self.d2z[i]]]
 
+class Trajectory3D:
+    
+    def __init__(self, control_points, generate_curve=False, resolution=20):
+        self.control_points = control_points
+        self.curve = BSpline.Curve()
+        self.curve.degree = 3
+        self.curve.ctrlpts = self.control_points
+        self.curve.knotvector = np.arange(len(self.control_points) + 1 + self.curve.degree)
+
+        self.curve.delta = 1/resolution
+
+        if generate_curve:
+            self.generateTrajectory()
+
+    def generateTrajectory(self):
+        self.curve_points = self.curve.evalpts
+
+    def getPoint(self, i):
+        return self.curve_points[i]
 
 
 def mainSinTrajectory():
@@ -192,8 +211,29 @@ def mainCircleTrajectory():
 
     plt.show()
 
+def mainTrajectory3D():
+
+    control_point = [[10, 5, 10], [10, 20, 10], [40, 10, 10], [-10, 5, 10], [10, 5, 10]]
+
+    my_curve = Trajectory3D(control_point, generate_curve=True)
+
+    x = [point[0] for point in my_curve.curve_points]
+    y = [point[1] for point in my_curve.curve_points]
+    z = [point[2] for point in my_curve.curve_points]
+    print(1/len(x))
+
+    ax = plt.figure().add_subplot(projection='3d')
+
+    ax.plot(x, y, z, label='my 3D curve')
+    ax.legend()
+
+    ax.scatter([point[0] for point in control_point], [point[1] for point in control_point], [point[2] for point in control_point])
+
+    plt.show()
+
 
 if __name__ == "__main__":
     # mainSinTrajectory()
     # mainTrajectory()
-    mainCircleTrajectory()
+    # mainCircleTrajectory()
+    mainTrajectory3D()

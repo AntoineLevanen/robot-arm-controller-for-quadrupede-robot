@@ -137,7 +137,7 @@ def controller(q, dq, dt, robot, init, i, viz):
 
 def controller2IK(q, dq, dt, robot, i, viz, goal):
     """
-    Follow a circle trajectory in position and constrain the base position
+    The gripper follow the desired trajectory using first order inverse kinematics (IK)
     q : current configuration of the robot
     dq : current velocity of the robot
     dt : time step
@@ -145,6 +145,7 @@ def controller2IK(q, dq, dt, robot, i, viz, goal):
     init : flag to init variable
     i : indice of current main loop scutation
     viz : instance of the used vizualizer
+    goal : goal position, velocity and acceleration of the end effector
     return : robot configuration, robot velocity
     """
 
@@ -226,7 +227,7 @@ def controller2IK(q, dq, dt, robot, i, viz, goal):
 
 def controller2IK2ndorder(q, dq, dt, robot, i, viz, goal):
     """
-    The gripper follow the desired trajectory, 
+    The gripper follow the desired trajectory using second order inverse kinematics (IK)
     q : current configuration of the robot
     dq : current velocity of the robot
     dt : time step
@@ -234,6 +235,7 @@ def controller2IK2ndorder(q, dq, dt, robot, i, viz, goal):
     init : flag to init variable
     i : indice of current main loop scutation
     viz : instance of the used vizualizer
+    goal : goal position, velocity and acceleration of the end effector
     return : robot configuration, robot velocity
     """
 
@@ -332,9 +334,9 @@ def controller2IK2ndorder(q, dq, dt, robot, i, viz, goal):
     q_temp = np.hstack([q_temp[:3], QUATTOXYZ(q_temp[3:7]), q_temp[7:]])
 
     # Posture task to ensure the body don't move away from the reference configuration
-    K3 = 1
+    K3 = 10
     J_posture = np.eye(24)
-    # J_posture[18:, 18:] = 0
+    J_posture[18:, 18:] = 0
     aq += K3 * J_posture @ q_temp
 
     # compute the velocity

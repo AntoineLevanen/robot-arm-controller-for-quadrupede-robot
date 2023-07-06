@@ -113,7 +113,7 @@ def addTable():
     Add a visual block to serve as a table where the robot can interact with
     return : model, collision model and visual model for displaying in the viewport
     """
-    box_model, box_collision_model, box_visual_model = pin.buildModelsFromUrdf("urdf/objects/box1.urdf", "objects", pin.JointModelFreeFlyer())
+    box_model, box_collision_model, box_visual_model = pin.buildModelsFromUrdf("urdf/objects/box1.urdf", "urdf/objects", pin.JointModelFreeFlyer())
     return (box_model, box_collision_model, box_visual_model)
 
 def initViz(robot, viz_choice, add_ground=False, add_box=False):
@@ -126,7 +126,7 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False):
     return : instance of the visualizer
     """
     plane_model, plane_collision_model, plane_visual_model, plane_data, \
-        plane_geom_model, plane_geom_data = addGroundPlane("urdf/objects/plane.urdf", "objects")
+        plane_geom_model, plane_geom_data = addGroundPlane("urdf/objects/plane.urdf", "urdf/objects")
 
     box_model, box_collision_model, box_visual_model = addTable()
 

@@ -9,10 +9,10 @@ from neckController import neckController, check_joint_limit
 from computeCollision import computeCollisions
 from visualObject import CenterOfMass
 from StateMachine import StateMahine
-from trajectory import CircleTrajectory
+from trajectory import CircleTrajectory, Trajectory3D
 
-sassa = initRobot("../sassa/robot_obj.urdf", "../sassa/")
-viz = initViz(sassa, 2, add_ground=False, add_box=False)
+sassa = initRobot("urdf/sassa-robot/robot_obj.urdf", "urdf/sassa-robot/")
+viz = initViz(sassa, 2, add_ground=True, add_box=False)
 
 duration = 40
 dt = 0.01
@@ -37,6 +37,8 @@ my_state_machine = StateMahine()
 my_trajectory = CircleTrajectory()
 # origine x, y, z; raduis; omega
 my_trajectory.circleTrajectoryXY(0.4, -0.05, 0.2, 2, 10)
+
+my_curve = Trajectory3D([[0.3, 0.1, 0.1], [0.4, -0.1, 0.4], [0.2, 0.1, 0.1], [0.3, 0.1, 0.1]], generate_curve=True, resolution=100)
 
 for i in range(int(duration / dt)): # int(duration / dt)
     # start time for loop duration
