@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "061760026d204032b779c261",
+    "documentMicroversion": "439efa002f5b4513aed1a4cd",
+    "elementId": "56b8510628e7ea2d983917dd",
+    "fullConfiguration": "default",
+    "id": "MdIF7wKq+aKSp9FMj",
+    "isStandardContent": false,
+    "name": "angle_motor_connect <1>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+}

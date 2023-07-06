@@ -11,8 +11,8 @@ class SphereGoal:
         coord : Coordinate of the sphere in [X, Y, Z] w.r.t the world frame
         name : Name of the object in the viewport
         """
-        self.urdfFilePath = "objects/sphere.urdf"
-        self.modelPath = "objects"
+        self.urdfFilePath = "urdf/objects/sphere.urdf"
+        self.modelPath = "urdf/objects"
         self.viz = viz
         
         sphere_model, sphere_collision_model, sphere_visual_model = pin.buildModelsFromUrdf(self.urdfFilePath, self.modelPath, pin.JointModelFreeFlyer())
