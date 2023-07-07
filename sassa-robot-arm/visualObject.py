@@ -54,3 +54,4 @@ class CenterOfMass(SphereGoal):
         com_projection = com_position.copy()
         com_projection[2] = 0
         super().moveGoalVisual(com_projection)
+        return com_projection

@@ -326,7 +326,7 @@ def controller2IK2ndorder(q, dq, dt, robot, i, viz, goal):
     # Orthogonal Projector (P1) in Null Space of the jacobian
     P0 = np.eye(robot.model.nv) - pinv(J) @ J
     # second task with less priority, move the gripper
-    aq += pinv(o_JGripper @ P0) @ (goal_acceleration - a_gripper + K2 * err_vel_gripper + K1 * o_Gripper)
+    aq += pinv(o_JGripper @ P0) @ (goal_acceleration - a_gripper + K2 * err_vel_gripper + K1 * np.array(o_Gripper))
 
     # Add a Regulation task to fill the free remaining dof
     # computing the error in position in the configuration space
@@ -336,7 +336,7 @@ def controller2IK2ndorder(q, dq, dt, robot, i, viz, goal):
     # Posture task to ensure the body don't move away from the reference configuration
     K3 = 10
     J_posture = np.eye(24)
-    J_posture[18:, 18:] = 0
+    J_posture[6:, 6:] = 0
     aq += K3 * J_posture @ q_temp
 
     # compute the velocity

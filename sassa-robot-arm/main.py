@@ -14,7 +14,7 @@ from trajectory import CircleTrajectory, Trajectory3D
 sassa = initRobot("urdf/sassa-robot/robot_obj.urdf", "urdf/sassa-robot/")
 viz = initViz(sassa, 2, add_ground=True, add_box=False)
 
-duration = 40
+duration = 10
 dt = 0.01
 realtime_sim = True
 
@@ -36,10 +36,11 @@ my_state_machine = StateMahine()
 # trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z; raduis; omega
-my_trajectory.circleTrajectoryXY(0.4, -0.05, 0.2, 2, 10)
+my_trajectory.circleTrajectoryXY(0.4, 0.1, 0.2, 0.3, 2)
 
-my_curve = Trajectory3D([[0.3, 0.1, 0.1], [0.4, -0.1, 0.4], [0.2, 0.1, 0.1], [0.3, 0.1, 0.1]], generate_curve=True, resolution=100)
+err = [[0, 0, 0]]
 
+# main loop, updating the configuration vector q
 for i in range(int(duration / dt)): # int(duration / dt)
     # start time for loop duration
     t0 = time.time()
@@ -73,8 +74,8 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # Update Geometry models
     sassa.updateGeometryPlacements(q, visual=False)
 
-    com_projection.updatePlacement(q)
-
+    e = com_projection.updatePlacement(q)
+    err = np.vstack([err, e])
     ### end controler
 
     # wait to have a real time sim
@@ -84,3 +85,16 @@ for i in range(int(duration / dt)): # int(duration / dt)
             time.sleep(tsleep)
             
 
+plt.subplot(3, 1, 1)
+e1 = [point[0] for point in err]
+plt.plot(e1)
+
+plt.subplot(3, 1, 2)
+e2 = [point[1] for point in err]
+plt.plot(e2)
+
+plt.subplot(3, 1, 3)
+e3 = [point[2] for point in err]
+plt.plot(e3)
+
+plt.show()

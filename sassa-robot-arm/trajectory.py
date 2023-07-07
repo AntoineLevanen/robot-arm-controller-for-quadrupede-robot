@@ -175,6 +175,9 @@ def mainTrajectory():
     plt.show()
 
 def mainCircleTrajectory():
+    """
+    Seulement en position, pas d(iformation sur la vitesse ou l'acceleration)
+    """
     my_trajectory = CircleTrajectory()
     my_trajectory.circleTrajectoryXY(0.4, -0.05, 0.2, 0.14, 8)
 
@@ -212,7 +215,9 @@ def mainCircleTrajectory():
     plt.show()
 
 def mainTrajectory3D():
-
+    """
+    Seulement en position, pas d(iformation sur la vitesse ou l'acceleration)
+    """
     control_point = [[10, 5, 10], [10, 20, 10], [40, 10, 10], [-10, 5, 10], [10, 5, 10]]
 
     my_curve = Trajectory3D(control_point, generate_curve=True)
