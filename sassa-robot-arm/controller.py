@@ -334,9 +334,9 @@ def controller2IK2ndorder(q, dq, dt, robot, i, viz, goal):
     q_temp = np.hstack([q_temp[:3], QUATTOXYZ(q_temp[3:7]), q_temp[7:]])
 
     # Posture task to ensure the body don't move away from the reference configuration
-    K3 = 10
+    K3 = 1
     J_posture = np.eye(24)
-    J_posture[6:, 6:] = 0
+    # J_posture[6:, 6:] = 0
     aq += K3 * J_posture @ q_temp
 
     # compute the velocity

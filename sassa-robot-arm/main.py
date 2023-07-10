@@ -12,10 +12,11 @@ from StateMachine import StateMahine
 from trajectory import CircleTrajectory, Trajectory3D
 
 sassa = initRobot("urdf/sassa-robot/robot_obj.urdf", "urdf/sassa-robot/")
-viz = initViz(sassa, 2, add_ground=True, add_box=False)
+viz = initViz(sassa, 2, add_ground=True, add_box=True)
 
-duration = 10
+duration = 20
 dt = 0.01
+trajectory_step = int(duration / dt)
 realtime_sim = True
 
 # q = np.zeros((25,))
@@ -38,6 +39,9 @@ my_trajectory = CircleTrajectory()
 # origine x, y, z; raduis; omega
 my_trajectory.circleTrajectoryXY(0.4, 0.1, 0.2, 0.3, 2)
 
+control_points = [[0.4, 0.1, 0.2], [0.5, 0.0, 0.3], [0.5, -0.05, 0.5], [0.5, -0.1, 0.3], [0.5, 0.0, 0.6], [0.4, 0.1, 0.1]]
+my_3d_trajectory = Trajectory3D(control_points, generate_curve=True, resolution=trajectory_step, degree=5)
+
 err = [[0, 0, 0]]
 
 # main loop, updating the configuration vector q
@@ -48,7 +52,8 @@ for i in range(int(duration / dt)): # int(duration / dt)
     ### start controler
 
     # WORKING controller
-    goal = my_trajectory.getPoint(i%360)
+    # goal = my_trajectory.getPoint(i%360)
+    goal = my_3d_trajectory.getPoint(i % trajectory_step)
     q, dq = controller2IK2ndorder(q, dq, dt, sassa, i, viz, goal)
     # q, dq, _ = lookAt(q, dq, dt, sassa, i, viz, 1)
     # q, dq, _ = useGripper(q, dq, dt, sassa, i, viz)
@@ -97,4 +102,4 @@ plt.subplot(3, 1, 3)
 e3 = [point[2] for point in err]
 plt.plot(e3)
 
-plt.show()
+# plt.show()

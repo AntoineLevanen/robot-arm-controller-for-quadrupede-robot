@@ -35,9 +35,7 @@ class Trajectory:
         self.spline = Spline(self.control_point[0], self.control_point[1])
         self.first_time = True
 
-    def get_point_3d(self, i):
-        
-        
+    def get_point_3d(self, i):        
         return self.spline(i)
 
 class CircleTrajectory:
@@ -112,12 +110,23 @@ class CircleTrajectory:
 
 class Trajectory3D:
     
-    def __init__(self, control_points, generate_curve=False, resolution=20):
+    def __init__(self, control_points, generate_curve=False, resolution=50, degree=3):
         self.control_points = control_points
         self.curve = BSpline.Curve()
-        self.curve.degree = 3
+        self.curve.degree = degree
         self.curve.ctrlpts = self.control_points
-        self.curve.knotvector = np.arange(len(self.control_points) + 1 + self.curve.degree)
+        self.curve_points = []
+        cpt = 0
+        for i in range(len(self.control_points) + 1 + self.curve.degree):
+            if i < self.curve.degree + 1:
+                self.curve.knotvector.append(0)
+            elif i > len(self.control_points):
+                self.curve.knotvector.append(cpt)
+            else:
+                cpt += 1
+                self.curve.knotvector.append(cpt)
+
+        self.curve.knotvector = [x / cpt for x in self.curve.knotvector]
 
         self.curve.delta = 1/resolution
 
@@ -128,7 +137,15 @@ class Trajectory3D:
         self.curve_points = self.curve.evalpts
 
     def getPoint(self, i):
-        return self.curve_points[i]
+        pos = np.array(self.curve_points[i]) # position
+        try:
+            vel = np.array(self.curve_points[i+1]) - pos # velocity, difference of position
+            acc = (np.array(self.curve_points[i+2]) - np.array(self.curve_points[i+1])) - vel # acceleration, difference of velocity
+        except IndexError:
+            vel = np.array([0, 0, 0]) - pos # velocity, difference of position
+            acc = np.array([0, 0, 0]) - vel # acceleration, difference of velocity
+
+        return [pos, vel, acc]
 
 
 def mainSinTrajectory():
@@ -216,16 +233,19 @@ def mainCircleTrajectory():
 
 def mainTrajectory3D():
     """
-    Seulement en position, pas d(iformation sur la vitesse ou l'acceleration)
+    Seulement en position, pas d'information sur la vitesse ou l'acceleration!
     """
-    control_point = [[10, 5, 10], [10, 20, 10], [40, 10, 10], [-10, 5, 10], [10, 5, 10]]
+    control_point = [[0, 0, 0], [10, 0, 10], [10, 10, 20], [20, 10, 30], [20, 0, 30], [30, 0, 20], [30, 10, 20], [40, 10, 10], [40, 0, 0]]
 
     my_curve = Trajectory3D(control_point, generate_curve=True)
 
-    x = [point[0] for point in my_curve.curve_points]
-    y = [point[1] for point in my_curve.curve_points]
-    z = [point[2] for point in my_curve.curve_points]
-    print(1/len(x))
+    err = []
+    for i in range(len(my_curve.curve_points)):
+        err.append(my_curve.getPoint(i)[2])
+
+    x = [point[0] for point in err]
+    y = [point[1] for point in err]
+    z = [point[2] for point in err]
 
     ax = plt.figure().add_subplot(projection='3d')
 
@@ -236,9 +256,40 @@ def mainTrajectory3D():
 
     plt.show()
 
+def mainTrajectory3D_2():
+    """
+    Seulement en position, pas d'information sur la vitesse ou l'acceleration!
+    """
+    control_point = [[0, 0, 0], [10, 0, 10], [10, 10, 20], [20, 10, 30], [20, 0, 30], [30, 0, 20], [30, 10, 20], [40, 10, 10], [40, 0, 0]]
+
+    my_curve = Trajectory3D(control_point, generate_curve=True, resolution=100, degree=5)
+
+    err = []
+    for i in range(len(my_curve.curve_points) - 2):
+        err.append(my_curve.getPoint(i))
+    pos = 1
+
+    plt.subplot(3, 1, 1)
+    e1 = [point[0][pos] for point in err]
+    plt.plot(e1, label='position')
+    plt.legend()
+
+    plt.subplot(3, 1, 2)
+    e2 = [point[1][pos] for point in err]
+    plt.plot(e2, label="velocity")
+    plt.legend()
+
+    plt.subplot(3, 1, 3)
+    e3 = [point[2][pos] for point in err]
+    plt.plot(e3, label="acceleration")
+    plt.legend()
+
+    plt.show()
+
 
 if __name__ == "__main__":
     # mainSinTrajectory()
     # mainTrajectory()
     # mainCircleTrajectory()
-    mainTrajectory3D()
+    # mainTrajectory3D()
+    mainTrajectory3D_2()
