@@ -11,14 +11,12 @@ def actuate_gripper(robot, q, dt, close=False):
     return : q, True if the action as ended, False if the ation is ongoing
     """
     gripper_actuator_velocity = 0.5
-    q_gripper = q.copy()
-    q_gripper[-1] = q_gripper[-2]
-    q_gripper = gripper_limits(robot, q_gripper)
 
-    if not close: #closing the gripper
-        # print("Opening the gripper")
-        if q[-1] >= deg2rad(45):
-            # print("Gripper open")
+    if not close: # opening the gripper
+        # print("Opening the gripper")
+        # print(np.rad2deg(q[-1]))
+        if q[-1] >= deg2rad(44.9):
+            # print("Gripper open")
             q = gripper_limits(robot, q)
             return q, True
         vq = np.zeros(robot.model.nv)
@@ -28,8 +26,9 @@ def actuate_gripper(robot, q, dt, close=False):
         q = gripper_limits(robot, q)
         return q, False
     
-    else: #opening the gripper
-        # print("Clossing the gripper")
+    else: # closing the gripper
+        # print("Clossing the gripper")
+        # print(np.rad2deg(q[-1]))
         if q[-1] <= deg2rad(0):
             # print("Gripper closed")
             q = gripper_limits(robot, q)

@@ -9,7 +9,7 @@ class StateMahine:
         self.current_state = 0
 
 
-    def changeState(self, q, dq, dt, robot, i, viz):
+    def updateState(self, q, dq, dt, robot, i, viz):
 
         if self.current_state == 0:
             # initial state
