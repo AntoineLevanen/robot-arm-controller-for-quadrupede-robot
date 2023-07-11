@@ -43,7 +43,7 @@ my_state_machine = StateMahine()
 # circular trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
-my_trajectory.circleTrajectoryXY(0.4, 0.0, 0.2, 0.15, 1)
+my_trajectory.circleTrajectoryXY(0.4, 0.0, 0.2, 0.15, 2 )
 
 # B-Spline trajectory
 control_points = [[0.4, 0.1, 0.2], [0.5, 0.0, 0.3], [0.5, -0.05, 0.5], [0.5, -0.1, 0.3], [0.5, 0.0, 0.6], [0.4, 0.1, 0.1]]

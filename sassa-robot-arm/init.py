@@ -36,7 +36,7 @@ def initRobot(urdfFilePath, meshFilePath):
     collision_pair = pin.CollisionPair(height_field_collision_id, fl_foot_collision_id)
     robot.collision_model.addCollisionPair(collision_pair) """
 
-    addCameraFrame(robot)
+    # addCameraFrame(robot)
     addGripperFrame(robot)
 
     return robot # robot.collision_model, robot.collision_data, robot.visual_model, robot.visual_data
