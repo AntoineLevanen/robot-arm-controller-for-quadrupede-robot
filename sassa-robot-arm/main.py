@@ -3,7 +3,7 @@ import numpy as np
 import pinocchio as pin
 import matplotlib.pyplot as plt
 from init import initRobot, initViz
-from controller import controller2IK, lookAt, useGripper, controller2IK2ndorder
+from controller import useGripper, controllerCLIK2ndorderPositionOnly, controllerCLIK2ndorder
 from gripper import actuate_gripper
 from neckController import neckController, check_joint_limit
 from computeCollision import computeCollisions
@@ -20,13 +20,12 @@ trajectory_step = int(duration / dt)
 realtime_viz = True # 
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
-                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0, 0.0])
 # q0_ref = np.zeros(sassa.model.nq)
 
 
 # q_current = np.zeros((25,))
-q_current = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
-                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+q_current = q0_ref.copy()
 
 dq_current = np.zeros((24,))
 d2q_current = np.zeros((24,))
@@ -43,12 +42,13 @@ my_state_machine = StateMahine()
 # circular trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
-my_trajectory.circleTrajectoryXY(0.4, 0.0, 0.2, 0.15, 2 )
+my_trajectory.circleTrajectoryXY(0.35, 0.0, 0.3, 0.02, 1)
 
 # B-Spline trajectory
 control_points = [[0.4, 0.1, 0.2], [0.5, 0.0, 0.3], [0.5, -0.05, 0.5], [0.5, -0.1, 0.3], [0.5, 0.0, 0.6], [0.4, 0.1, 0.1]]
 my_3d_trajectory = Trajectory3D(control_points, generate_curve=True, resolution=trajectory_step, degree=5)
 
+goal = [0, 0, 0]
 err = [[0, 0, 0]]
 
 # main loop, updating the configuration vector q
@@ -60,8 +60,9 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     # WORKING controller
     goal = my_trajectory.getPoint(i%360) # circular trajectory
+    # goal = [[0.4, 0.0, 0.3], [0, 0, 0], [0, 0, 0]]
     # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
-    q_current, dq_current = controller2IK2ndorder(q_current, dq_current, dt, sassa, i, viz, goal, q0_ref)
+    q_current, dq_current = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, goal, q0_ref)
 
     # TEST controller
     # q, dq, _ = lookAt(q_current, dq_current, dt, sassa, i, viz, 1)
@@ -79,6 +80,12 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     init = False
     viz.display(q_current)
+    # viz.drawFrameVelocities(sassa.model.getFrameId('FL_foot_frame'), v_scale=4)
+    # o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('FL_foot_frame')].homogeneous
+    # print(sassa.data.oMf[sassa.model.getFrameId('FL_foot_frame')])
+    # img = viz.viewer.get_image()
+    # print(img)
+    # time.sleep(100)
 
     # Update Geometry models
     sassa.updateGeometryPlacements(q_current, visual=False)
@@ -88,6 +95,10 @@ for i in range(int(duration / dt)): # int(duration / dt)
     ### end controler
 
     # wait to have a real time sim
+
+    if i % (1/dt) == 0:
+        print("time remaining :", duration-(i*dt))
+
     if realtime_viz:
         tsleep = dt - (time.time() - t0)
         if tsleep > 0:

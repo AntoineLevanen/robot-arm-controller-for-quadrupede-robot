@@ -75,8 +75,8 @@ def addGripperFrame(robot):
     """
     L = 0.05
     X = pin.utils.rotate('y', np.pi/2)
-    Y = pin.utils.rotate('x', -np.pi/2)
-    Z = np.eye(3)
+    Y = pin.utils.rotate('x', np.pi)
+    Z = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]) # np.eye(3)
     cyl = hppfcl.Cylinder(L/30,L)
     med = np.array([0, 0, L/2])
 
@@ -87,13 +87,13 @@ def addGripperFrame(robot):
     FIDX = robot.model.addFrame(pin.Frame('framegripper', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
 
     robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, 1.])
+    robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, 0.5])
 
     robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_y', FIDX, JIDX, cyl, pin.SE3(Y, Y@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 1, 0, 1.])
+    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 1, 0, 0.5])
 
     robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, 1.])
+    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, 0.5])
 
     robot.data = robot.model.createData()
     robot.visual_data = robot.visual_model.createData()
