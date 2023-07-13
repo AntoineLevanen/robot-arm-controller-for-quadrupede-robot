@@ -8,14 +8,14 @@ from gripper import actuate_gripper
 from neckController import neckController, check_joint_limit
 from computeCollision import computeCollisions
 from visualObject import CenterOfMass
-from StateMachine import StateMahine
+from states_machine.StateMachine import StateMahine
 from trajectory import CircleTrajectory, Trajectory3D
 
 sassa = initRobot("urdf/sassa-robot/robot_obj.urdf", "urdf/sassa-robot/")
 viz = initViz(sassa, 2, add_ground=True, add_box=False)
 
 duration = 60 # vizualization duration
-dt = 0.01 # delta time
+dt = 0.05 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True # 
 
@@ -42,7 +42,7 @@ my_state_machine = StateMahine()
 # circular trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
-my_trajectory.circleTrajectoryXY(0.35, 0.0, 0.3, 0.02, 1)
+my_trajectory.circleTrajectoryXY(0.45, -0.01, 0.3, 0.02, 1)
 
 # B-Spline trajectory
 control_points = [[0.4, 0.1, 0.2], [0.5, 0.0, 0.3], [0.5, -0.05, 0.5], [0.5, -0.1, 0.3], [0.5, 0.0, 0.6], [0.4, 0.1, 0.1]]
@@ -59,9 +59,8 @@ for i in range(int(duration / dt)): # int(duration / dt)
     ### start controler
 
     # WORKING controller
-    goal = my_trajectory.getPoint(i%360) # circular trajectory
-    # goal = [[0.4, 0.0, 0.3], [0, 0, 0], [0, 0, 0]]
-    # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
+    # goal = my_trajectory.getPoint(i%360) # circular trajectory
+    goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
     q_current, dq_current = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, goal, q0_ref)
 
     # TEST controller
@@ -96,11 +95,12 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     # wait to have a real time sim
 
-    if i % (1/dt) == 0:
-        print("time remaining :", duration-(i*dt))
+    # if i % (1/dt) == 0:
+    #     print("time remaining :", duration-(i*dt))
 
     if realtime_viz:
         tsleep = dt - (time.time() - t0)
+        # print(tsleep)
         if tsleep > 0:
             time.sleep(tsleep)
             

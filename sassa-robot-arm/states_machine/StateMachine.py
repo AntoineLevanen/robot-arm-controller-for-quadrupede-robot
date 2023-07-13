@@ -6,10 +6,24 @@ from gripper import actuate_gripper
 class StateMahine:
 
     def __init__(self):
+        """
+        State machine to test the robot by going point to point with an IK controler in position/velocity
+        Also actuate the gripper 
+
+        """
         self.current_state = 0
 
 
     def updateState(self, q, dq, dt, robot, i, viz):
+        """
+        q : current robot contiguration vector
+        dq : current robot joint velocity vector
+        dt : delta time
+        robot : robot wrapper class instance
+        i : current state of the main loop
+        viz : vizualizater to display goal point in 3D space
+        return : new configuration and velocity vector to be displayed
+        """
 
         if self.current_state == 0:
             # initial state

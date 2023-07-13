@@ -11,7 +11,7 @@ from visualObject import SphereGoal
 
 def controller(q, dq, dt, robot, init, i, viz):
     """
-    Go from one point to another
+    Go from one point to another. Using CLIK (Closed Loop Inverse Kinematics)
     q : current configuration of the robot
     dq : current velocity of the robot
     dt : time step
@@ -371,8 +371,9 @@ def controllerCLIK2ndorderPositionOnly(q_current, dq_current, dt, robot, init, v
 
 def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0_ref):
     """
-    The gripper follow the desired trajectory using second order inverse kinematics with close loop (CLIK)
-    Controlling Position and Orientation
+    The gripper follow the desired trajectory using second order closed loop inverse kinematics (CLIK)
+    Controlling Position and Orientation of the end effector with the four leg stick to the ground, 
+    the body will adapte to follow the end effector movement
     q_current : current configuration of the robot
     dq_current : current velocity of the robot
     dt : time step
@@ -442,14 +443,19 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0
     err_vel_hr_foot = o_hrfoot - pin.getFrameVelocity(robot.model, robot.data, IDX_HRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3]
 
     # Gripper jacobian and error
-    ### PROBLEM!!! ###
     oMGripper = robot.data.oMf[IDX_Gripper]
     o_JGripper = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)
+    # get the jacobian matrix of translation part and on orientation (y axis)
+    o_JGripper = np.vstack([o_JGripper[:3], o_JGripper[4]])
     o_Gripper = oMgoalGripper.translation - oMGripper.translation
     err_vel_gripper = np.hstack([o_Gripper, [0, 0, 0]]) - pin.getFrameVelocity(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector
+    err_vel_gripper = np.hstack([err_vel_gripper[:3], err_vel_gripper[4]])
 
-    gripper_rotation = np.eye(3) # pin.utils.rotate('y', np.pi/10 * 8)
+    # define a rotation for the end effector
+    oMgoalGripper.rotation = pin.utils.rotate('y', np.pi/4)
     gripper_nu = pin.log(oMGripper.inverse() * oMgoalGripper).vector
+    # error vector position + one orientation
+    gripper_nu = np.hstack([gripper_nu[:3], gripper_nu[4]])
 
     # Base jacobian and error
     oMBase = robot.data.oMf[IDX_Base]
@@ -471,30 +477,32 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0
     a_hl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_hr_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_gripper = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).np
+    a_gripper = np.hstack([a_gripper[:3], a_gripper[4]])
     a_base = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).np
 
     # Stack the current acceleration of each feet frame
     J_dot_q_dot = np.hstack([a_fl_foot, a_fr_foot, a_hl_foot, a_hr_foot])
 
     # gains
-    K1 = 1
+    # tune the gain to compensate the overshoot
+    K1 = 20
     K2 = 2*np.sqrt(K1)
 
     # Tasks in order of priority
     # It is posible to scale task to affect the extremum of the velocity and acceleration, scale factor [0;1]
     # first task with higher priority, fixe the feet on the ground 
-    # d2q = pinv(J) @ (x_ddot - J_dot_q_dot + K2 * e_dot + K1 * e) 
+    d2q = pinv(J) @ (x_ddot - J_dot_q_dot + K2 * e_dot + K1 * e) 
 
     # Null Space of the first task
     P0 = np.eye(robot.model.nv) - pinv(J) @ J
     # second task with less priority, move the gripper
-    d2q = np.zeros(robot.model.nv)
-    d2q += pinv(o_JGripper @ P0) @ (np.hstack([goal_Gripper_acceleration, [0, 0, 0]]) - a_gripper + K2 * err_vel_gripper + K1 * gripper_nu)
+    d2q += pinv(o_JGripper @ P0) @ (np.hstack([goal_Gripper_acceleration, [0]]) - a_gripper + K2 * err_vel_gripper + K1 * gripper_nu)
 
     P1 = P0 - pinv(o_JGripper @ P0) @ o_JGripper @ P0
-    d2q += pinv(o_JBase @ P1) @ (np.array([0, 0, 0, 0, 0, 0]) - a_base + K2 * err_vel_base + K1 * base_nu)
+    # constrain the CoM position in the center of the support polygone, only in X and Y
+    d2q += pinv(o_JBase[:2,:] @ P1) @ (np.array([0, 0]) - a_base[:2] + K2 * err_vel_base[:2] + K1 * base_nu[:2])
 
-    # Add a Regulation task to fill the free remaining dof
+    # Add a Regulation Task to fill the free remaining dof
     # computing the error in position in the configuration space base : xyz,abc
     q_temp = q0_ref - q_current
     q_temp = np.hstack([[0, 0, 0, 0, 0, 0], q_temp[7:]])

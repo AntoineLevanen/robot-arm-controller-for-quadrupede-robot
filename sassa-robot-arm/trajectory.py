@@ -29,14 +29,26 @@ class sinTrajectory:
         return self.d2q
 
 class Trajectory:
-
-    def __init__(self, control_point, ):
+    """
+    Using the Curves library from robotpkg
+    """
+    def __init__(self, control_point, start_orientation, end_orientation):
+        """
+        control_points : list of control points use for the trajectory
+        start_orientation : orientation of the end effector at the begining of the trajectory (Quaternion)
+        end_orientation : orientation of the end effector at the end of the trajectory (Quaternion)
+        """
         self.control_point = control_point
-        self.spline = Spline(self.control_point[0], self.control_point[1])
-        self.first_time = True
+        self.start_orientation = start_orientation
+        self.end_orientation = end_orientation
+        # push back control points
+        self.spline = None
 
-    def get_point_3d(self, i):        
-        return self.spline(i)
+    def getPoint3d(self, i):        
+        return None
+
+    def getPoint6d(self, i):
+        return None
 
 class CircleTrajectory:
 
@@ -286,6 +298,11 @@ def mainTrajectory3D_2():
 
     plt.show()
 
+def mainTrajectory():
+    """
+    main for the Curve library from robotpkg
+    """
+    pass
 
 if __name__ == "__main__":
     # mainSinTrajectory()
