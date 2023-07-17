@@ -13,7 +13,7 @@ dir_path = r'/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadruped
 launchBullet = False
 
 argumentList = sys.argv[1:]
-print(len(argumentList))
+# print(len(argumentList))
 
 # Options
 options = "hbc"

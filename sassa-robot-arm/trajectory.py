@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline as Spline
 from numpy import sin, cos
 from geomdl import BSpline
+# from curves import CURVES_WITH_PINOCCHIO_SUPPORT
 
 class sinTrajectory:
 
@@ -247,13 +248,13 @@ def mainTrajectory3D():
     """
     Seulement en position, pas d'information sur la vitesse ou l'acceleration!
     """
-    control_point = [[0, 0, 0], [10, 0, 10], [10, 10, 20], [20, 10, 30], [20, 0, 30], [30, 0, 20], [30, 10, 20], [40, 10, 10], [40, 0, 0]]
+    control_point = [[0.3, 0.1, 0.2], [0.3, 0.1, 0.25], [0.3, 0.0, 0.4], [0.3, -0.1, 0.25], [0.3, -0.1, 0.2]]
 
     my_curve = Trajectory3D(control_point, generate_curve=True)
 
     err = []
     for i in range(len(my_curve.curve_points)):
-        err.append(my_curve.getPoint(i)[2])
+        err.append(my_curve.getPoint(i)[0])
 
     x = [point[0] for point in err]
     y = [point[1] for point in err]
@@ -308,5 +309,5 @@ if __name__ == "__main__":
     # mainSinTrajectory()
     # mainTrajectory()
     # mainCircleTrajectory()
-    # mainTrajectory3D()
-    mainTrajectory3D_2()
+    mainTrajectory3D()
+    # mainTrajectory3D_2()

@@ -169,7 +169,7 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False):
         q0 = pin.neutral(robot.model)
         # q0[2] = 0.5
         q1 = np.array([0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
-                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, 0.0, np.pi/6, -np.pi/6, 0.0, 0.0])
+                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, 0.0, np.pi/6, -np.pi/6, 0.0])
         viz.display(q1)
         viz.displayCollisions(False) # display the collision meshes
         viz.displayVisuals(True)

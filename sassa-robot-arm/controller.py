@@ -518,7 +518,13 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0
     # compute the next configuration
     q_next = pin.integrate(robot.model, q_current, dq_next * dt)
 
-    return q_next, dq_next
+    flag = False
+    print(norm(o_Gripper))
+    if norm(o_Gripper) < 0.012:
+        # goal position is reach
+        flag = True
+
+    return q_next, dq_next, flag
 
 def QUATTOXYZ(q1):
     """

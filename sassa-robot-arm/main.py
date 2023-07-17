@@ -11,7 +11,7 @@ from visualObject import CenterOfMass
 from states_machine.StateMachine import StateMahine
 from trajectory import CircleTrajectory, Trajectory3D
 
-sassa = initRobot("urdf/sassa-robot/robot_obj.urdf", "urdf/sassa-robot/")
+sassa = initRobot("urdf/sassa-robot/robot.urdf", "urdf/sassa-robot/")
 viz = initViz(sassa, 2, add_ground=True, add_box=False)
 
 duration = 60 # vizualization duration
@@ -20,18 +20,18 @@ trajectory_step = int(duration / dt)
 realtime_viz = True # 
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
-                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0, 0.0])
+                        np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
 # q0_ref = np.zeros(sassa.model.nq)
 
 
-# q_current = np.zeros((25,))
+# q_current = np.zeros((sassa.model.nq,))
 q_current = q0_ref.copy()
 
-dq_current = np.zeros((24,))
-d2q_current = np.zeros((24,))
+dq_current = np.zeros((sassa.model.nv,))
+d2q_current = np.zeros((sassa.model.nv,))
 
 init = True
-is_open = False
+is_close = True
 
 # Object to show the projection on the ground of the center of masse 
 com_projection = CenterOfMass(viz, sassa, "com")
@@ -48,7 +48,7 @@ my_trajectory.circleTrajectoryXY(0.45, -0.01, 0.3, 0.02, 1)
 control_points = [[0.4, 0.1, 0.2], [0.5, 0.0, 0.3], [0.5, -0.05, 0.5], [0.5, -0.1, 0.3], [0.5, 0.0, 0.6], [0.4, 0.1, 0.1]]
 my_3d_trajectory = Trajectory3D(control_points, generate_curve=True, resolution=trajectory_step, degree=5)
 
-goal = [0, 0, 0]
+goal = [[0.55, 0, 0.45], [0, 0, 0], [0, 0, 0]]
 err = [[0, 0, 0]]
 
 # main loop, updating the configuration vector q
@@ -60,7 +60,7 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     # WORKING controller
     # goal = my_trajectory.getPoint(i%360) # circular trajectory
-    goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
+    # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
     q_current, dq_current = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, goal, q0_ref)
 
     # TEST controller
@@ -72,10 +72,10 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # q, dq = my_state_machine.updateState(q_current, dq_current, dt, sassa, i, viz)
 
     # ACTUATE gripper
-    # q, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_open)
-    # if is_gripper_end_actuated:
-    #     is_open = not is_open
-    #     is_gripper_end_actuated = False
+    q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
+    if is_gripper_end_actuated:
+        is_close = not is_close
+        is_gripper_end_actuated = False
 
     init = False
     viz.display(q_current)
