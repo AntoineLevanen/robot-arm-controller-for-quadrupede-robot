@@ -37,11 +37,11 @@ def initRobot(urdfFilePath, meshFilePath):
     robot.collision_model.addCollisionPair(collision_pair) """
 
     # addCameraFrame(robot)
-    addGripperFrame(robot)
+    addGripperFrame(robot, add_visual=True, transparency=0.1)
 
     return robot # robot.collision_model, robot.collision_data, robot.visual_model, robot.visual_data
 
-def addCameraFrame(robot):
+def addCameraFrame(robot, add_visual=False):
     """
     Add frame for the camera as well as a visual in the viewport
     robot : Instance of the class RobotWrapper from Pinocchio
@@ -58,17 +58,17 @@ def addCameraFrame(robot):
 
     eff = np.array([0.2, -0.02525, 0.03])
     FIDX = robot.model.addFrame(pin.Frame('framecamera', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
+    if add_visual:
+        robot.visual_model.addGeometryObject(pin.GeometryObject('axiscamera_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
+        robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, 1.])
 
-    robot.visual_model.addGeometryObject(pin.GeometryObject('axiscamera_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, 1.])
+        robot.visual_model.addGeometryObject(pin.GeometryObject('axiscamera_y', FIDX, JIDX, cyl, pin.SE3(Y, Y@med+eff)))
+        robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 1, 0, 1.])
 
-    robot.visual_model.addGeometryObject(pin.GeometryObject('axiscamera_y', FIDX, JIDX, cyl, pin.SE3(Y, Y@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 1, 0, 1.])
+        robot.visual_model.addGeometryObject(pin.GeometryObject('axiscamera_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
+        robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, 1.])
 
-    robot.visual_model.addGeometryObject(pin.GeometryObject('axiscamera_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, 1.])
-
-def addGripperFrame(robot):
+def addGripperFrame(robot, add_visual=True, transparency=0.5):
     """
     Add frame for the gripper as well as a visual in the viewport
     robot : Instance of the class RobotWrapper from Pinocchio
@@ -83,20 +83,20 @@ def addGripperFrame(robot):
     FIDX = robot.model.getFrameId('OT')
     JIDX = robot.model.frames[FIDX].parent
 
-    eff = np.array([0.1, -0.005, 0.03])
+    eff = np.array([0.09, -0.008, 0.03])
     FIDX = robot.model.addFrame(pin.Frame('framegripper', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
+    if add_visual:
+        robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
+        robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, transparency])
 
-    robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, 0.5])
+        robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_y', FIDX, JIDX, cyl, pin.SE3(Y, Y@med+eff)))
+        robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 1, 0, transparency])
 
-    robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_y', FIDX, JIDX, cyl, pin.SE3(Y, Y@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 1, 0, 0.5])
+        robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
+        robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, transparency])
 
-    robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
-    robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, 0.5])
-
-    robot.data = robot.model.createData()
-    robot.visual_data = robot.visual_model.createData()
+        robot.data = robot.model.createData()
+        robot.visual_data = robot.visual_model.createData()
 
 def addGroundPlane(plane_URDF_path, mesh_path):
     """
@@ -116,7 +116,7 @@ def addTable():
     box_model, box_collision_model, box_visual_model = pin.buildModelsFromUrdf("urdf/objects/box1.urdf", "urdf/objects", pin.JointModelFreeFlyer())
     return (box_model, box_collision_model, box_visual_model)
 
-def initViz(robot, viz_choice, add_ground=False, add_box=False):
+def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45, -0.1, 0.1]):
     """
     Initialize the vizualizer (MeshCat or Gepetto Viewer)
     robot : Instance of the class RobotWrapper from Pinocchio
@@ -189,9 +189,9 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False):
             viz3.initViewer(viz.viewer)
             viz3.loadViewerModel(rootNodeName="table")
             q0 = pin.neutral(box_model)
-            q0[0] = 0.45
-            q0[1] = -0.1
-            q0[2] = 0.1
+            q0[0] = box_config[0]
+            q0[1] = box_config[1]
+            q0[2] = box_config[2]
             viz3.display(q0)
 
     else:
@@ -199,3 +199,85 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False):
         sys.exit(1)
         
     return viz
+
+
+class Door:
+
+    def __init__(self, viz, position=[0.4, 0.4, 0.0]):
+        """
+        Add a visual door which the robot can interact with
+        return : model, collision model and visual model for displaying in the viewport
+        """
+        door_model, door_collision_model, door_visual_model = pin.buildModelsFromUrdf("urdf/objects/door-urdf/robot.urdf", "urdf/objects/door-urdf", pin.JointModelFreeFlyer())
+
+        # Display a door
+        self.viz4 = MeshcatVisualizer(door_model, door_collision_model, door_visual_model)
+        self.viz4.initViewer(viz.viewer)
+        self.viz4.loadViewerModel(rootNodeName="door")
+        self.q0 = pin.neutral(door_model)
+        self.q0[0] = position[0]
+        self.q0[1] = position[1]
+        self.q0[2] = position[2]
+        self.viz4.display(self.q0)
+
+    def actuateDoor(self, angle):
+        self.q0[-1] = angle
+        self.viz4.display(self.q0)
+
+class Cagette:
+
+    def __init__(self, viz, initial_position=[0.4, 0.4, 0.0]):
+        """
+        Add a visual door which the robot can interact with
+        return : model, collision model and visual model for displaying in the viewport
+        """
+        cagette_model, cagette_collision_model, cagette_visual_model = pin.buildModelsFromUrdf("urdf/objects/cagette/robot.urdf", "urdf/objects/cagette", pin.JointModelFreeFlyer())
+
+        # Display a door
+        self.viz5 = MeshcatVisualizer(cagette_model, cagette_collision_model, cagette_visual_model)
+        self.viz5.initViewer(viz.viewer)
+        self.viz5.loadViewerModel(rootNodeName="door")
+        self.q0 = pin.neutral(cagette_model)
+        self.q0[0] = initial_position[0]
+        self.q0[1] = initial_position[1]
+        self.q0[2] = initial_position[2]
+        self.q0[3:7] = [0, 0, .7, .7]
+        self.viz5.display(self.q0)
+
+    def actuate(self, x=None, y=None, z=None):
+        if x is not None:
+            self.q0[0] = x
+        if y is not None:
+            self.q0[1] = y
+        if z is not None:
+            self.q0[2] = z
+        self.viz5.display(self.q0)
+
+class Table:
+
+    def __init__(self, viz, initial_position=[1, 1, 0.0]):
+        """
+        Add a visual door which the robot can interact with
+        return : model, collision model and visual model for displaying in the viewport
+        """
+        table_model, table_collision_model, table_visual_model = pin.buildModelsFromUrdf("urdf/objects/table/table.urdf", "urdf/objects/table", pin.JointModelFreeFlyer())
+
+        # Display a door
+        self.viz6 = MeshcatVisualizer(table_model, table_collision_model, table_visual_model)
+        self.viz6.initViewer(viz.viewer)
+        self.viz6.loadViewerModel(rootNodeName="table")
+        self.q0 = pin.neutral(table_model)
+        self.q0[0] = initial_position[0]
+        self.q0[1] = initial_position[1]
+        self.q0[2] = initial_position[2]
+        self.q0[3:7] = [0, 0, .7, .7]
+        self.viz6.display(self.q0)
+
+    def actuate(self, x=None, y=None, z=None):
+        if x is not None:
+            self.q0[0] = x
+        if y is not None:
+            self.q0[1] = y
+        if z is not None:
+            self.q0[2] = z
+        self.viz6.display(self.q0)

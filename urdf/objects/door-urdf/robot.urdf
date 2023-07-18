@@ -1,0 +1,58 @@
+<robot name="door">
+<link name="floor">
+<visual>
+<origin xyz="0 -1.9081958235744878039e-17 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="package:///floor.stl"/>
+</geometry>
+<material name="floor_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 0.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 -1.9081958235744878039e-17 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="package:///floor.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="door">
+<visual>
+<origin xyz="0.41000000000000003109 3.4694469519536141888e-18 0" rpy="3.141592653589793116 -0 0" />
+<geometry>
+<mesh filename="package:///door.stl"/>
+</geometry>
+<material name="door_material">
+<color rgba="0.90196078431372550543 0.90196078431372550543 0.90196078431372550543 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.41000000000000003109 3.4694469519536141888e-18 0" rpy="3.141592653589793116 -0 0" />
+<geometry>
+<mesh filename="package:///door.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<joint name="door" type="revolute">
+<origin xyz="0 3.4694469519536141888e-18 0" rpy="3.141592653589793116 -0 0" />
+<parent link="floor" />
+<child link="door" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="-1.570796326794896558" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+
+</robot>

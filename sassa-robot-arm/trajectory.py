@@ -248,7 +248,9 @@ def mainTrajectory3D():
     """
     Seulement en position, pas d'information sur la vitesse ou l'acceleration!
     """
-    control_point = [[0.3, 0.1, 0.2], [0.3, 0.1, 0.25], [0.3, 0.0, 0.4], [0.3, -0.1, 0.25], [0.3, -0.1, 0.2]]
+    # control_point = [[0.3, 0.1, 0.2], [0.3, 0.1, 0.25], [0.3, 0.0, 0.4], [0.3, -0.1, 0.25], [0.3, -0.1, 0.2]]
+    aa = 0.35
+    control_point = [[aa, 0.0, 0.4], [aa, 0.1, 0.25], [aa, 0.13, 0.15], [aa, 0.13, 0.07], [aa, 0.05, 0.07], [aa, -0.15, 0.07], [aa, -0.2, 0.07], [aa, -0.2, 0.1], [aa, -0.2, 0.2], [aa, 0.0, 0.3]]
 
     my_curve = Trajectory3D(control_point, generate_curve=True)
 

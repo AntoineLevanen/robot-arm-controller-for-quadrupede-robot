@@ -14,7 +14,7 @@ def actuate_gripper(robot, q, dt, close=False, gripper_actuator_velocity=0.5):
     if close: # open the gripper
         # print("Opening the gripper")
         # print(np.rad2deg(q[-1]))
-        if q[-1] >= deg2rad(60):
+        if q[-1] >= deg2rad(59.6):
             # print("Gripper open")
             q = gripper_limits(robot, q)
             return q, True

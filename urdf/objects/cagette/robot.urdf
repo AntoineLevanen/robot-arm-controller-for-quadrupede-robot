@@ -1,0 +1,26 @@
+<robot name="cagette">
+<link name="cagette">
+<visual>
+<origin xyz="2.7376104855258986959e-17 1.4365678785432933751e-18 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="package:///cagette.stl"/>
+</geometry>
+<material name="cagette_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="2.7376104855258986959e-17 1.4365678785432933751e-18 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="package:///cagette.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+
+</robot>

@@ -369,7 +369,7 @@ def controllerCLIK2ndorderPositionOnly(q_current, dq_current, dt, robot, init, v
 
     return q_next, dq_next
 
-def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0_ref):
+def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, goal, orientation=pin.utils.rotate('y', np.pi/2), eps=0.015, add_goal_sphere=True):
     """
     The gripper follow the desired trajectory using second order closed loop inverse kinematics (CLIK)
     Controlling Position and Orientation of the end effector with the four leg stick to the ground, 
@@ -411,10 +411,10 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0
 
     # target position of the end effector
     oMgoalGripper = pin.SE3(np.eye(3), np.array([goal_Gripper_position[0], goal_Gripper_position[1], goal_Gripper_position[2]]))
-
-    if init:
-        sphere_goal = SphereGoal(viz, oMgoalGripper.translation, "goal1")
-    sphere_goal.moveGoalVisual(oMgoalGripper.translation)
+    if add_goal_sphere:
+        if init:
+            sphere_goal = SphereGoal(viz, oMgoalGripper.translation, "goal1")
+        sphere_goal.moveGoalVisual(oMgoalGripper.translation)
 
     # second order Closed Loop Inverse kinematics
     # Run the algorithms that outputs values in robot.data
@@ -452,7 +452,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0
     err_vel_gripper = np.hstack([err_vel_gripper[:3], err_vel_gripper[4]])
 
     # define a rotation for the end effector
-    oMgoalGripper.rotation = pin.utils.rotate('y', np.pi/4)
+    oMgoalGripper.rotation = orientation
     gripper_nu = pin.log(oMGripper.inverse() * oMgoalGripper).vector
     # error vector position + one orientation
     gripper_nu = np.hstack([gripper_nu[:3], gripper_nu[4]])
@@ -519,8 +519,8 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, goal, q0
     q_next = pin.integrate(robot.model, q_current, dq_next * dt)
 
     flag = False
-    print(norm(o_Gripper))
-    if norm(o_Gripper) < 0.012:
+    # print(norm(o_Gripper))
+    if norm(o_Gripper) < eps: # default 0.015
         # goal position is reach
         flag = True
 

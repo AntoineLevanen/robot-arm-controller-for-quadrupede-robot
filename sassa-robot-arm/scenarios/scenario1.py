@@ -12,7 +12,8 @@ from visualObject import CenterOfMass
 from scenario1StateMachine import StateMahineScenario1
 
 sassa = initRobot("urdf/sassa-robot/robot.urdf", "urdf/sassa-robot/")
-viz = initViz(sassa, 2, add_ground=True, add_box=False)
+# sassa = initRobot("urdf/sassa-robot-short-arm/robot.urdf", "urdf/sassa-robot-short-arm/")
+viz = initViz(sassa, 2, add_ground=True, add_box=True, box_config=[0.4, 0.0, 0.04])
 
 duration = 60 # vizualization duration
 dt = 0.05 # delta time
@@ -31,7 +32,7 @@ d2q_current = np.zeros((sassa.model.nv,))
 # Object to show the projection on the ground of the center of masse 
 com_projection = CenterOfMass(viz, sassa, "com")
 
-my_state_machine = StateMahineScenario1(sassa, viz, dt, q0_ref, resolution=50)
+my_state_machine = StateMahineScenario1(sassa, viz, dt, q0_ref, curve_resolution=500)
 
 init = True
 
