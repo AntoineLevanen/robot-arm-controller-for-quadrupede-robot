@@ -1,7 +1,6 @@
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-
 import sys
 import os
 path = os.path.abspath("sassa-robot-arm")
@@ -51,6 +50,9 @@ for i in range(int(duration / dt)): # int(duration / dt)
     init = False
 
     viz.display(q_current)
+
+    # o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('FL_foot_frame')].homogeneous
+    # capture image or animation
 
     # wait to have a real time sim
     # if i % (1/dt) == 0:
