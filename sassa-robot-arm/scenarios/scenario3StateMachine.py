@@ -13,21 +13,28 @@ from trajectory import Trajectory3D
 
 class StateMahineScenario3:
 
-    def __init__(self,robot, viz, dt, q0_ref, curve_resolution=50):
+    def __init__(self,robot, viz, dt, q0_ref, curve_resolution=50, control_point=None):
         """
         State machine to look inside a box and then move it
         Also actuate the gripper 
         """
         self.current_state = 0
-        self.ma_cagette = Cagette(viz, initial_position=[0.4, 0.1, 0.0])
+        if viz is not None:
+            self.ma_cagette = Cagette(viz, initial_position=[0.4, 0.1, 0.0])
+        else:
+            self.ma_cagette = None
 
         self.robot = robot
         self.curve_resolution = curve_resolution
         self.viz = viz
         self.dt = dt
         self.q0_ref = q0_ref
-        aa = 0.35
-        self.control_point = [[aa, 0.0, 0.4], [aa, 0.1, 0.25], [aa, 0.13, 0.15], [aa, 0.13, 0.07], [aa, 0.05, 0.07], [aa, -0.15, 0.07], [aa, -0.2, 0.07], [aa, -0.2, 0.1], [aa, -0.2, 0.2], [aa, 0.0, 0.3]]
+        if control_point is not None:
+            self.control_point = control_point
+        else:
+            aa = 0.35
+            self.control_point = [[aa, 0.0, 0.4], [aa, 0.1, 0.25], [aa, 0.13, 0.15], [aa, 0.13, 0.07], [aa, 0.05, 0.07], \
+                                [aa, -0.15, 0.07], [aa, -0.2, 0.07], [aa, -0.2, 0.1], [aa, -0.2, 0.2], [aa, 0.0, 0.3]]
         self.trajectory = my_curve = Trajectory3D(self.control_point, generate_curve=True, resolution=self.curve_resolution)
         self.trajectory_i = 0
         self.init = True
@@ -131,7 +138,8 @@ class StateMahineScenario3:
             a = -0.2/(box_actuate_end_time - box_actuate_start_time)
             b = -0.1 - (-0.2/(box_actuate_end_time - box_actuate_start_time) * box_actuate_end_time)
             y = a * self.trajectory_i + b
-            self.ma_cagette.actuate(y=y)
+            if self.viz is not None:
+                self.ma_cagette.actuate(y=y)
 
             self.init = False
 
@@ -159,4 +167,4 @@ class StateMahineScenario3:
                 self.t0 = time.time()
 
 
-        return q, dq
+        return q, dq, self.goal

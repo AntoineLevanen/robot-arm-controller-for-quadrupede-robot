@@ -11,7 +11,7 @@ from trajectory import Trajectory3D
 
 class StateMahineScenario1:
 
-    def __init__(self,robot, viz, dt, q0_ref, curve_resolution=50):
+    def __init__(self,robot, viz, dt, q0_ref, curve_resolution=50, control_point=None):
         """
         State machine to pick and place
         Also actuate the gripper 
@@ -22,7 +22,10 @@ class StateMahineScenario1:
         self.dt = dt
         self.q0_ref = q0_ref
         self.current_state = 0
-        self.control_point = [[0.4, 0.1, 0.2], [0.4, 0.1, 0.25], [0.4, 0.0, 0.4], [0.4, -0.1, 0.25], [0.4, -0.1, 0.2]]
+        if control_point is not None:
+            self.control_point = control_point
+        else:
+            self.control_point = [[0.4, 0.1, 0.2], [0.4, 0.1, 0.25], [0.4, 0.0, 0.4], [0.4, -0.1, 0.25], [0.4, -0.1, 0.2]]
         self.trajectory = my_curve = Trajectory3D(self.control_point, generate_curve=True, resolution=self.curve_resolution)
         self.trajectory_i = 0
         self.init = True
@@ -140,4 +143,4 @@ class StateMahineScenario1:
                 self.init = True
 
 
-        return q, dq
+        return q, dq, self.goal
