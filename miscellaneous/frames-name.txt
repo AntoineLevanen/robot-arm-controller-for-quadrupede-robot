@@ -41,12 +41,10 @@ frame 39: arm3
 frame 40: amr3_sasm
 frame 41: OT
 frame 42: ot_sasm
-frame 43: GripperLeft
+frame 43: Gripper
 frame 44:
-frame 45: GripperRight
-frame 46:
-frame 47: framecamera
-frame 48: framegripper
+frame 45: framecamera
+frame 46: framegripper
 
 print(sassa.model.existFrame):
 Joint 0 universe: parent=0
@@ -67,5 +65,4 @@ Joint 14 arm1: parent=1
 Joint 15 arm2: parent=14
 Joint 16 arm3: parent=15
 Joint 17 OT: parent=16
-Joint 18 GripperLeft: parent=17
-Joint 19 GripperRight: parent=17
+Joint 18 Gripper: parent=17

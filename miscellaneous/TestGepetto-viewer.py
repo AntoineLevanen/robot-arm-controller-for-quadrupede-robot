@@ -5,7 +5,9 @@ import os
 from pinocchio.visualize import GepettoVisualizer
  
 # Load the URDF model. 
-model, collision_model, visual_model = pin.buildModelsFromUrdf("../sassa/robot.urdf", "../sassa/", pin.JointModelFreeFlyer())
+urdf = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/robot.urdf" # "urdf/sassa-robot/robot.urdf"
+model_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/" # "urdf/sassa-robot/"
+model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf, model_path, pin.JointModelFreeFlyer())
 viz = GepettoVisualizer(model, collision_model, visual_model)
  
 # Initialize the viewer.

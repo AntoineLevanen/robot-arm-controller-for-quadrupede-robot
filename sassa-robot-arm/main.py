@@ -59,9 +59,9 @@ for i in range(int(duration / dt)): # int(duration / dt)
     ### start controler
 
     # WORKING controller
-    # goal = my_trajectory.getPoint(i%360) # circular trajectory
+    goal = my_trajectory.getPoint(i%360) # circular trajectory
     # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
-    q_current, dq_current = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, goal, q0_ref)
+    q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, q0_ref, goal)
 
     # TEST controller
     # q, dq, _ = lookAt(q_current, dq_current, dt, sassa, i, viz, 1)
@@ -79,11 +79,9 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     init = False
     viz.display(q_current)
-    # viz.drawFrameVelocities(sassa.model.getFrameId('FL_foot_frame'), v_scale=4)
-    # o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('FL_foot_frame')].homogeneous
-    # print(sassa.data.oMf[sassa.model.getFrameId('FL_foot_frame')])
-    # img = viz.viewer.get_image()
-    # print(img)
+    # viz.drawFrameVelocities(sassa.model.getFrameId('framegripper'), v_scale=4)
+    o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
+    viz.viewer.get_image()
     # time.sleep(100)
 
     # Update Geometry models
