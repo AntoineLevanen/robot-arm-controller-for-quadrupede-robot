@@ -85,7 +85,7 @@ def addGripperFrame(robot, add_visual=True, transparency=0.5):
 
     eff = np.array([0.09, -0.008, 0.03])
     FIDX = robot.model.addFrame(pin.Frame('framegripper', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
-    if add_visual:
+    """ if add_visual:
         robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
         robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, transparency])
 
@@ -94,9 +94,9 @@ def addGripperFrame(robot, add_visual=True, transparency=0.5):
 
         robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
         robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, transparency])
-
-        robot.data = robot.model.createData()
-        robot.visual_data = robot.visual_model.createData()
+        """
+    robot.data = robot.model.createData()
+    robot.visual_data = robot.visual_model.createData()
 
 def addGroundPlane(plane_URDF_path, mesh_path):
     """

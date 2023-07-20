@@ -26,7 +26,7 @@ class StateMahineScenario2:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.5, 0.0, 0.4], [0.3, 0.0, 0.6], [0.3, 0.0, 0.7], [0.45, 0.0, 0.7]]
+            self.control_point = [[0.5, 0.0, 0.4], [0.3, 0.0, 0.5], [0.3, 0.0, 0.6], [0.45, 0.0, 0.6]]
         self.trajectory = my_curve = Trajectory3D(self.control_point, generate_curve=True, resolution=self.curve_resolution)
         self.trajectory_i = 0
         self.init = True

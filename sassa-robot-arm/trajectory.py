@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline as Spline
 from numpy import sin, cos
 from geomdl import BSpline
-# from curves import CURVES_WITH_PINOCCHIO_SUPPORT
+from ndcurves import bezier# , piecewise_bezier_curve
 
 class sinTrajectory:
 
@@ -31,14 +31,39 @@ class sinTrajectory:
 
 class Trajectory:
     """
-    Using the Curves library from robotpkg
+    Using the ndCurves library from robotpkg
     """
-    def __init__(self, control_point, start_orientation, end_orientation):
+    def __init__(self, control_point=0, start_orientation=0, end_orientation=0):
         """
         control_points : list of control points use for the trajectory
         start_orientation : orientation of the end effector at the begining of the trajectory (Quaternion)
         end_orientation : orientation of the end effector at the end of the trajectory (Quaternion)
         """
+        P0 = [1., 1., 1.]
+        P1 = [2., 2., 2.]
+        P2 = [3., 3., 3.]
+        P3 = [4., 4., 4.]
+        waypoints0 = matrix([P0, P1]).transpose()
+        waypoints1 = matrix([P2, P3]).transpose()
+        bc0 = bezier(waypoints0, 0., 1.)
+        bc1 = bezier(waypoints1, 1., 3.)
+        print(bc1(3.))
+        pc = piecewise_bezier_curve()
+
+        pc.add_curve(bc0)
+        pc.add_curve(bc1)
+
+        res = pc(0.)
+        print(res)
+        res = pc(3.)
+        print(res)
+
+        isC0 = pc.is_continuous(0)
+        print(isC0)
+        isC1 = pc.is_continuous(1)
+        print(isC1)
+
+
         self.control_point = control_point
         self.start_orientation = start_orientation
         self.end_orientation = end_orientation
@@ -190,9 +215,9 @@ def mainSinTrajectory():
 
 def mainTrajectory():
     control_points = [[0, 1, 2, 3], [0, 2, 0, -0.5]]
-    traj = Trajectory(control_points)
+    traj = Trajectory()
     
-
+    time.sleep(200)
     result_list = []
 
     for i in range(10):
@@ -250,7 +275,8 @@ def mainTrajectory3D():
     """
     # control_point = [[0.3, 0.1, 0.2], [0.3, 0.1, 0.25], [0.3, 0.0, 0.4], [0.3, -0.1, 0.25], [0.3, -0.1, 0.2]]
     aa = 0.35
-    control_point = [[aa, 0.0, 0.4], [aa, 0.1, 0.25], [aa, 0.13, 0.15], [aa, 0.13, 0.07], [aa, 0.05, 0.07], [aa, -0.15, 0.07], [aa, -0.2, 0.07], [aa, -0.2, 0.1], [aa, -0.2, 0.2], [aa, 0.0, 0.3]]
+    control_point = [[aa, 0.0, 0.4], [aa, 0.1, 0.35], [aa, 0.13, 0.22], [aa, 0.13, 0.17], [aa, 0.05, 0.17], \
+                                [aa, -0.15, 0.17], [aa, -0.2, 0.17], [aa, -0.2, 0.2], [aa, -0.2, 0.3], [aa, 0.0, 0.4]]
 
     my_curve = Trajectory3D(control_point, generate_curve=True)
 
@@ -309,7 +335,7 @@ def mainTrajectory():
 
 if __name__ == "__main__":
     # mainSinTrajectory()
-    # mainTrajectory()
+    mainTrajectory()
     # mainCircleTrajectory()
-    mainTrajectory3D()
+    # mainTrajectory3D()
     # mainTrajectory3D_2()
