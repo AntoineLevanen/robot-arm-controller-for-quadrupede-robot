@@ -13,7 +13,7 @@ def mainScenario1(info=1):
     """
     log_com_1, log_goal_1, log_end_effector_1 = scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False)
     log_com_2, log_goal_2, log_end_effector_2 = scenario1(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False)
-
+    
     if info == 1:
         # log test 1
         # position error of the CoM 
@@ -71,12 +71,12 @@ def mainScenario1(info=1):
         fig = plt.figure()
 
         plt.subplot(3, 2, 1)
-        e1 = [point[0][0]for point in log_end_effector_1]
+        e1 = [point[0][0] for point in log_end_effector_1]
         plt.plot(e1, label='X end effector position')
         e1 = [point[0][0] for point in log_goal_1]
         plt.plot(e1, label='X goal position', linestyle='dashed')
         plt.legend()
-        plt.ylim([0.38, 0.56])
+        # plt.ylim([0.38, 0.56])
         plt.title("Sassa with long arm")
 
         plt.subplot(3, 2, 3)
@@ -102,11 +102,11 @@ def mainScenario1(info=1):
         e1 = [point[0][0] for point in log_goal_2]
         plt.plot(e1, label='X goal position', linestyle='dashed')
         plt.legend()
-        plt.ylim([0.38, 0.56])
+        # plt.ylim([0.38, 0.56])
         plt.title("Sassa with short arm")
 
         plt.subplot(3, 2, 4)
-        e2 = [point[0][0] for point in log_end_effector_2]
+        e2 = [point[0][1] for point in log_end_effector_2]
         plt.plot(e2, label='Y end effector position')
         e2 = [point[0][1] for point in log_goal_2]
         plt.plot(e2, label='Y goal position', linestyle='dashed')

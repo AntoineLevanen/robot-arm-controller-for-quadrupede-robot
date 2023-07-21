@@ -44,7 +44,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     dq_current = np.zeros((sassa.model.nv,))
     d2q_current = np.zeros((sassa.model.nv,))
 
-    my_state_machine = StateMahineScenario2(sassa, viz, dt, q0_ref, curve_resolution=200)
+    my_state_machine = StateMahineScenario2(sassa, viz, dt, q0_ref)
 
     log_com = []
     log_goal = []
@@ -65,24 +65,20 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         ### end controler
 
         if enable_viz:
+            # to display the movement in a 3D viewport
             viz.display(q_current)  
-            # viz.drawFrameVelocities(frame_id=sassa.model.getFrameId('framegripper'))
-            # rot_matrix = np.eye(4)
-            # rot_matrix[:3, :3] = pin.utils.rotate("z", np.pi)
-            # pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous @ rot_matrix
-            # viz.setCameraPose(pos)
-
+            
         # log values
         if not enable_viz:
             log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
             log_goal.append(goal)
             IDX_Gripper = sassa.model.getFrameId('framegripper')
             frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector]
+                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
             log_end_effector.append(frame_EF)
 
         # wait to have a real time sim
-        if i % (1/dt) == 0 and enable_viz:
+        if i % (1/dt) == 0:
             # print the remaining time of the simulation in second
             print("time remaining :", duration-(i*dt))
 
@@ -96,23 +92,23 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario2(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=True)
+    log_com, log_goal, log_end_effector = scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False)
 
-    # plt.subplot(3, 1, 1)
-    # e1 = [point[0] for point in log_com]
-    # plt.plot(e1, label='X CoM position')
-    # plt.plot(np.zeros(len(e1)), label='X CoM desired position')
-    # plt.legend()
+    plt.subplot(3, 1, 1)
+    e1 = [point[0][0] for point in log_goal]
+    plt.plot(e1, label='X CoM position')
+    plt.plot(np.zeros(len(e1)), label='X CoM desired position')
+    plt.legend()
 
-    # plt.subplot(3, 1, 2)
-    # e2 = [point[1] for point in log_com]
-    # plt.plot(e2, label='Y CoM position')
-    # plt.plot(np.zeros(len(e2)), label='Y CoM desired position')
-    # plt.legend()
+    plt.subplot(3, 1, 2)
+    e2 = [point[0][1] for point in log_goal]
+    plt.plot(e2, label='Y CoM position')
+    plt.plot(np.zeros(len(e2)), label='Y CoM desired position')
+    plt.legend()
 
-    # plt.subplot(3, 1, 3)
-    # e3 = [point[2] for point in log_com]
-    # plt.plot(e3, label='Z CoM position')
-    # plt.legend()
+    plt.subplot(3, 1, 3)
+    e3 = [point[0][2] for point in log_goal]
+    plt.plot(e3, label='Z CoM position')
+    plt.legend()
 
-    # plt.show()
+    plt.show()

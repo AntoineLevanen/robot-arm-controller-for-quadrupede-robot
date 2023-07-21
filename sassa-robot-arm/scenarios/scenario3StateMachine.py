@@ -39,7 +39,7 @@ class StateMahineScenario3:
 
             self.control_point = [[0.35, 0.0, 0.4], [0.35, 0.13, 0.22], [0.35, 0.05, 0.17], [0.35, -0.15, 0.17], [0.35, -0.15, 0.2], [0.35, 0.0, 0.3]]
 
-        self.trajectory = Trajectory3D(self.control_point, generate_curve=True, resolution=self.curve_resolution)
+        # self.trajectory = Trajectory3D(self.control_point, generate_curve=True, resolution=self.curve_resolution)
         self.trajectory = TrajectoryExactCubic(self.control_point, 0, 20)
         self.trajectory_i = 0
         self.init = True
@@ -74,13 +74,13 @@ class StateMahineScenario3:
             if self.trajectory_i == 170: ### trouver le point correspondant
                 self.current_state = 1
                 self.init = True
-                self.t0 = time.time()
+                self.t0 = i
 
 
         elif self.current_state == 1:
             # wait 2 sec to take a picture
             
-            if time.time() - self.t0 > 2:
+            if i - self.t0 > (2 / self.dt):
                 self.current_state = 2
 
 
@@ -98,12 +98,12 @@ class StateMahineScenario3:
             self.init = False
 
             if self.trajectory_i == 200: ### trouver le point correspondant
-                self.current_state = 6
+                self.current_state = 3
                 self.init = True
-                self.t0 = time.time()
+                self.t0 = i
 
 
-        elif self.current_state == 6:
+        elif self.current_state == 3:
             # first contact with the box
             if self.trajectory_i > self.curve_resolution - 1:
                 self.trajectory_i = self.curve_resolution - 1
@@ -117,12 +117,12 @@ class StateMahineScenario3:
             self.init = False
 
             if self.trajectory_i == 235:
-                self.current_state = 7
+                self.current_state = 4
                 self.init = True
                 self.t0 = time.time()
 
 
-        elif self.current_state == 7:
+        elif self.current_state == 4:
             # move the box
             if self.trajectory_i > self.curve_resolution - 1:
                 self.trajectory_i = self.curve_resolution - 1
@@ -143,12 +143,12 @@ class StateMahineScenario3:
             self.init = False
 
             if self.trajectory_i == box_actuate_end_time + 0:
-                self.current_state = 8
+                self.current_state = 5
                 self.init = True
                 self.t0 = time.time()
 
         
-        elif self.current_state == 8:
+        elif self.current_state == 5:
             # move the box
             if self.trajectory_i > self.curve_resolution - 1:
                 self.trajectory_i = self.curve_resolution - 1
@@ -162,8 +162,8 @@ class StateMahineScenario3:
             self.init = False
 
             if task_finished and self.trajectory_i >= self.curve_resolution - 1:
-                self.current_state = 9
+                self.current_state = 6
                 self.init = True
-                self.t0 = time.time()
+                self.t0 = i
 
         return q, dq, self.goal

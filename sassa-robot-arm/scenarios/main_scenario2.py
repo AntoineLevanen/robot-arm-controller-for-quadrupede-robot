@@ -106,7 +106,7 @@ def mainScenario2(info=1):
         plt.title("Sassa with short arm")
 
         plt.subplot(3, 2, 4)
-        e2 = [point[0][0] for point in log_end_effector_2]
+        e2 = [point[0][1] for point in log_end_effector_2]
         plt.plot(e2, label='Y end effector position')
         e2 = [point[0][1] for point in log_goal_2]
         plt.plot(e2, label='Y goal position', linestyle='dashed')
@@ -186,4 +186,4 @@ def mainScenario2(info=1):
         plt.show()
 
 if __name__ == "__main__":
-    mainScenario2(info=2)
+    mainScenario2(info=3)

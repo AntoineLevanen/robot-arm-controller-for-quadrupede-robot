@@ -401,7 +401,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     q_next = pin.integrate(robot.model, q_current, dq_next * dt)
 
     flag = False
-    # print(norm(o_Gripper))
+    print(norm(o_Gripper))
     if norm(o_Gripper) < eps: # default 0.015
         # goal position is reach
         flag = True

@@ -122,6 +122,8 @@ class TrajectoryExactCubic:
 
 def mainTrajectory():
     control_points = [[0.35, 0.0, 0.4], [0.35, 0.13, 0.22], [0.35, 0.05, 0.17], [0.35, -0.15, 0.17], [0.35, -0.15, 0.2], [0.35, 0.0, 0.3]]
+    control_points = [[0.4, 0.1, 0.2], [0.4, 0.1, 0.25], [0.4, 0.0, 0.4], [0.4, -0.1, 0.25], [0.4, -0.1, 0.2]]
+    control_points = [[0.5, 0.0, 0.4], [0.3, 0.0, 0.5], [0.3, 0.0, 0.6], [0.45, 0.0, 0.6]]
     start_time = 0
     end_time = 10
     traj = TrajectoryExactCubic(control_points, start_time, end_time)

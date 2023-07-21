@@ -8,6 +8,7 @@ import os
 path = os.path.abspath("sassa-robot-arm")
 sys.path.append(path)
 from trajectory import Trajectory3D
+from trajectory2 import TrajectoryExactCubic
 
 class StateMahineScenario1:
 
@@ -26,7 +27,8 @@ class StateMahineScenario1:
             self.control_point = control_point
         else:
             self.control_point = [[0.4, 0.1, 0.2], [0.4, 0.1, 0.25], [0.4, 0.0, 0.4], [0.4, -0.1, 0.25], [0.4, -0.1, 0.2]]
-        self.trajectory = my_curve = Trajectory3D(self.control_point, generate_curve=True, resolution=self.curve_resolution)
+        self.end_time = 10
+        self.trajectory = TrajectoryExactCubic(self.control_point, 0, self.end_time)
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -47,35 +49,33 @@ class StateMahineScenario1:
             # update q and dq here
 
             # go to the initial position
+            self.goal = self.trajectory.getPoint3d(int(self.end_time / 2), self.dt)
 
-            self.goal = self.trajectory.getPoint(int(self.curve_resolution / 2)) # point de parking, milieu de la trajectoire
-
-            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/6))
+            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/6), eps=0.03)
 
             self.init = False
 
             if task_finished:
                 self.current_state = 1
                 self.init = True
-                self.trajectory_i = int(self.curve_resolution / 2)
+                self.trajectory_i = int(self.end_time / 2)
 
 
         if self.current_state == 1:
             # go to first pick point and open the gripper
             # make sure to avoid Index out of range error (try, except...)
-            self.goal = self.trajectory.getPoint(self.trajectory_i)
-            self.trajectory_i = self.trajectory_i - 1
-
             if self.trajectory_i < 0:
-                self.goal = self.trajectory.getPoint(0)
+                self.trajectory_i = 0
 
+            self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
+            self.trajectory_i = self.trajectory_i - 1
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/3))
             q, _ = actuate_gripper(self.robot, q, self.dt, close=True)
 
             self.init = False
             
-            if task_finished and self.trajectory_i <= 0: ### on saute directement a la tache 3!!! car eps est < 0.012
+            if task_finished and self.trajectory_i <= 0:
                 self.current_state = 2
                 self.trajectory_i = 0
                 self.init = True
@@ -95,10 +95,10 @@ class StateMahineScenario1:
 
         elif self.current_state == 3:
             # go to end point while maintaining the gripper closed
-            if self.trajectory_i > self.curve_resolution - 1:
-                self.trajectory_i = self.curve_resolution - 1
+            if self.trajectory_i > self.end_time / self.dt - 1:
+                self.trajectory_i = self.end_time / self.dt - 1
 
-            self.goal = self.trajectory.getPoint(self.trajectory_i)
+            self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i + 1
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, eps=0.035, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/2))
@@ -107,7 +107,7 @@ class StateMahineScenario1:
             
             if task_finished and self.trajectory_i >= self.curve_resolution - 1:
                 self.current_state = 4
-                self.trajectory_i = self.curve_resolution - 1
+                self.trajectory_i = self.end_time / self.dt - 1
                 self.init = True
 
 
@@ -125,10 +125,11 @@ class StateMahineScenario1:
 
         elif self.current_state == 5:
             # go to waiting point
-            if self.trajectory_i < int(self.curve_resolution / 2):
-                self.trajectory_i = int(self.curve_resolution / 2)
+            if self.trajectory_i < int(self.end_time / 2):
+                self.trajectory_i = int(self.end_time / 2)
 
             self.goal = self.trajectory.getPoint(self.trajectory_i)
+            #self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i - 1
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, orientation=pin.utils.rotate('y', np.pi/3), add_goal_sphere=False)
@@ -137,9 +138,8 @@ class StateMahineScenario1:
             self.init = False
             
             if task_finished and self.trajectory_i >= self.curve_resolution - 1:
-                self.current_state = 6
-                self.trajectory_i = int(self.curve_resolution / 2)
+                self.current_state = 0
+                self.trajectory_i = int(self.end_time / 2)
                 self.init = True
-
 
         return q, dq, self.goal

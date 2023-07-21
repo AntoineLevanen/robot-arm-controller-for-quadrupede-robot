@@ -60,6 +60,7 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
         ### end controler
 
         if enable_viz:
+            # to display the movement in a 3D viewport
             viz.display(q_current)
 
         # log values

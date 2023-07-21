@@ -62,12 +62,12 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         ### end controler
 
         if enable_viz:
-            # to display the movement in a 3u
+            # to display the movement in a 3D viewport
             viz.display(q_current)  
             viz.drawFrameVelocities(frame_id=sassa.model.getFrameId('framegripper'))
             rot_matrix = np.eye(4)
             rot_matrix[:3, :3] = pin.utils.rotate("z", np.pi)
-            pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous @ rot_matrix
+            pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous # @ rot_matrix
             viz.setCameraPose(pos)
 
         # log values
@@ -76,7 +76,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
             log_goal.append(goal)
             IDX_Gripper = sassa.model.getFrameId('framegripper')
             frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector]
+                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
             log_end_effector.append(frame_EF)
         
         
@@ -96,7 +96,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario1(enable_viz=True)
+    log_com, log_goal, log_end_effector = scenario1(enable_viz=False)
 
     # plt.subplot(3, 1, 1)
     # e1 = [point[0] for point in log_com]
