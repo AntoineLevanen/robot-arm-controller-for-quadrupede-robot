@@ -9,6 +9,7 @@ from ndcurves import bezier, piecewise_bezier, exact_cubic, curve_constraints, p
 class TrajectoryBezier:
     """
     Using the ndCurves library from robotpkg
+    Not implemented
     """
     def __init__(self, control_point=0, start_orientation=0, end_orientation=0):
         """
@@ -87,21 +88,23 @@ class TrajectoryExactCubic:
         start_time : start time of the spline
         end_time : end time of the spline
         """
-        self.waypoints = np.array(control_point).transpose()
-        self.time_waypoints = np.linspace(start_time, end_time, num=len(self.waypoints.T)).transpose()
-        print(self.time_waypoints)
-        self.ec = exact_cubic(self.waypoints, self.time_waypoints)
-        number_of_spline = self.ec.getNumberSplines()
+        self.waypoints = np.array(control_point).transpose() # control point of the curve
+        self.time_waypoints = np.linspace(start_time, end_time, num=len(self.waypoints.T)).transpose() # uniforme time
+        # print(self.time_waypoints)
+        self.ec = exact_cubic(self.waypoints, self.time_waypoints) # create the curve
+        number_of_spline = self.ec.getNumberSplines() # number of sline used for the curve
         first_spline = self.ec.getSplineAt(0)
 
 
-    def getPoint3d(self, i, dt):        
+    def getPoint3d(self, i, dt): 
+        # get the point position, velocity and acceleration       
         return [self.ec(i*dt), self.ec.derivate(i*dt, 1), self.ec.derivate(i*dt, 2)]
 
     def getPoint6d(self, i, dt):
         return None
 
     def printCurve(self, dt=0.01):
+        # print the curve in 3D
         pos = []
         for i in range(int((self.time_waypoints[-1] - self.time_waypoints[0]) / dt)):
             pos.append(self.ec(i * dt))

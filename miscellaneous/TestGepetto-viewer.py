@@ -3,6 +3,10 @@ import numpy as np
 import sys
 import os
 from pinocchio.visualize import GepettoVisualizer
+
+"""
+Pinocchio example to test Gepetto Viewer
+"""
  
 # Load the URDF model. 
 urdf = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/robot.urdf" # "urdf/sassa-robot/robot.urdf"

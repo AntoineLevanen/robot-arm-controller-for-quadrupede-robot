@@ -3,16 +3,15 @@ import numpy as np
 import pinocchio as pin
 import matplotlib.pyplot as plt
 from init import initRobot, initViz
-from controller import useGripper, controllerCLIK2ndorderPositionOnly, controllerCLIK2ndorder
+from controller import controllerCLIK2ndorderPositionOnly, controllerCLIK2ndorder
 from gripper import actuate_gripper
-from neckController import neckController, check_joint_limit
-from computeCollision import computeCollisions
 from visualObject import CenterOfMass
-from states_machine.StateMachine import StateMahine
 from trajectory import CircleTrajectory, Trajectory3D
 
-sassa = initRobot("urdf/sassa-robot/robot.urdf", "urdf/sassa-robot/")
-viz = initViz(sassa, 2, add_ground=True, add_box=False)
+urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
+file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
+sassa = initRobot(urdf_path, file_path)
+viz = initViz(sassa, 2, add_ground=False, add_box=False)
 
 duration = 60 # vizualization duration
 dt = 0.05 # delta time
@@ -34,7 +33,7 @@ init = True
 is_close = True
 
 # Object to show the projection on the ground of the center of masse 
-com_projection = CenterOfMass(viz, sassa, "com")
+# com_projection = CenterOfMass(viz, sassa, "com")
 
 # State machine to implement a scenario of action
 my_state_machine = StateMahine()
@@ -72,10 +71,10 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # q, dq = my_state_machine.updateState(q_current, dq_current, dt, sassa, i, viz)
 
     # ACTUATE gripper
-    q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
-    if is_gripper_end_actuated:
-        is_close = not is_close
-        is_gripper_end_actuated = False
+    # q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
+    # if is_gripper_end_actuated:
+    #     is_close = not is_close
+    #     is_gripper_end_actuated = False
 
     init = False
     viz.display(q_current)
@@ -87,8 +86,8 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # Update Geometry models
     sassa.updateGeometryPlacements(q_current, visual=False)
 
-    e = com_projection.updatePlacement(q_current)
-    err = np.vstack([err, e])
+    # e = com_projection.updatePlacement(q_current)
+    # err = np.vstack([err, e])
     ### end controler
 
     # wait to have a real time sim

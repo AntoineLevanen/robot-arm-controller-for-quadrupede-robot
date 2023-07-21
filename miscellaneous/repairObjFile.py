@@ -1,6 +1,10 @@
 import sys, getopt
 import os
 
+"""
+Remove the '//' charater in .OBJ file after conversion from .STL ( in the face definition part in the file)
+"""
+
 # folder path
 dir_path = r'/home/alevanen/Documents/StageM1/sassa'
 

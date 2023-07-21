@@ -106,7 +106,7 @@ def addGroundPlane(plane_URDF_path, mesh_path):
     plane_data = plane_model.createData()
     plane_geom_model = pin.buildGeomFromUrdf(plane_model, "urdf/objects/plane.urdf", pin.GeometryType.COLLISION, package_dirs="objects")
     plane_geom_data = pin.GeometryData(plane_geom_model)
-    return (plane_model, plane_collision_model, plane_visual_model, plane_data, plane_geom_model, plane_geom_data)
+    return (plane_model, plane_collision_model, plane_visual_model)
 
 def addTable():
     """
@@ -125,11 +125,7 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45
     add_box : True -> add a box which serve as a table
     return : instance of the visualizer
     """
-    plane_model, plane_collision_model, plane_visual_model, plane_data, \
-        plane_geom_model, plane_geom_data = addGroundPlane("urdf/objects/plane.urdf", "urdf/objects")
-
-    box_model, box_collision_model, box_visual_model = addTable()
-
+    
     viz = None
     if viz_choice == 1:
         viz = GepettoVisualizer(robot.model, robot.collision_model, robot.visual_model)
@@ -165,17 +161,18 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45
             sys.exit(0)
 
         # Display a robot configuration.
-        viz.loadViewerModel(rootNodeName="sassa")
+        viz.loadViewerModel(rootNodeName="pinocchio") # "sassa"
         q0 = pin.neutral(robot.model)
         # q0[2] = 0.5
         q1 = np.array([0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, 0.0, np.pi/6, -np.pi/6, 0.0])
         viz.display(q1)
-        viz.displayCollisions(False) # display the collision meshes
+        viz.displayCollisions(True) # display the collision meshes
         viz.displayVisuals(True)
 
         if add_ground:
             # Display the ground
+            plane_model, plane_collision_model, plane_visual_model = addGroundPlane("urdf/objects/plane.urdf", "urdf/objects")
             viz2 = MeshcatVisualizer(plane_model, plane_collision_model, plane_visual_model)
             viz2.initViewer(viz.viewer)
             viz2.loadViewerModel(rootNodeName="ground")
@@ -185,6 +182,7 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45
 
         if add_box:
             # Display a box
+            box_model, box_collision_model, box_visual_model = addTable()
             viz3 = MeshcatVisualizer(box_model, box_collision_model, box_visual_model)
             viz3.initViewer(viz.viewer)
             viz3.loadViewerModel(rootNodeName="table")

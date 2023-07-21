@@ -51,10 +51,7 @@ class StateMahineScenario3:
         """
         q : current robot configuration vector
         dq : current robot joint velocity vector
-        dt : delta time
-        robot : robot wrapper class instance
         i : current state of the main loop
-        viz : vizualizater to display goal point in 3D space
         return : new configuration and velocity vector to be displayed
         """
 

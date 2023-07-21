@@ -16,6 +16,7 @@ def mainScenario1(info=1):
 
     if info == 1:
         # log test 1
+        # position error of the CoM 
         fig = plt.figure()
         plt.subplot(3, 2, 1)
         e1 = [point[0] for point in log_com_1]
@@ -66,6 +67,7 @@ def mainScenario1(info=1):
     
     elif info == 2:
         # log test 1
+        # Position error of the end effector
         fig = plt.figure()
 
         plt.subplot(3, 2, 1)
@@ -125,6 +127,7 @@ def mainScenario1(info=1):
 
     elif info == 3:
         # log test 1
+        # velocity error of the end effector
         fig = plt.figure()
 
         plt.subplot(3, 2, 1)

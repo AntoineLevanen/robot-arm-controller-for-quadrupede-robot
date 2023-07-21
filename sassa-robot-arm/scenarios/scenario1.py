@@ -62,6 +62,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         ### end controler
 
         if enable_viz:
+            # to display the movement in a 3u
             viz.display(q_current)  
             viz.drawFrameVelocities(frame_id=sassa.model.getFrameId('framegripper'))
             rot_matrix = np.eye(4)
@@ -80,8 +81,9 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         
         
         # wait to have a real time sim
-        # if i % (1/dt) == 0:
-        #     print("time remaining :", duration-(i*dt))
+        if i % (1/dt) == 0 and enable_viz:
+            # print the remaining time of the simulation in second
+            print("time remaining :", duration-(i*dt))
 
         if enable_viz:
             tsleep = dt - (time.time() - t0)

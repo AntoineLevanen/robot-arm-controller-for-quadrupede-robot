@@ -9,7 +9,11 @@ from pinocchio.visualize import (GepettoVisualizer, MeshcatVisualizer)
 from sys import argv
 import os
 from os.path import dirname, join, abspath
- 
+
+"""
+Pinocchio example to test the RobotWrapper class
+"""
+
 # If you want to visualize the robot in this example,
 # you can choose which visualizer to employ
 # by specifying an option from the command line:

@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline as Spline
 from numpy import sin, cos
 from geomdl import BSpline
-from ndcurves import bezier# , piecewise_bezier_curve
+
+"""
+Generate circle trajectory
+Using geomdl to generate 3D curve, position only
+"""
 
 class sinTrajectory:
 

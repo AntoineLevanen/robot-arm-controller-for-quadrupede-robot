@@ -36,10 +36,7 @@ class StateMahineScenario1:
         """
         q : current robot contiguration vector
         dq : current robot joint velocity vector
-        dt : delta time
-        robot : robot wrapper class instance
         i : current state of the main loop
-        viz : vizualizater to display goal point in 3D space
         return : new configuration and velocity vector to be displayed
         """
 
@@ -48,6 +45,8 @@ class StateMahineScenario1:
         if self.current_state == 0:
             # initial state
             # update q and dq here
+
+            # go to the initial position
 
             self.goal = self.trajectory.getPoint(int(self.curve_resolution / 2)) # point de parking, milieu de la trajectoire
 
@@ -62,7 +61,7 @@ class StateMahineScenario1:
 
 
         if self.current_state == 1:
-            # go to first point
+            # go to first pick point and open the gripper
             # make sure to avoid Index out of range error (try, except...)
             self.goal = self.trajectory.getPoint(self.trajectory_i)
             self.trajectory_i = self.trajectory_i - 1
@@ -83,7 +82,7 @@ class StateMahineScenario1:
 
 
         elif self.current_state == 2:
-            # open gripper
+            # when arrived, close the gripper
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/2))
             q, task_finished = actuate_gripper(self.robot, q, self.dt, close=False)
 
@@ -95,7 +94,7 @@ class StateMahineScenario1:
 
 
         elif self.current_state == 3:
-            # go to end point
+            # go to end point while maintaining the gripper closed
             if self.trajectory_i > self.curve_resolution - 1:
                 self.trajectory_i = self.curve_resolution - 1
 
@@ -113,7 +112,7 @@ class StateMahineScenario1:
 
 
         elif self.current_state == 4:
-            # close gripper
+            # when at the place point, open the gripper
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, eps=0.035, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/3))
             q, task_finished = actuate_gripper(self.robot, q, self.dt, close=True)
 

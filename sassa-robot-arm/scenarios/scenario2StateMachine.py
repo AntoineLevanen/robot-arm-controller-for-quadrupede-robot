@@ -38,17 +38,14 @@ class StateMahineScenario2:
         """
         q : current robot contiguration vector
         dq : current robot joint velocity vector
-        dt : delta time
-        robot : robot wrapper class instance
         i : current state of the main loop
-        viz : vizualizater to display goal point in 3D space
         return : new configuration and velocity vector to be displayed
         """
 
         # print(self.current_state)
 
         if self.current_state == 0:
-            # initial state
+            # initial state, go to end position
             # update q and dq here
             if self.trajectory_i > self.curve_resolution - 1:
                 self.trajectory_i = self.curve_resolution - 1
@@ -95,10 +92,10 @@ class StateMahineScenario2:
 
 
         elif self.current_state == 3:
-            # open gripper
             # wait 4 sec to take a picture
             
             if time.time() - self.t0 > 4:
+                # start again to loop
                 self.current_state = 0
 
 

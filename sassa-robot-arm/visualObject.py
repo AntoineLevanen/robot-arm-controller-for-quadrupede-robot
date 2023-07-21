@@ -6,7 +6,7 @@ class SphereGoal:
 
     def __init__(self, viz, coord, name):
         """
-        Add a sphere to the viewport at the given location
+        Add a sphere to the viewport at the given location to represent the goal of the end effector
         viz : Instance of the used visualizer
         coord : Coordinate of the sphere in [X, Y, Z] w.r.t the world frame
         name : Name of the object in the viewport
@@ -50,8 +50,8 @@ class CenterOfMass(SphereGoal):
         """
         q : Current configuration of the robot
         """
-        com_position = pin.centerOfMass(self.model, self.data, q)
+        com_position = pin.centerOfMass(self.model, self.data, q) # compute the location of the CoM in the world
         com_projection = com_position.copy()
-        com_projection[2] = 0
+        com_projection[2] = 0 # nullify the Z coordinate
         super().moveGoalVisual(com_projection)
         return com_projection

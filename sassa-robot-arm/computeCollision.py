@@ -4,7 +4,7 @@ import numpy as np
 from numpy.linalg import pinv, inv, norm
 from trajectory import sinTrajectory
 
-
+# functions are not working
 def computeCollisions(robot, q, print_data=False):
     """
     Inspired from the Pinocchio tutorial about dynamics
