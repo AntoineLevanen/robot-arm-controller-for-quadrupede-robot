@@ -1,5 +1,5 @@
 Scenario 1:
-Move an Object
+Pick and place
 
 Scenario 2:
 Look on top of a table
@@ -9,6 +9,3 @@ Move a box arround
 
 Scenario 4:
 Look behind obstacle
-
-Scenario 5:
-Open a door

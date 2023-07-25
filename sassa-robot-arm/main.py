@@ -35,9 +35,6 @@ is_close = True
 # Object to show the projection on the ground of the center of masse 
 # com_projection = CenterOfMass(viz, sassa, "com")
 
-# State machine to implement a scenario of action
-my_state_machine = StateMahine()
-
 # circular trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
@@ -62,13 +59,15 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
     q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, q0_ref, goal)
 
+
     # TEST controller
     # q, dq, _ = lookAt(q_current, dq_current, dt, sassa, i, viz, 1)
     # q, dq, _ = useGripper(q_current, dq_current, dt, sassa, i, viz)
 
-    # STATE MACHINE
-    # update the current state of the robot
-    # q, dq = my_state_machine.updateState(q_current, dq_current, dt, sassa, i, viz)
+    sassa.forwardKinematics(q_current)
+    pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
+    print(pos)
+
 
     # ACTUATE gripper
     # q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
@@ -79,7 +78,7 @@ for i in range(int(duration / dt)): # int(duration / dt)
     init = False
     viz.display(q_current)
     # viz.drawFrameVelocities(sassa.model.getFrameId('framegripper'), v_scale=4)
-    o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
+    # o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
     viz.viewer.get_image()
     # time.sleep(100)
 

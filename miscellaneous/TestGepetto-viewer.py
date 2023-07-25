@@ -12,11 +12,13 @@ Pinocchio example to test Gepetto Viewer
 urdf = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/robot.urdf" # "urdf/sassa-robot/robot.urdf"
 model_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/" # "urdf/sassa-robot/"
 model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf, model_path, pin.JointModelFreeFlyer())
-viz = GepettoVisualizer(model, collision_model, visual_model)
+print(collision_model.geometryObjects[10].geometry)
+viz = GepettoVisualizer(model=model, collision_model=collision_model, visual_model=visual_model)
+# print(collision_model.geometryObjects[10].geometry)
  
 # Initialize the viewer.
 try:
-    viz.initViewer()
+    viz.initViewer(loadModel=True)
 except ImportError as err:
     print("Error while initializing the viewer. It seems you should install gepetto-viewer")
     print(err)
