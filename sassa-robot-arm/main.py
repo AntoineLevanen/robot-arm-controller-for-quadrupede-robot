@@ -7,23 +7,25 @@ from controller import controllerCLIK2ndorderPositionOnly, controllerCLIK2ndorde
 from gripper import actuate_gripper
 from visualObject import CenterOfMass
 from trajectory import CircleTrajectory, Trajectory3D
+import gepetto.corbaserver as gui
 
-urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
-file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
+import yaml
+
+yaml.load("/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/motion.yaml")
+
+urdf_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
+file_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
 sassa = initRobot(urdf_path, file_path)
-viz = initViz(sassa, 2, add_ground=False, add_box=False)
+viz = initViz(sassa, 1, add_ground=False, add_box=False)
 
-duration = 60 # vizualization duration
-dt = 0.05 # delta time
+duration = 10 # vizualization duration
+dt = 0.04 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True # 
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
-# q0_ref = np.zeros(sassa.model.nq)
 
-
-# q_current = np.zeros((sassa.model.nq,))
 q_current = q0_ref.copy()
 
 dq_current = np.zeros((sassa.model.nv,))
@@ -40,12 +42,152 @@ my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
 my_trajectory.circleTrajectoryXY(0.45, -0.01, 0.3, 0.02, 1)
 
-# B-Spline trajectory
-control_points = [[0.4, 0.1, 0.2], [0.5, 0.0, 0.3], [0.5, -0.05, 0.5], [0.5, -0.1, 0.3], [0.5, 0.0, 0.6], [0.4, 0.1, 0.1]]
-my_3d_trajectory = Trajectory3D(control_points, generate_curve=True, resolution=trajectory_step, degree=5)
-
-goal = [[0.55, 0, 0.45], [0, 0, 0], [0, 0, 0]]
 err = [[0, 0, 0]]
+
+# capture to export to blender
+
+node_name = [
+    "world/pinocchio/collisions/body_sasm_0", 
+    "world/pinocchio/collisions/body_sasm_1",
+    "world/pinocchio/collisions/body_sasm_2",
+    "world/pinocchio/collisions/body_sasm_3",
+    "world/pinocchio/collisions/body_sasm_4",
+    "world/pinocchio/collisions/body_sasm_5",
+    "world/pinocchio/collisions/body_sasm_6",
+    "world/pinocchio/collisions/body_sasm_7",
+    "world/pinocchio/collisions/helbow_sasm_0",
+    "world/pinocchio/collisions/helbow_sasm_1",
+    "world/pinocchio/collisions/upperleg_sasm_0",
+    "world/pinocchio/collisions/upperleg_sasm_1",
+    "world/pinocchio/collisions/upperleg_sasm_2",
+    "world/pinocchio/collisions/upperleg_sasm_3",
+    "world/pinocchio/collisions/upperleg_sasm_4",
+    "world/pinocchio/collisions/upperleg_sasm_5",
+    "world/pinocchio/collisions/lowerleg_sasm_0",
+    "world/pinocchio/collisions/lowerleg_sasm_1",
+    "world/pinocchio/collisions/lowerleg_sasm_2",
+    "world/pinocchio/collisions/lowerleg_sasm_3",
+    "world/pinocchio/collisions/helbow_sasm_2_0",
+    "world/pinocchio/collisions/helbow_sasm_2_1",
+    "world/pinocchio/collisions/upperleg_sasm_2_0",
+    "world/pinocchio/collisions/upperleg_sasm_2_1",
+    "world/pinocchio/collisions/upperleg_sasm_2_2",
+    "world/pinocchio/collisions/upperleg_sasm_2_3",
+    "world/pinocchio/collisions/upperleg_sasm_2_4",
+    "world/pinocchio/collisions/upperleg_sasm_2_5",
+    "world/pinocchio/collisions/lowerleg_sasm_2_0",
+    "world/pinocchio/collisions/lowerleg_sasm_2_1",
+    "world/pinocchio/collisions/lowerleg_sasm_2_2",
+    "world/pinocchio/collisions/lowerleg_sasm_2_3",
+    "world/pinocchio/collisions/helbow_sasm_3_0", 
+    "world/pinocchio/collisions/helbow_sasm_3_1", 
+    "world/pinocchio/collisions/upperleg_sasm_3_0", 
+    "world/pinocchio/collisions/upperleg_sasm_3_1", 
+    "world/pinocchio/collisions/upperleg_sasm_3_2", 
+    "world/pinocchio/collisions/upperleg_sasm_3_3", 
+    "world/pinocchio/collisions/upperleg_sasm_3_4", 
+    "world/pinocchio/collisions/upperleg_sasm_3_5", 
+    "world/pinocchio/collisions/lowerleg_sasm_3_0", 
+    "world/pinocchio/collisions/lowerleg_sasm_3_1", 
+    "world/pinocchio/collisions/lowerleg_sasm_3_2", 
+    "world/pinocchio/collisions/lowerleg_sasm_3_3", 
+    "world/pinocchio/collisions/helbow_sasm_4_0", 
+    "world/pinocchio/collisions/helbow_sasm_4_1", 
+    "world/pinocchio/collisions/upperleg_sasm_4_0", 
+    "world/pinocchio/collisions/upperleg_sasm_4_1", 
+    "world/pinocchio/collisions/upperleg_sasm_4_2", 
+    "world/pinocchio/collisions/upperleg_sasm_4_3", 
+    "world/pinocchio/collisions/upperleg_sasm_4_4", 
+    "world/pinocchio/collisions/upperleg_sasm_4_5", 
+    "world/pinocchio/collisions/lowerleg_sasm_4_0", 
+    "world/pinocchio/collisions/lowerleg_sasm_4_1", 
+    "world/pinocchio/collisions/lowerleg_sasm_4_2", 
+    "world/pinocchio/collisions/lowerleg_sasm_4_3", 
+    "world/pinocchio/collisions/arm1_sasm_0", 
+    "world/pinocchio/collisions/arm2_sasm_0", 
+    "world/pinocchio/collisions/arm2_sasm_1", 
+    "world/pinocchio/collisions/arm2_sasm_2", 
+    "world/pinocchio/collisions/arm3_sasm_0", 
+    "world/pinocchio/collisions/end_effector_sasm_0", 
+    "world/pinocchio/collisions/end_effector_sasm_1", 
+    "world/pinocchio/collisions/end_effector_sasm_2", 
+    "world/pinocchio/collisions/gripper_0", 
+    "world/pinocchio/visuals/body_sasm_0", 
+    "world/pinocchio/visuals/body_sasm_1", 
+    "world/pinocchio/visuals/body_sasm_2", 
+    "world/pinocchio/visuals/body_sasm_3", 
+    "world/pinocchio/visuals/body_sasm_4", 
+    "world/pinocchio/visuals/body_sasm_5", 
+    "world/pinocchio/visuals/body_sasm_6", 
+    "world/pinocchio/visuals/body_sasm_7", 
+    "world/pinocchio/visuals/helbow_sasm_0", 
+    "world/pinocchio/visuals/helbow_sasm_1", 
+    "world/pinocchio/visuals/upperleg_sasm_0", 
+    "world/pinocchio/visuals/upperleg_sasm_1", 
+    "world/pinocchio/visuals/upperleg_sasm_2", 
+    "world/pinocchio/visuals/upperleg_sasm_3", 
+    "world/pinocchio/visuals/upperleg_sasm_4", 
+    "world/pinocchio/visuals/upperleg_sasm_5", 
+    "world/pinocchio/visuals/lowerleg_sasm_0", 
+    "world/pinocchio/visuals/lowerleg_sasm_1", 
+    "world/pinocchio/visuals/lowerleg_sasm_2", 
+    "world/pinocchio/visuals/lowerleg_sasm_3", 
+    "world/pinocchio/visuals/helbow_sasm_2_0", 
+    "world/pinocchio/visuals/helbow_sasm_2_1", 
+    "world/pinocchio/visuals/upperleg_sasm_2_0", 
+    "world/pinocchio/visuals/upperleg_sasm_2_1", 
+    "world/pinocchio/visuals/upperleg_sasm_2_2", 
+    "world/pinocchio/visuals/upperleg_sasm_2_3", 
+    "world/pinocchio/visuals/upperleg_sasm_2_4", 
+    "world/pinocchio/visuals/upperleg_sasm_2_5", 
+    "world/pinocchio/visuals/lowerleg_sasm_2_0", 
+    "world/pinocchio/visuals/lowerleg_sasm_2_1", 
+    "world/pinocchio/visuals/lowerleg_sasm_2_2", 
+    "world/pinocchio/visuals/lowerleg_sasm_2_3", 
+    "world/pinocchio/visuals/helbow_sasm_3_0", 
+    "world/pinocchio/visuals/helbow_sasm_3_1", 
+    "world/pinocchio/visuals/upperleg_sasm_3_0", 
+    "world/pinocchio/visuals/upperleg_sasm_3_1", 
+    "world/pinocchio/visuals/upperleg_sasm_3_2", 
+    "world/pinocchio/visuals/upperleg_sasm_3_3", 
+    "world/pinocchio/visuals/upperleg_sasm_3_4", 
+    "world/pinocchio/visuals/upperleg_sasm_3_5", 
+    "world/pinocchio/visuals/lowerleg_sasm_3_0", 
+    "world/pinocchio/visuals/lowerleg_sasm_3_1", 
+    "world/pinocchio/visuals/lowerleg_sasm_3_2", 
+    "world/pinocchio/visuals/lowerleg_sasm_3_3", 
+    "world/pinocchio/visuals/helbow_sasm_4_0", 
+    "world/pinocchio/visuals/helbow_sasm_4_1", 
+    "world/pinocchio/visuals/upperleg_sasm_4_0", 
+    "world/pinocchio/visuals/upperleg_sasm_4_1", 
+    "world/pinocchio/visuals/upperleg_sasm_4_2", 
+    "world/pinocchio/visuals/upperleg_sasm_4_3", 
+    "world/pinocchio/visuals/upperleg_sasm_4_4", 
+    "world/pinocchio/visuals/upperleg_sasm_4_5", 
+    "world/pinocchio/visuals/lowerleg_sasm_4_0", 
+    "world/pinocchio/visuals/lowerleg_sasm_4_1", 
+    "world/pinocchio/visuals/lowerleg_sasm_4_2", 
+    "world/pinocchio/visuals/lowerleg_sasm_4_3", 
+    "world/pinocchio/visuals/arm1_sasm_0", 
+    "world/pinocchio/visuals/arm2_sasm_0", 
+    "world/pinocchio/visuals/arm2_sasm_1", 
+    "world/pinocchio/visuals/arm2_sasm_2", 
+    "world/pinocchio/visuals/arm3_sasm_0", 
+    "world/pinocchio/visuals/end_effector_sasm_0", 
+    "world/pinocchio/visuals/end_effector_sasm_1", 
+    "world/pinocchio/visuals/end_effector_sasm_2", 
+    "world/pinocchio/visuals/gripper_0"
+]
+
+node_list = []
+
+for node in node_name:
+    node_list.append(node)
+
+python_file_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/pinToBlender.py"
+motion_file_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/motion.yaml"
+viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
+viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
 # main loop, updating the configuration vector q
 for i in range(int(duration / dt)): # int(duration / dt)
@@ -57,17 +199,16 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # WORKING controller
     goal = my_trajectory.getPoint(i%360) # circular trajectory
     # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
-    q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, init, viz, q0_ref, goal)
+    q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, \
+                                            init, viz, q0_ref, goal, add_goal_sphere=False)
 
 
-    # TEST controller
-    # q, dq, _ = lookAt(q_current, dq_current, dt, sassa, i, viz, 1)
-    # q, dq, _ = useGripper(q_current, dq_current, dt, sassa, i, viz)
+    viz.viewer.gui.refresh ()
+    viz.viewer.gui.captureTransform ()
 
-    sassa.forwardKinematics(q_current)
-    pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
-    print(pos)
-
+    # sassa.forwardKinematics(q_current)
+    # pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
+    # print(pos)
 
     # ACTUATE gripper
     # q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
@@ -77,16 +218,7 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     init = False
     viz.display(q_current)
-    # viz.drawFrameVelocities(sassa.model.getFrameId('framegripper'), v_scale=4)
-    # o_Gripper_frame = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
-    viz.viewer.get_image()
-    # time.sleep(100)
 
-    # Update Geometry models
-    sassa.updateGeometryPlacements(q_current, visual=False)
-
-    # e = com_projection.updatePlacement(q_current)
-    # err = np.vstack([err, e])
     ### end controler
 
     # wait to have a real time sim
@@ -99,18 +231,3 @@ for i in range(int(duration / dt)): # int(duration / dt)
         # print(tsleep)
         if tsleep > 0:
             time.sleep(tsleep)
-            
-
-plt.subplot(3, 1, 1)
-e1 = [point[0] for point in err]
-plt.plot(e1)
-
-plt.subplot(3, 1, 2)
-e2 = [point[1] for point in err]
-plt.plot(e2)
-
-plt.subplot(3, 1, 3)
-e3 = [point[2] for point in err]
-plt.plot(e3)
-
-# plt.show()
