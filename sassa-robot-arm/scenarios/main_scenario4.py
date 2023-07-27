@@ -62,7 +62,7 @@ def mainScenario3(info=1):
         # plt.ylim([0.275, 0.4])
 
         plt.suptitle("Pick and Place operation")
-        fig.supxlabel('dt = 0.01 seconds, duration = 60 seconds')
+        fig.supxlabel('dt = 0.04 seconds, duration = 60 seconds')
         plt.show()
     
     elif info == 2:
@@ -106,7 +106,7 @@ def mainScenario3(info=1):
         plt.title("Sassa with short arm")
 
         plt.subplot(3, 2, 4)
-        e2 = [point[0][0] for point in log_end_effector_2]
+        e2 = [point[0][1] for point in log_end_effector_2]
         plt.plot(e2, label='Y end effector position')
         e2 = [point[0][1] for point in log_goal_2]
         plt.plot(e2, label='Y goal position', linestyle='dashed')
@@ -122,7 +122,7 @@ def mainScenario3(info=1):
         # plt.ylim([0.275, 0.4])
 
         plt.suptitle("Pick and Place operation position")
-        fig.supxlabel('dt = 0.01 seconds, duration = 60 seconds')
+        fig.supxlabel('dt = 0.04 seconds, duration = 60 seconds')
         plt.show()
 
     elif info == 3:
@@ -182,7 +182,7 @@ def mainScenario3(info=1):
         # plt.ylim([0.275, 0.4])
 
         plt.suptitle("Pick and Place operation velocities")
-        fig.supxlabel('dt = 0.01 seconds, duration = 60 seconds')
+        fig.supxlabel('dt = 0.04 seconds, duration = 60 seconds')
         plt.show()
 
 if __name__ == "__main__":

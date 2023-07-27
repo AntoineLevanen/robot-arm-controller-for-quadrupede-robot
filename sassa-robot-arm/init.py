@@ -85,7 +85,7 @@ def addGripperFrame(robot, add_visual=True, transparency=0.5):
 
     eff = np.array([0.09, -0.008, 0.03])
     FIDX = robot.model.addFrame(pin.Frame('framegripper', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
-    """ if add_visual:
+    if add_visual:
         robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_x', FIDX, JIDX, cyl, pin.SE3(X, X@med+eff)))
         robot.visual_model.geometryObjects[-1].meshColor = np.array([1, 0, 0, transparency])
 
@@ -94,7 +94,7 @@ def addGripperFrame(robot, add_visual=True, transparency=0.5):
 
         robot.visual_model.addGeometryObject(pin.GeometryObject('axisgripper_z', FIDX, JIDX, cyl, pin.SE3(Z, Z@med+eff)))
         robot.visual_model.geometryObjects[-1].meshColor = np.array([0, 0, 1, transparency])
-        """
+       
     robot.data = robot.model.createData()
     robot.visual_data = robot.visual_model.createData()
 
@@ -167,7 +167,7 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45
         q1 = np.array([0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, 0.0, np.pi/6, -np.pi/6, 0.0])
         viz.display(q1)
-        viz.displayCollisions(True) # display the collision meshes
+        viz.displayCollisions(False) # display the collision meshes
         viz.displayVisuals(True)
 
         if add_ground:

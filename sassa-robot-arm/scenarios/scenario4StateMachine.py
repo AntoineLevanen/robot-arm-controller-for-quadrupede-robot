@@ -28,17 +28,19 @@ class StateMahineScenario4:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.56, -0.015, 0.45], [0.5, 0.1, 0.2], [0.5, -0.1, 0.2], [0.56, -0.015, 0.45]]
+            self.control_point = [[0.5, -0.015, 0.35], [0.35, 0.1, 0.2], [0.35, -0.1, 0.2], [0.5, -0.015, 0.35]]
         
         self.end_time = 10
-        self.trajectory = TrajectoryExactCubic(self.control_point, 0, self.end_time)
+        self.trajectory1 = TrajectoryExactCubic(self.control_point[:2], 0, self.end_time)
+        self.trajectory2 = TrajectoryExactCubic(self.control_point[1:3], 0, self.end_time)
+        self.trajectory3 = TrajectoryExactCubic(self.control_point[2:], 0, self.end_time)
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self.t0 = 0
 
 
-    def updateState(self, q, dq, i):
+    def updateState(self, q, dq, i, add_goal_viz=True):
         """
         q : current robot contiguration vector
         dq : current robot joint velocity vector
@@ -46,7 +48,7 @@ class StateMahineScenario4:
         return : new configuration and velocity vector to be displayed
         """
 
-        # print(self.current_state)
+        # print(self.current_state)
 
         if self.current_state == 0:
             # initial state, go to end position
@@ -54,45 +56,46 @@ class StateMahineScenario4:
             if self.trajectory_i > ((self.end_time / self.dt) - 1):
                 self.trajectory_i = ((self.end_time / self.dt) - 1)
 
-            self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
+            self.goal = self.trajectory1.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i + 1
 
-            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', np.pi/2), eps=0.03)
+            end_effector_rotation = ((np.pi/2) / (self.end_time / self.dt)) * self.trajectory_i
+
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+                                            add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', end_effector_rotation), eps=0.007)
 
             self.init = False
 
             if task_finished and self.trajectory_i >= self.end_time / self.dt:
-                print("End state 0")
                 self.current_state = 1
                 self.init = True
-                self.trajectory_i = self.end_time / self.dt - 1
+                self.trajectory_i = 0
                 self.t0 = i
 
 
         elif self.current_state == 1:
             # wait 2 sec to take a picture
             
-            if i - self.t0 > (2 / self.dt):
-                print("End state 1")
-                print("wait 2 sec first")
+            if i - self.t0 >= (2 / self.dt):
                 self.current_state = 2
+                self.t0 = i
 
 
-        if self.current_state == 2:
-            # return to start position
+        elif self.current_state == 2:
+            # go second capture pos
             # make sure to avoid Index out of range error (try, except...)
-            if self.trajectory_i < 0:
-                self.trajectory_i = 0
+            if self.trajectory_i > ((self.end_time / self.dt) - 1):
+                self.trajectory_i = ((self.end_time / self.dt) - 1)
 
-            self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
-            self.trajectory_i = self.trajectory_i - 1
+            self.goal = self.trajectory2.getPoint3d(self.trajectory_i, self.dt)
+            self.trajectory_i = self.trajectory_i + 1
 
-            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', 0))
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+                                                        add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2), eps=0.008)
             
             self.init = False
             
-            if task_finished and self.trajectory_i <= 0:
-                print("End state 2")
+            if task_finished and self.trajectory_i >= self.end_time / self.dt:
                 self.current_state = 3
                 self.trajectory_i = 0
                 self.init = True
@@ -100,12 +103,41 @@ class StateMahineScenario4:
 
 
         elif self.current_state == 3:
-            # wait 4 sec to take a picture
+            # wait 2 sec to take a picture
             
-            if i - self.t0 > (4 / self.dt):
+            if i - self.t0 >= (2 / self.dt):
                 # start again to loop
-                print("End state 3")
-                print("wait 4 sec last")
+                self.current_state = 4
+                self.t0 = i
+
+
+        elif self.current_state == 4:
+            # return to start position
+            # make sure to avoid Index out of range error (try, except...)
+            if self.trajectory_i > ((self.end_time / self.dt) - 1):
+                self.trajectory_i = ((self.end_time / self.dt) - 1)
+
+            self.goal = self.trajectory3.getPoint3d(self.trajectory_i, self.dt)
+            self.trajectory_i = self.trajectory_i + 1
+
+            end_effector_rotation = ((-np.pi/2) / (self.end_time / self.dt)) * self.trajectory_i + (np.pi/2)
+
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+                                            add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', end_effector_rotation), eps=0.002)
+            
+            self.init = False
+            
+            if task_finished and self.trajectory_i >= self.end_time / self.dt:
+                self.current_state = 5
+                self.trajectory_i = 0
+                self.init = True
+                self.t0 = i
+
+
+        elif self.current_state == 5:
+            # wait 5 sec 
+            if i - self.t0 >= (5 / self.dt):
                 self.current_state = 0
+                self.t0 = i
 
         return q, dq, self.goal

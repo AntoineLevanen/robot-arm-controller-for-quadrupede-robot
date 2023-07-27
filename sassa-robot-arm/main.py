@@ -9,19 +9,16 @@ from visualObject import CenterOfMass
 from trajectory import CircleTrajectory, Trajectory3D
 import gepetto.corbaserver as gui
 
-import yaml
-
-yaml.load("/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/motion.yaml")
-
-urdf_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
-file_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
+urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
+file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
 sassa = initRobot(urdf_path, file_path)
 viz = initViz(sassa, 1, add_ground=False, add_box=False)
 
-duration = 10 # vizualization duration
+duration = 30 # vizualization duration
 dt = 0.04 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True # 
+export_to_blender = True
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
@@ -40,7 +37,7 @@ is_close = True
 # circular trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
-my_trajectory.circleTrajectoryXY(0.45, -0.01, 0.3, 0.02, 1)
+my_trajectory.circleTrajectoryXY(0.45, -0.01, 0.3, 0.04, 2)
 
 err = [[0, 0, 0]]
 
@@ -184,10 +181,13 @@ node_list = []
 for node in node_name:
     node_list.append(node)
 
-python_file_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/pinToBlender.py"
-motion_file_path = "/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/motion.yaml"
-viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
-viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
+if export_to_blender:
+    project_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/"
+
+    python_file_path = project_path + "pinToBlender.py"
+    motion_file_path = project_path + "/motion.yaml"
+    viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
+    viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
 # main loop, updating the configuration vector q
 for i in range(int(duration / dt)): # int(duration / dt)
@@ -202,19 +202,19 @@ for i in range(int(duration / dt)): # int(duration / dt)
     q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, \
                                             init, viz, q0_ref, goal, add_goal_sphere=False)
 
-
-    viz.viewer.gui.refresh ()
-    viz.viewer.gui.captureTransform ()
+    if export_to_blender:
+        viz.viewer.gui.refresh ()
+        viz.viewer.gui.captureTransform ()
 
     # sassa.forwardKinematics(q_current)
     # pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
     # print(pos)
 
     # ACTUATE gripper
-    # q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
-    # if is_gripper_end_actuated:
-    #     is_close = not is_close
-    #     is_gripper_end_actuated = False
+    q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
+    if is_gripper_end_actuated:
+        is_close = not is_close
+        is_gripper_end_actuated = False
 
     init = False
     viz.display(q_current)

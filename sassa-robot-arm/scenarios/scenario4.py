@@ -24,15 +24,13 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     viz = None
     com_projection = None
     if enable_viz:
-        viz = initViz(sassa, 2, add_ground=True, add_box=True, box_config=[0.3, 0.0, -0.1])
-        viz.setCameraPose()
+        viz = initViz(sassa, 2, add_ground=True, add_box=True, box_config=[0.4, 0.0, -0.1])
+        # viz.viewer.gui.
         # Object to show the projection on the ground of the center of masse 
-        com_projection = CenterOfMass(viz, sassa, "com")
-        # my_door = Door(viz)
-        my_table = Table(viz, initial_position=[0.7, 0.0, -0.1])
+        # com_projection = CenterOfMass(viz, sassa, "com")
 
     duration = 60 # vizualization duration
-    dt = 0.05 # delta time
+    dt = 0.04 # delta time
     trajectory_step = int(duration / dt)
 
     # robot start configuration, velocity and acceleration
@@ -57,7 +55,7 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
         ### start controler
 
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=enable_viz)
 
         ### end controler
 
@@ -75,21 +73,21 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
             log_end_effector.append(frame_EF)
 
         # wait to have a real time sim
-        if i % (1/dt) == 0:
-            # print the remaining time of the simulation in second
-            print("time remaining :", duration-(i*dt))
+        # if i % (1/dt) == 0:
+        #     # print the remaining time of the simulation in second
+        #     print("time remaining :", duration-(i*dt))
 
-        if enable_viz:
-            tsleep = dt - (time.time() - t0)
-            if tsleep > 0:
-                # wait to have a consitente frame rate
-                time.sleep(tsleep)
+        # if enable_viz:
+        #     tsleep = dt - (time.time() - t0)
+        #     if tsleep > 0:
+        #         # wait to have a consitente frame rate
+        #         time.sleep(tsleep)
 
     return log_com, log_goal, log_end_effector
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False)
+    log_com, log_goal, log_end_effector = scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=True)
 
     plt.subplot(3, 1, 1)
     e1 = [point[0][0] for point in log_goal]
