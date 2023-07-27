@@ -25,7 +25,6 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
     com_projection = None
     if enable_viz:
         viz = initViz(sassa, 2, add_ground=True, add_box=False)
-        viz.setCameraPose()
         # Object to show the projection on the ground of the center of masse 
         com_projection = CenterOfMass(viz, sassa, "com")
 
@@ -40,7 +39,6 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
     q_current = q0_ref.copy()
 
     dq_current = np.zeros((sassa.model.nv,))
-    d2q_current = np.zeros((sassa.model.nv,))
 
     my_state_machine = StateMahineScenario3(sassa, viz, dt, q0_ref, curve_resolution=500)
 
@@ -55,7 +53,7 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
 
         ### start controler
 
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=enable_viz)
 
         ### end controler
 
@@ -64,13 +62,12 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
             viz.display(q_current)
 
         # log values
-        if not enable_viz:
-            log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
-            log_goal.append(goal)
-            IDX_Gripper = sassa.model.getFrameId('framegripper')
-            frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector]
-            log_end_effector.append(frame_EF)
+        log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
+        log_goal.append(goal)
+        IDX_Gripper = sassa.model.getFrameId('framegripper')
+        frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
+            pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3], np.array([0, 0, 0])]
+        log_end_effector.append(frame_EF)
 
         # wait to have a real time sim
         if i % (1/dt) == 0 and enable_viz:
@@ -87,7 +84,7 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario3(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=True) # robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", 
+    log_com, log_goal, log_end_effector = scenario3(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=True)
 
     # plt.subplot(3, 1, 1)
     # e1 = [point[0] for point in log_com]

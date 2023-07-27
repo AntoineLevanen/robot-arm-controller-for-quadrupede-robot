@@ -28,7 +28,6 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         viz.setCameraPose()
         # Object to show the projection on the ground of the center of masse 
         com_projection = CenterOfMass(viz, sassa, "com")
-        # my_door = Door(viz)
         my_table = Table(viz, initial_position=[0.7, 0.0, -0.1])
 
     duration = 60 # vizualization duration
@@ -42,7 +41,6 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     q_current = q0_ref.copy()
 
     dq_current = np.zeros((sassa.model.nv,))
-    d2q_current = np.zeros((sassa.model.nv,))
 
     my_state_machine = StateMahineScenario2(sassa, viz, dt, q0_ref)
 
@@ -60,7 +58,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         # Implement the scenario here (State Machine, ...)
         # my_door.actuateDoor(np.sin(np.deg2rad(i%180)))
 
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=enable_viz)
 
         ### end controler
 
@@ -69,19 +67,14 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
             viz.display(q_current)  
             
         # log values
-        if not enable_viz:
-            log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
-            log_goal.append(goal)
-            IDX_Gripper = sassa.model.getFrameId('framegripper')
-            frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
-            log_end_effector.append(frame_EF)
+        log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
+        log_goal.append(goal)
+        IDX_Gripper = sassa.model.getFrameId('framegripper')
+        frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
+            pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3], np.array([0, 0, 0])]
+        log_end_effector.append(frame_EF)
 
         # wait to have a real time sim
-        if i % (1/dt) == 0:
-            # print the remaining time of the simulation in second
-            print("time remaining :", duration-(i*dt))
-
         if enable_viz:
             tsleep = dt - (time.time() - t0)
             if tsleep > 0:

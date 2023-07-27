@@ -26,9 +26,9 @@ class StateMahineScenario2:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.5, -0.015, 0.4], [0.3, -0.015, 0.5], [0.3, -0.015, 0.6], [0.45, -0.015, 0.6]]
+            self.control_point = [[0.5, -0.015, 0.4], [0.4, 0.0, 0.4], [0.4, 0.0, 0.6], [0.45, 0.0, 0.6]]
         
-        self.end_time = 10
+        self.end_time = 20
         self.trajectory = TrajectoryExactCubic(self.control_point, 0, self.end_time)
         self.trajectory_i = 0
         self.init = True
@@ -36,7 +36,7 @@ class StateMahineScenario2:
         self.t0 = 0
 
 
-    def updateState(self, q, dq, i):
+    def updateState(self, q, dq, i, add_goal_viz=True):
         """
         q : current robot contiguration vector
         dq : current robot joint velocity vector
@@ -55,12 +55,12 @@ class StateMahineScenario2:
             self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i + 1
 
-            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', 0), eps=0.03)
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
+                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.02)
 
             self.init = False
 
             if task_finished and self.trajectory_i >= self.end_time / self.dt:
-                print("End state 0")
                 self.current_state = 1
                 self.init = True
                 self.trajectory_i = self.end_time / self.dt - 1
@@ -71,8 +71,6 @@ class StateMahineScenario2:
             # wait 4 sec to take a picture
             
             if i - self.t0 > (4 / self.dt):
-                print("End state 1")
-                print("wait 4 sec first")
                 self.current_state = 2
 
 
@@ -85,12 +83,12 @@ class StateMahineScenario2:
             self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i - 1
 
-            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', 0))
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
+                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.02)
             
             self.init = False
             
             if task_finished and self.trajectory_i <= 0:
-                print("End state 2")
                 self.current_state = 3
                 self.trajectory_i = 0
                 self.init = True
@@ -102,8 +100,6 @@ class StateMahineScenario2:
             
             if i - self.t0 > (4 / self.dt):
                 # start again to loop
-                print("End state 3")
-                print("wait 4 sec last")
                 self.current_state = 0
 
 

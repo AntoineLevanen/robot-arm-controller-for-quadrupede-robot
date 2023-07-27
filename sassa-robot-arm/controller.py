@@ -1,11 +1,8 @@
 import time
-import math
 import sys
 import pinocchio as pin
 import numpy as np
 from numpy.linalg import inv,pinv,norm,eig,svd
-from numpy import sin, cos
-from computeCollision import computeCollisions
 from visualObject import SphereGoal
 
 
