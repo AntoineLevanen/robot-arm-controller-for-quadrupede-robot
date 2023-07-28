@@ -7,8 +7,8 @@ import os
 build URDF file and reduce the size of STL file
 """
 
-# folder path
-dir_path = r'/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot'
+# folder path in which the file will be download
+dir_path = r'/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm'
 
 launchBullet = False
 
@@ -29,7 +29,7 @@ try:
     for currentArgument, currentValue in arguments:
 
         if currentArgument in ("-h", "--Help"):
-            print("use -b to launch Bullet")
+            print("use -b to launch PyBullet")
             print("use -c to clear caches")
             sys.exit(2)
             
@@ -63,16 +63,31 @@ for file in os.listdir(dir_path):
         numFaces = 100 + 2*TARGET
 
         #Simplify the mesh. Only first simplification will be agressive
-        while (ms.current_mesh().vertex_number() > TARGET):
-            ms.apply_filter('simplification_quadric_edge_collapse_decimation', targetfacenum=numFaces, preservenormal=True)
-            # print("Decimated to", numFaces, "faces mesh has", ms.current_mesh().vertex_number(), "vertex")
-            #Refine our estimation to slowly converge to TARGET vertex number
-            numFaces = numFaces - (ms.current_mesh().vertex_number() - TARGET)
+        # while (ms.current_mesh().vertex_number() > TARGET):
+        #     ms.apply_filter('simplification_quadric_edge_collapse_decimation', targetfacenum=numFaces, preservenormal=True)
+        #     # print("Decimated to", numFaces, "faces mesh has", ms.current_mesh().vertex_number(), "vertex")
+        #     #Refine our estimation to slowly converge to TARGET vertex number
+        #     numFaces = numFaces - (ms.current_mesh().vertex_number() - TARGET)
 
-        m = ms.current_mesh()
-        print('output mesh has', m.vertex_number(), 'vertex and', m.face_number(), 'faces')
+        # m = ms.current_mesh()
+        # print('output mesh has', m.vertex_number(), 'vertex and', m.face_number(), 'faces')
+        file.replace(".stl", ".obj") ### to be fixed
         ms.save_current_mesh(dir_path + "/" + file)
 
 # load the URDF file in Bullet
 if launchBullet:
     os.system("onshape-to-robot-bullet " + dir_path)
+
+
+
+
+robot = dir_path + "/robot.urdf"
+robot2 = dir_path + "/robot_temp.urdf"
+
+commande = str("mv " + robot + " " + robot2)
+print(commande)
+os.system(commande)
+
+commande2 = str("sed 's/\.stl/\.obj/g' %s > %s" % (robot2, robot))
+
+os.system(commande2)

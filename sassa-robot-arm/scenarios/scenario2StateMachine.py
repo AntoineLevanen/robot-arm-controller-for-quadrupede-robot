@@ -6,7 +6,6 @@ from gripper import actuate_gripper
 
 from controller import controllerCLIK2ndorder
 from gripper import actuate_gripper
-from trajectory import Trajectory3D
 from trajectory2 import TrajectoryExactCubic
 
 class StateMahineScenario2:

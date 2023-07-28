@@ -3,7 +3,7 @@
 <visual>
 <origin xyz="-2.498001805406602216e-16 6.9388939039072283776e-18 1.8041124150158793782e-16" rpy="-9.7843404150693598069e-29 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///handle.obj"/>
+<mesh filename="package:///handle.stl"/>
 </geometry>
 <material name="handle_material">
 <color rgba="1 0 0 1.0"/>
@@ -12,13 +12,13 @@
 <collision>
 <origin xyz="-2.498001805406602216e-16 6.9388939039072283776e-18 1.8041124150158793782e-16" rpy="-9.7843404150693598069e-29 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///handle.obj"/>
+<mesh filename="package:///handle.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-0.12800000000000033573 1.0408340855861448079e-17 -1.9428902930940239457e-16" rpy="-1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///body_panel.obj"/>
+<mesh filename="package:///body_panel.stl"/>
 </geometry>
 <material name="body_panel_material">
 <color rgba="1 0 0 1.0"/>
@@ -27,13 +27,13 @@
 <collision>
 <origin xyz="-0.12800000000000033573 1.0408340855861448079e-17 -1.9428902930940239457e-16" rpy="-1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///body_panel.obj"/>
+<mesh filename="package:///body_panel.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0.12800000000000044675 0.060000000000000004718 5.5511151231257827021e-17" rpy="-1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -42,13 +42,13 @@
 <collision>
 <origin xyz="0.12800000000000044675 0.060000000000000004718 5.5511151231257827021e-17" rpy="-1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-0.12800000000000033573 0.060000000000000011657 -1.9428902930940239457e-16" rpy="1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -57,13 +57,13 @@
 <collision>
 <origin xyz="-0.12800000000000033573 0.060000000000000011657 -1.9428902930940239457e-16" rpy="1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0 -5.5511151231257827021e-17 0" rpy="1.3877787807814453674e-17 -0 -1.57079632679489678" />
 <geometry>
-<mesh filename="package:///body.obj"/>
+<mesh filename="package:///body.stl"/>
 </geometry>
 <material name="body_material">
 <color rgba="0.2745098039215686514 0.2745098039215686514 0.2745098039215686514 1.0"/>
@@ -72,13 +72,13 @@
 <collision>
 <origin xyz="0 -5.5511151231257827021e-17 0" rpy="1.3877787807814453674e-17 -0 -1.57079632679489678" />
 <geometry>
-<mesh filename="package:///body.obj"/>
+<mesh filename="package:///body.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0.12800000000000044675 1.0408340855860438892e-17 5.5511151231257827021e-17" rpy="1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///body_panel.obj"/>
+<mesh filename="package:///body_panel.stl"/>
 </geometry>
 <material name="body_panel_material">
 <color rgba="1 0 0 1.0"/>
@@ -87,13 +87,13 @@
 <collision>
 <origin xyz="0.12800000000000044675 1.0408340855860438892e-17 5.5511151231257827021e-17" rpy="1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///body_panel.obj"/>
+<mesh filename="package:///body_panel.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0.12800000000000044675 -0.059999999999999990841 5.5511151231257827021e-17" rpy="-1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -102,13 +102,13 @@
 <collision>
 <origin xyz="0.12800000000000044675 -0.059999999999999990841 5.5511151231257827021e-17" rpy="-1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-0.12800000000000033573 -0.059999999999999983902 -1.9428902930940239457e-16" rpy="1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -117,7 +117,7 @@
 <collision>
 <origin xyz="-0.12800000000000033573 -0.059999999999999983902 -1.9428902930940239457e-16" rpy="1.570796326794896558 7.888609052210114691e-29 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -131,7 +131,7 @@
 <visual>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 -6.5617017863841870815e-34 6.5617017838168550278e-34" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 <material name="angle_motor_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -140,13 +140,13 @@
 <collision>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 -6.5617017863841870815e-34 6.5617017838168550278e-34" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 0.3141592653589793116 -3.141592653589793116" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -155,7 +155,7 @@
 <collision>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 0.3141592653589793116 -3.141592653589793116" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -169,7 +169,7 @@
 <visual>
 <origin xyz="7.6290213507511077293e-18 0 -0.079250000000000014877" rpy="1.5707963267948970021 2.9044849690249756194e-16 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -178,13 +178,13 @@
 <collision>
 <origin xyz="7.6290213507511077293e-18 0 -0.079250000000000014877" rpy="1.5707963267948970021 2.9044849690249756194e-16 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="1.753469930634033528e-16 0 -0.053500000000000075273" rpy="3.141592653589793116 1.0047893711214148772e-16 1.6578076876195083607e-29" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 <material name="upperleg_cover_material">
 <color rgba="1 0 0 1.0"/>
@@ -193,13 +193,13 @@
 <collision>
 <origin xyz="1.753469930634033528e-16 0 -0.053500000000000075273" rpy="3.141592653589793116 1.0047893711214148772e-16 1.6578076876195083607e-29" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-3.0814879110195773649e-33 0 -0.023000000000000020428" rpy="1.570796326794896558 -0 0" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 <material name="inline_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -208,13 +208,13 @@
 <collision>
 <origin xyz="-3.0814879110195773649e-33 0 -0.023000000000000020428" rpy="1.570796326794896558 -0 0" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="8.3984370386311552134e-18 0 -0.056000000000000021982" rpy="-3.141592653589793116 6.8403891977347234462e-17 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 <material name="motor_pulley_material">
 <color rgba="1 0 0 1.0"/>
@@ -223,13 +223,13 @@
 <collision>
 <origin xyz="8.3984370386311552134e-18 0 -0.056000000000000021982" rpy="-3.141592653589793116 6.8403891977347234462e-17 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="1.3877787807814456755e-17 0 -0.02300000000000000655" rpy="-3.141592653589793116 6.8403891977347234462e-17 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -238,13 +238,13 @@
 <collision>
 <origin xyz="1.3877787807814456755e-17 0 -0.02300000000000000655" rpy="-3.141592653589793116 6.8403891977347234462e-17 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="3.6569114985258803736e-17 0 -0.053500000000000019762" rpy="-3.1415926535897926719 3.4480744915607654605e-16 1.6566079009641247914e-29" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 <material name="upperleg_main_material">
 <color rgba="1 0 0 1.0"/>
@@ -253,7 +253,7 @@
 <collision>
 <origin xyz="3.6569114985258803736e-17 0 -0.053500000000000019762" rpy="-3.1415926535897926719 3.4480744915607654605e-16 1.6566079009641247914e-29" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -267,7 +267,7 @@
 <visual>
 <origin xyz="2.7755575615628913511e-17 0 -2.7755575615628913511e-17" rpy="2.9330896303248668082e-32 5.2919806624416397802e-31 -8.9902534028177188512e-32" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 <material name="lower_leg_material">
 <color rgba="1 0 0 1.0"/>
@@ -276,13 +276,13 @@
 <collision>
 <origin xyz="2.7755575615628913511e-17 0 -2.7755575615628913511e-17" rpy="2.9330896303248668082e-32 5.2919806624416397802e-31 -8.9902534028177188512e-32" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="2.7755575615628913511e-17 0 -0.0060000000000000330846" rpy="-1.5707963267948992225 1.5694156464006572129e-15 1.0330794565568739415e-30" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -291,13 +291,13 @@
 <collision>
 <origin xyz="2.7755575615628913511e-17 0 -0.0060000000000000330846" rpy="-1.5707963267948992225 1.5694156464006572129e-15 1.0330794565568739415e-30" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="2.7755575615628913511e-17 0 0.0060000000000000608402" rpy="1.5707963267949018871 3.2630587779497501504e-15 3.4947918559641619179e-31" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -306,13 +306,13 @@
 <collision>
 <origin xyz="2.7755575615628913511e-17 0 0.0060000000000000608402" rpy="1.5707963267949018871 3.2630587779497501504e-15 3.4947918559641619179e-31" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-1.415534356397074589e-15 0 3.0531133177191804862e-16" rpy="-2.5827259566927633692e-15 1.5694156464006621433e-15 1.0330794565568739415e-30" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 <material name="foot_ball_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -321,7 +321,7 @@
 <collision>
 <origin xyz="-1.415534356397074589e-15 0 3.0531133177191804862e-16" rpy="-2.5827259566927633692e-15 1.5694156464006621433e-15 1.0330794565568739415e-30" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -376,7 +376,7 @@
 <visual>
 <origin xyz="-3.1225022567582533862e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 -3.6953570529203814193e-39 1.5407439555083695941e-33" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 <material name="angle_motor_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -385,13 +385,13 @@
 <collision>
 <origin xyz="-3.1225022567582533862e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 -3.6953570529203814193e-39 1.5407439555083695941e-33" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-3.0357660829594130315e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.57079632679489678 0.31415926535897936711 3.141592653589793116" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -400,7 +400,7 @@
 <collision>
 <origin xyz="-3.0357660829594130315e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.57079632679489678 0.31415926535897936711 3.141592653589793116" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -414,7 +414,7 @@
 <visual>
 <origin xyz="0 -2.7755575615628913511e-17 0.023000000000000020428" rpy="-1.570796326794896558 2.5291602972405318469e-32 -2.7150157746293330749e-44" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 <material name="inline_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -423,13 +423,13 @@
 <collision>
 <origin xyz="0 -2.7755575615628913511e-17 0.023000000000000020428" rpy="-1.570796326794896558 2.5291602972405318469e-32 -2.7150157746293330749e-44" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-1.7205465538984564751e-16 -1.3877787807814456755e-16 0.079250000000000278555" rpy="-1.570796326794896336 -9.714451465469948398e-17 -1.570796326794896336" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -438,13 +438,13 @@
 <collision>
 <origin xyz="-1.7205465538984564751e-16 -1.3877787807814456755e-16 0.079250000000000278555" rpy="-1.570796326794896336 -9.714451465469948398e-17 -1.570796326794896336" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-1.7731282339771384989e-16 -1.3877787807814456755e-16 0.056000000000000091371" rpy="5.4123372450474941675e-16 -2.5847379792053932669e-16 -1.570796326794896336" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 <material name="motor_pulley_material">
 <color rgba="1 0 0 1.0"/>
@@ -453,13 +453,13 @@
 <collision>
 <origin xyz="-1.7731282339771384989e-16 -1.3877787807814456755e-16 0.056000000000000091371" rpy="5.4123372450474941675e-16 -2.5847379792053932669e-16 -1.570796326794896336" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="8.6633917922066816174e-15 -3.6082248300317587564e-16 0.053500000000000505485" rpy="1.9949319973733131209e-16 9.2981178312356663045e-16 -2.775557561563065147e-17" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 <material name="upperleg_cover_material">
 <color rgba="1 0 0 1.0"/>
@@ -468,13 +468,13 @@
 <collision>
 <origin xyz="8.6633917922066816174e-15 -3.6082248300317587564e-16 0.053500000000000505485" rpy="1.9949319973733131209e-16 9.2981178312356663045e-16 -2.775557561563065147e-17" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="8.2386461239203363498e-16 -3.8857805861880478915e-16 0.053500000000000005884" rpy="5.0007687304695769841e-16 2.8852669743158039726e-16 -2.7755575615620568841e-17" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 <material name="upperleg_main_material">
 <color rgba="1 0 0 1.0"/>
@@ -483,13 +483,13 @@
 <collision>
 <origin xyz="8.2386461239203363498e-16 -3.8857805861880478915e-16 0.053500000000000005884" rpy="5.0007687304695769841e-16 2.8852669743158039726e-16 -2.7755575615620568841e-17" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-1.8735013540549358847e-16 -1.3877787807814456755e-16 0.02300000000000000655" rpy="6.6613381477508633147e-16 -1.2143064331837457376e-16 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -498,7 +498,7 @@
 <collision>
 <origin xyz="-1.8735013540549358847e-16 -1.3877787807814456755e-16 0.02300000000000000655" rpy="6.6613381477508633147e-16 -1.2143064331837457376e-16 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -512,7 +512,7 @@
 <visual>
 <origin xyz="0 -2.7755575615628913511e-17 -0.0059999999999999775735" rpy="-1.57079632679489678 5.781209582702274372e-32 -1.8562439446568260626e-17" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -521,13 +521,13 @@
 <collision>
 <origin xyz="0 -2.7755575615628913511e-17 -0.0059999999999999775735" rpy="-1.57079632679489678 5.781209582702274372e-32 -1.8562439446568260626e-17" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-2.2204460492503130808e-16 -2.7755575615628913511e-17 -2.7755575615628913511e-17" rpy="-2.8969882048802926184e-16 -8.8397666051774869371e-32 -4.6846516387535727591e-18" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 <material name="foot_ball_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -536,13 +536,13 @@
 <collision>
 <origin xyz="-2.2204460492503130808e-16 -2.7755575615628913511e-17 -2.7755575615628913511e-17" rpy="-2.8969882048802926184e-16 -8.8397666051774869371e-32 -4.6846516387535727591e-18" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0 0 0" rpy="-3.539406725163545736e-32 -0 0" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 <material name="lower_leg_material">
 <color rgba="1 0 0 1.0"/>
@@ -551,13 +551,13 @@
 <collision>
 <origin xyz="0 0 0" rpy="-3.539406725163545736e-32 -0 0" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0 0 0.0060000000000000053291" rpy="1.5707963267948956698 4.6419140727812833279e-16 -4.6846516387532276325e-18" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -566,7 +566,7 @@
 <collision>
 <origin xyz="0 0 0.0060000000000000053291" rpy="1.5707963267948956698 4.6419140727812833279e-16 -4.6846516387532276325e-18" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -621,7 +621,7 @@
 <visual>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 0.3141592653589793116 -3.141592653589793116" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -630,13 +630,13 @@
 <collision>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 0.3141592653589793116 -3.141592653589793116" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 3.8110772711717211778e-33 -2.8025969286495594657e-45" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 <material name="angle_motor_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -645,7 +645,7 @@
 <collision>
 <origin xyz="-3.1225022567582527699e-17 -0.016999999999999994282 -0.05999999999999999778" rpy="1.570796326794896558 3.8110772711717211778e-33 -2.8025969286495594657e-45" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -659,7 +659,7 @@
 <visual>
 <origin xyz="3.4763482264219987944e-16 -6.6613381477509392425e-16 -0.079249999999999903855" rpy="1.5707963267949121011 -8.7708493677194047434e-31 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -668,13 +668,13 @@
 <collision>
 <origin xyz="3.4763482264219987944e-16 -6.6613381477509392425e-16 -0.079249999999999903855" rpy="1.5707963267949121011 -8.7708493677194047434e-31 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="3.9443045261050590271e-31 0 -0.023000000000000020428" rpy="1.570796326794896558 1.12266282378325968e-31 -1.5869662741828017458e-31" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 <material name="inline_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -683,13 +683,13 @@
 <collision>
 <origin xyz="3.9443045261050590271e-31 0 -0.023000000000000020428" rpy="1.570796326794896558 1.12266282378325968e-31 -1.5869662741828017458e-31" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-1.6516246738967529295e-16 -4.4408920985006261617e-16 -0.053500000000000019762" rpy="-3.1415926535897900074 -4.9960036108130584926e-15 6.4739880123452744713e-15" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 <material name="upperleg_cover_material">
 <color rgba="1 0 0 1.0"/>
@@ -698,13 +698,13 @@
 <collision>
 <origin xyz="-1.6516246738967529295e-16 -4.4408920985006261617e-16 -0.053500000000000019762" rpy="-3.1415926535897900074 -4.9960036108130584926e-15 6.4739880123452744713e-15" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="9.4506055723547158392e-16 -4.4408920985006261617e-16 -0.053500000000000019762" rpy="-3.1415926535897908956 -4.9960036108130584926e-15 6.4739880123452784156e-15" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 <material name="upperleg_main_material">
 <color rgba="1 0 0 1.0"/>
@@ -713,13 +713,13 @@
 <collision>
 <origin xyz="9.4506055723547158392e-16 -4.4408920985006261617e-16 -0.053500000000000019762" rpy="-3.1415926535897908956 -4.9960036108130584926e-15 6.4739880123452784156e-15" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="3.4694469519535698154e-16 -3.3306690738754696213e-16 -0.023000000000000228595" rpy="3.141592653589788231 -2.454806747213854959e-30 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -728,13 +728,13 @@
 <collision>
 <origin xyz="3.4694469519535698154e-16 -3.3306690738754696213e-16 -0.023000000000000228595" rpy="3.141592653589788231 -2.454806747213854959e-30 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="3.4387796306280250907e-16 -5.273559366969493567e-16 -0.056000000000000021982" rpy="3.141592653589788231 -2.454806747213854959e-30 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 <material name="motor_pulley_material">
 <color rgba="1 0 0 1.0"/>
@@ -743,7 +743,7 @@
 <collision>
 <origin xyz="3.4387796306280250907e-16 -5.273559366969493567e-16 -0.056000000000000021982" rpy="3.141592653589788231 -2.454806747213854959e-30 1.570796326794896558" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -757,7 +757,7 @@
 <visual>
 <origin xyz="0 0 0" rpy="4.9814313959820394058e-33 -1.354866199554786051e-30 -1.1832913578319268873e-30" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 <material name="lower_leg_material">
 <color rgba="1 0 0 1.0"/>
@@ -766,13 +766,13 @@
 <collision>
 <origin xyz="0 0 0" rpy="4.9814313959820394058e-33 -1.354866199554786051e-30 -1.1832913578319268873e-30" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0 -2.7755575615628913511e-17 -0.0060000000000000053291" rpy="-1.57079632679489678 -2.0665654347996242627e-30 3.155443620841420423e-30" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -781,13 +781,13 @@
 <collision>
 <origin xyz="0 -2.7755575615628913511e-17 -0.0060000000000000053291" rpy="-1.57079632679489678 -2.0665654347996242627e-30 3.155443620841420423e-30" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="5.8286708792820718372e-15 0 0" rpy="2.722414939770826494e-14 1.9911547907015339569e-29 -3.7470892997510093599e-30" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 <material name="foot_ball_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -796,13 +796,13 @@
 <collision>
 <origin xyz="5.8286708792820718372e-15 0 0" rpy="2.722414939770826494e-14 1.9911547907015339569e-29 -3.7470892997510093599e-30" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0 0 0.0059999999999999220623" rpy="1.5707963267948961139 -8.0213613529163596808e-14 1.0255191767872332309e-29" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -811,7 +811,7 @@
 <collision>
 <origin xyz="0 0 0.0059999999999999220623" rpy="1.5707963267948961139 -8.0213613529163596808e-14 1.0255191767872332309e-29" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -866,7 +866,7 @@
 <visual>
 <origin xyz="-3.1225022567582527699e-17 -0.017000000000000001221 -0.05999999999999999778" rpy="1.570796326794896558 -0 0" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 <material name="angle_motor_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -875,13 +875,13 @@
 <collision>
 <origin xyz="-3.1225022567582527699e-17 -0.017000000000000001221 -0.05999999999999999778" rpy="1.570796326794896558 -0 0" />
 <geometry>
-<mesh filename="package:///angle_motor_connect.obj"/>
+<mesh filename="package:///angle_motor_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-3.1225022567582527699e-17 -0.017000000000000001221 -0.05999999999999999778" rpy="1.570796326794896558 0.3141592653589793116 3.1415926535897922278" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -890,7 +890,7 @@
 <collision>
 <origin xyz="-3.1225022567582527699e-17 -0.017000000000000001221 -0.05999999999999999778" rpy="1.570796326794896558 0.3141592653589793116 3.1415926535897922278" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -904,7 +904,7 @@
 <visual>
 <origin xyz="7.629021350754563618e-18 -2.7755575615628913511e-17 0.079250000000000334066" rpy="-1.570796326794896558 2.6499421621830933368e-30 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -913,13 +913,13 @@
 <collision>
 <origin xyz="7.629021350754563618e-18 -2.7755575615628913511e-17 0.079250000000000334066" rpy="-1.570796326794896558 2.6499421621830933368e-30 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="1.3877787807816034477e-17 -2.7755575615628913511e-17 0.023000000000000020428" rpy="-2.2204460492474472971e-16 8.3815096766793541436e-30 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 <material name="rmdx8v3_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -928,13 +928,13 @@
 <collision>
 <origin xyz="1.3877787807816034477e-17 -2.7755575615628913511e-17 0.023000000000000020428" rpy="-2.2204460492474472971e-16 8.3815096766793541436e-30 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///rmdx8v3.obj"/>
+<mesh filename="package:///rmdx8v3.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="2.2335275568130866206e-17 -2.7755575615628913511e-17 0.053500000000000005884" rpy="-1.1102230246304645882e-16 1.1102230246208832562e-16 2.0912209559343255345e-28" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 <material name="upperleg_main_material">
 <color rgba="1 0 0 1.0"/>
@@ -943,13 +943,13 @@
 <collision>
 <origin xyz="2.2335275568130866206e-17 -2.7755575615628913511e-17 0.053500000000000005884" rpy="-1.1102230246304645882e-16 1.1102230246208832562e-16 2.0912209559343255345e-28" />
 <geometry>
-<mesh filename="package:///upperleg_main.obj"/>
+<mesh filename="package:///upperleg_main.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="8.4574877603164094509e-18 -2.7755575615628913511e-17 0.053500000000000005884" rpy="-1.1102230246272406123e-16 1.110223024626815367e-16 -3.610542407486705846e-27" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 <material name="upperleg_cover_material">
 <color rgba="1 0 0 1.0"/>
@@ -958,13 +958,13 @@
 <collision>
 <origin xyz="8.4574877603164094509e-18 -2.7755575615628913511e-17 0.053500000000000005884" rpy="-1.1102230246272406123e-16 1.110223024626815367e-16 -3.610542407486705846e-27" />
 <geometry>
-<mesh filename="package:///upperleg_cover.obj"/>
+<mesh filename="package:///upperleg_cover.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0 0 0.02300000000000000655" rpy="-1.570796326794896558 3.6620779973816428862e-30 1.479114197289388377e-31" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 <material name="inline_connect_material">
 <color rgba="1 0 0 1.0"/>
@@ -973,13 +973,13 @@
 <collision>
 <origin xyz="0 0 0.02300000000000000655" rpy="-1.570796326794896558 3.6620779973816428862e-30 1.479114197289388377e-31" />
 <geometry>
-<mesh filename="package:///inline_connect.obj"/>
+<mesh filename="package:///inline_connect.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="1.6430687626724614809e-18 -2.7755575615628913511e-17 0.056000000000000008105" rpy="-1.6535384173010603369e-14 1.5210055437364344837e-14 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 <material name="motor_pulley_material">
 <color rgba="1 0 0 1.0"/>
@@ -988,7 +988,7 @@
 <collision>
 <origin xyz="1.6430687626724614809e-18 -2.7755575615628913511e-17 0.056000000000000008105" rpy="-1.6535384173010603369e-14 1.5210055437364344837e-14 -1.570796326794896558" />
 <geometry>
-<mesh filename="package:///motor_pulley.obj"/>
+<mesh filename="package:///motor_pulley.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -1002,7 +1002,7 @@
 <visual>
 <origin xyz="0 0 0.0060000000000000330846" rpy="1.570796326794896558 1.1102230246494793408e-16 -1.6042472583800794153e-27" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -1011,13 +1011,13 @@
 <collision>
 <origin xyz="0 0 0.0060000000000000330846" rpy="1.570796326794896558 1.1102230246494793408e-16 -1.6042472583800794153e-27" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-5.5511151231257827021e-17 0 5.5511151231257827021e-17" rpy="3.141592653589793116 2.2204460492529631605e-16 -6.310887241768093042e-30" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 <material name="foot_ball_material">
 <color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
@@ -1026,13 +1026,13 @@
 <collision>
 <origin xyz="-5.5511151231257827021e-17 0 5.5511151231257827021e-17" rpy="3.141592653589793116 2.2204460492529631605e-16 -6.310887241768093042e-30" />
 <geometry>
-<mesh filename="package:///foot_ball.obj"/>
+<mesh filename="package:///foot_ball.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-2.7755575615628913511e-17 0 0" rpy="3.141592653589793116 2.7081386121130422452e-29 6.9518367272601623313e-30" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 <material name="lower_leg_material">
 <color rgba="1 0 0 1.0"/>
@@ -1041,13 +1041,13 @@
 <collision>
 <origin xyz="-2.7755575615628913511e-17 0 0" rpy="3.141592653589793116 2.7081386121130422452e-29 6.9518367272601623313e-30" />
 <geometry>
-<mesh filename="package:///lower_leg.obj"/>
+<mesh filename="package:///lower_leg.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-2.7755575615628913511e-17 0 -0.0060000000000000053291" rpy="-1.57079632679489678 1.6297448791652292256e-29 7.5927862127522330219e-30" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 <material name="61804-2rs_material">
 <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
@@ -1056,7 +1056,7 @@
 <collision>
 <origin xyz="-2.7755575615628913511e-17 0 -0.0060000000000000053291" rpy="-1.57079632679489678 1.6297448791652292256e-29 7.5927862127522330219e-30" />
 <geometry>
-<mesh filename="package:///61804-2rs.obj"/>
+<mesh filename="package:///61804-2rs.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -1111,7 +1111,7 @@
 <visual>
 <origin xyz="2.7755575615628913511e-17 -1.530808498934268238e-18 -0.034000000000000002442" rpy="-1.570796326794896558 3.246314345065296996e-17 -1.4964449862239514051e-31" />
 <geometry>
-<mesh filename="package:///5015.obj"/>
+<mesh filename="package:///5015.stl"/>
 </geometry>
 <material name="5015_material">
 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
@@ -1120,7 +1120,7 @@
 <collision>
 <origin xyz="2.7755575615628913511e-17 -1.530808498934268238e-18 -0.034000000000000002442" rpy="-1.570796326794896558 3.246314345065296996e-17 -1.4964449862239514051e-31" />
 <geometry>
-<mesh filename="package:///5015.obj"/>
+<mesh filename="package:///5015.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -1134,7 +1134,7 @@
 <visual>
 <origin xyz="-5.5511151231257827021e-17 2.7755575615628913511e-17 -0.034000000000000002442" rpy="-1.570796326794896558 1.1070902065631869695e-31 -0.785398163397448279" />
 <geometry>
-<mesh filename="package:///7015.obj"/>
+<mesh filename="package:///7015.stl"/>
 </geometry>
 <material name="7015_material">
 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
@@ -1143,13 +1143,13 @@
 <collision>
 <origin xyz="-5.5511151231257827021e-17 2.7755575615628913511e-17 -0.034000000000000002442" rpy="-1.570796326794896558 1.1070902065631869695e-31 -0.785398163397448279" />
 <geometry>
-<mesh filename="package:///7015.obj"/>
+<mesh filename="package:///7015.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0.028284271247461689747 -0.028284271247461384435 2.2397479442724408186e-15" rpy="-1.570796326794896558 1.1070902065631869695e-31 -0.785398163397448279" />
 <geometry>
-<mesh filename="package:///link.obj"/>
+<mesh filename="package:///link.stl"/>
 </geometry>
 <material name="link_material">
 <color rgba="1 0 0 1.0"/>
@@ -1158,13 +1158,13 @@
 <collision>
 <origin xyz="0.028284271247461689747 -0.028284271247461384435 2.2397479442724408186e-15" rpy="-1.570796326794896558 1.1070902065631869695e-31 -0.785398163397448279" />
 <geometry>
-<mesh filename="package:///link.obj"/>
+<mesh filename="package:///link.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-1.6653345369377348106e-16 4.9960036108132044319e-16 0.015000000000002252851" rpy="-1.570796326794896558 1.1070902065631869695e-31 -0.785398163397448279" />
 <geometry>
-<mesh filename="package:///5015.obj"/>
+<mesh filename="package:///5015.stl"/>
 </geometry>
 <material name="5015_material">
 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
@@ -1173,7 +1173,7 @@
 <collision>
 <origin xyz="-1.6653345369377348106e-16 4.9960036108132044319e-16 0.015000000000002252851" rpy="-1.570796326794896558 1.1070902065631869695e-31 -0.785398163397448279" />
 <geometry>
-<mesh filename="package:///5015.obj"/>
+<mesh filename="package:///5015.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -1187,7 +1187,7 @@
 <visual>
 <origin xyz="0.039999999999999980016 2.7755575615628913511e-17 7.8886090522101180541e-31" rpy="1.570796326794896558 1.1070902065631256627e-31 0" />
 <geometry>
-<mesh filename="package:///link.obj"/>
+<mesh filename="package:///link.stl"/>
 </geometry>
 <material name="link_material">
 <color rgba="1 0 0 1.0"/>
@@ -1196,7 +1196,7 @@
 <collision>
 <origin xyz="0.039999999999999980016 2.7755575615628913511e-17 7.8886090522101180541e-31" rpy="1.570796326794896558 1.1070902065631256627e-31 0" />
 <geometry>
-<mesh filename="package:///link.obj"/>
+<mesh filename="package:///link.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -1210,7 +1210,7 @@
 <visual>
 <origin xyz="0.014999999999999957812 1.3877787807814456755e-17 0.02999999999999999542" rpy="-1.570796326794896558 -4.0895337336256195199e-31 -5.7998163170288558874e-32" />
 <geometry>
-<mesh filename="package:///end_effector.obj"/>
+<mesh filename="package:///end_effector.stl"/>
 </geometry>
 <material name="end_effector_material">
 <color rgba="0.2745098039215686514 0.2745098039215686514 0.2745098039215686514 1.0"/>
@@ -1219,13 +1219,13 @@
 <collision>
 <origin xyz="0.014999999999999957812 1.3877787807814456755e-17 0.02999999999999999542" rpy="-1.570796326794896558 -4.0895337336256195199e-31 -5.7998163170288558874e-32" />
 <geometry>
-<mesh filename="package:///end_effector.obj"/>
+<mesh filename="package:///end_effector.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="0.030000000000000026645 0.017988005261371856069 0.030000000000000005829" rpy="-1.570796326794896558 1.570796326794896558 0" />
 <geometry>
-<mesh filename="package:///t265.obj"/>
+<mesh filename="package:///t265.stl"/>
 </geometry>
 <material name="t265_material">
 <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
@@ -1234,13 +1234,13 @@
 <collision>
 <origin xyz="0.030000000000000026645 0.017988005261371856069 0.030000000000000005829" rpy="-1.570796326794896558 1.570796326794896558 0" />
 <geometry>
-<mesh filename="package:///t265.obj"/>
+<mesh filename="package:///t265.stl"/>
 </geometry>
 </collision>
 <visual>
 <origin xyz="-5.5511151231257827021e-17 1.3877787807814456755e-17 -0.025000000000000001388" rpy="-1.570796326794896558 -4.0895337336256195199e-31 -5.7998163170288558874e-32" />
 <geometry>
-<mesh filename="package:///2408.obj"/>
+<mesh filename="package:///2408.stl"/>
 </geometry>
 <material name="2408_material">
 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
@@ -1249,7 +1249,7 @@
 <collision>
 <origin xyz="-5.5511151231257827021e-17 1.3877787807814456755e-17 -0.025000000000000001388" rpy="-1.570796326794896558 -4.0895337336256195199e-31 -5.7998163170288558874e-32" />
 <geometry>
-<mesh filename="package:///2408.obj"/>
+<mesh filename="package:///2408.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -1263,7 +1263,7 @@
 <visual>
 <origin xyz="0.030000000000000026645 0.0029999999999999887867 -0.0050000000000000027062" rpy="1.570796326794896558 -1.601709792890827255e-31 0" />
 <geometry>
-<mesh filename="package:///gripper.obj"/>
+<mesh filename="package:///gripper.stl"/>
 </geometry>
 <material name="gripper_material">
 <color rgba="0.2745098039215686514 0.2745098039215686514 0.2745098039215686514 1.0"/>
@@ -1272,7 +1272,7 @@
 <collision>
 <origin xyz="0.030000000000000026645 0.0029999999999999887867 -0.0050000000000000027062" rpy="1.570796326794896558 -1.601709792890827255e-31 0" />
 <geometry>
-<mesh filename="package:///gripper.obj"/>
+<mesh filename="package:///gripper.stl"/>
 </geometry>
 </collision>
 <inertial>

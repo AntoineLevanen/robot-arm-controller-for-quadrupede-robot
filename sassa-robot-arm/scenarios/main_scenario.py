@@ -6,6 +6,11 @@ from scenario3 import scenario3
 from scenario4 import scenario4
 from scenario5 import scenario5
 
+"""
+choose the scenarion to be played, add URDF file path and choose to vizualize the robot or not.
+To use export_to_blender, enable the gepetto viewer in the scenario function
+Plot the mean square error of the end effector.
+"""
 class MainScenario:
 
     def __init__(self, scenario_num=1):
@@ -26,8 +31,8 @@ class MainScenario:
             self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario4(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
 
         elif scenario_num == 5:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario5(robot_urdf_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf", robot_file_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/", enable_viz=True, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario5(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario5(robot_urdf_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf", robot_file_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/", enable_viz=False, export_to_blender=False)
+            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario5(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=True, export_to_blender=False)
 
 
     def plot_figure(self, info, plot_main_title="Pick and Place operation position"):
@@ -324,5 +329,5 @@ class MainScenario:
 
 if __name__ == "__main__":
     test1 = MainScenario(scenario_num=5)
-    test1.plot_figure(2, plot_main_title="Filp a lever and push a button")
+    test1.plot_figure(2, plot_main_title="Flip a lever and push a button")
     test1.meanSquaredError(0)

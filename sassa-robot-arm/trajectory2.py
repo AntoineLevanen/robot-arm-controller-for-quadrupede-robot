@@ -3,8 +3,13 @@ import time
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline as Spline
 from numpy import sin, cos
-from geomdl import BSpline
 from ndcurves import bezier, piecewise_bezier, exact_cubic, curve_constraints, polynomial
+
+"""
+Generate trajectory using the ndcurves lib
+Bezier curve
+ExactCubic, multiple polynomial that pass through each control point
+"""
 
 class TrajectoryBezier:
     """
@@ -118,7 +123,6 @@ class TrajectoryExactCubic:
                 
         ax.scatter([point[0] for point in self.waypoints.T], [point[1] for point in self.waypoints.T], [point[2] for point in self.waypoints.T])
         plt.show()
-
 
 def mainTrajectory():
     control_points = [[0.35, 0.0, 0.4], [0.35, 0.13, 0.22], [0.35, 0.05, 0.17], [0.35, -0.15, 0.17], [0.35, -0.15, 0.2], [0.35, 0.0, 0.3]]

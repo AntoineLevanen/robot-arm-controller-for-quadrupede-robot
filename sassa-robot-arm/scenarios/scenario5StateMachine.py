@@ -7,7 +7,6 @@ import sys
 import os
 path = os.path.abspath("sassa-robot-arm")
 sys.path.append(path)
-from trajectory import Trajectory3D
 from trajectory2 import TrajectoryExactCubic
 
 class StateMahineScenario5:

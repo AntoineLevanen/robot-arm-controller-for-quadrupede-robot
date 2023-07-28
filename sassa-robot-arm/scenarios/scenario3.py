@@ -185,7 +185,7 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
         node_list.append(node)
 
     if export_to_blender:
-        project_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/"
+        project_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/blender"
 
         python_file_path = project_path + "pinToBlender.py"
         motion_file_path = project_path + "/motion.yaml"
