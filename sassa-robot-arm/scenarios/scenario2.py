@@ -236,7 +236,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False)
+    log_com, log_goal, log_end_effector = scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=True)
 
     plt.subplot(3, 1, 1)
     e1 = [point[0][0] for point in log_goal]

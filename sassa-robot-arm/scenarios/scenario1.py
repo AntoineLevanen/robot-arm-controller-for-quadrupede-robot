@@ -25,7 +25,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     viz = None
     com_projection = None
     if enable_viz:
-        viz = initViz(sassa, 1, add_ground=enable_viz, add_box=enable_viz, box_config=[0.4, 0.0, 0.04])
+        viz = initViz(sassa, 2, add_ground=enable_viz, add_box=enable_viz, box_config=[0.4, 0.0, 0.04])
         # Object to show the projection on the ground of the center of masse 
         # com_projection = CenterOfMass(viz, sassa, "com")
         

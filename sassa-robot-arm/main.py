@@ -12,13 +12,13 @@ import gepetto.corbaserver as gui
 urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
 file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
 sassa = initRobot(urdf_path, file_path)
-viz = initViz(sassa, 1, add_ground=False, add_box=False)
+viz = initViz(sassa, 2, add_ground=False, add_box=False)
 
 duration = 30 # vizualization duration
 dt = 0.04 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True # 
-export_to_blender = True
+export_to_blender = False
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
@@ -29,7 +29,7 @@ dq_current = np.zeros((sassa.model.nv,))
 d2q_current = np.zeros((sassa.model.nv,))
 
 init = True
-is_close = True
+is_close = "open"
 
 # Object to show the projection on the ground of the center of masse 
 # com_projection = CenterOfMass(viz, sassa, "com")
@@ -211,9 +211,9 @@ for i in range(int(duration / dt)): # int(duration / dt)
     # print(pos)
 
     # ACTUATE gripper
-    q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, close=is_close)
+    q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, action="sdqfgs")
     if is_gripper_end_actuated:
-        is_close = not is_close
+        is_close = "close" if is_close == "open" else "open"
         is_gripper_end_actuated = False
 
     init = False

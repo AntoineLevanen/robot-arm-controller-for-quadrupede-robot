@@ -15,7 +15,7 @@ class StateMahineScenario4:
 
     def __init__(self,robot, viz, dt, q0_ref, control_point=None):
         """
-        State machine to look over a table with a 2 nd order CLIK controller
+        State machine to look at two posision near the ground with a 2 nd order CLIK controller
         Also actuate the gripper 
 
         """

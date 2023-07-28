@@ -26,7 +26,7 @@ class MainScenario:
             self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario4(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
 
         elif scenario_num == 5:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario5(robot_urdf_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf", robot_file_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/", enable_viz=True, export_to_blender=True)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario5(robot_urdf_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf", robot_file_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/", enable_viz=True, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario5(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
 
 
@@ -320,9 +320,6 @@ class MainScenario:
                 wspace=0.2,
                 hspace=0.37)
         plt.show()
-
-
-
 
 
 if __name__ == "__main__":

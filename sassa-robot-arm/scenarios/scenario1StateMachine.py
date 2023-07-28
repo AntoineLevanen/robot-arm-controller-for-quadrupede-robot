@@ -75,7 +75,7 @@ class StateMahineScenario1:
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2))
-            q, _ = actuate_gripper(self.robot, q, self.dt, close=True)
+            q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
 
             self.init = False
             
@@ -103,7 +103,7 @@ class StateMahineScenario1:
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3))
-            q, _ = actuate_gripper(self.robot, q, self.dt, close=True)
+            q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
 
             self.init = False
             
@@ -117,7 +117,7 @@ class StateMahineScenario1:
             # when arrived, close the gripper
             q, dq, _ = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2))
-            q, task_finished = actuate_gripper(self.robot, q, self.dt, close=False)
+            q, task_finished = actuate_gripper(self.robot, q, self.dt, action="close")
 
             self.init = False
 
@@ -149,7 +149,7 @@ class StateMahineScenario1:
             # when at the place point, open the gripper
             q, dq, _ = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3), eps=0.035)
-            q, task_finished = actuate_gripper(self.robot, q, self.dt, close=True)
+            q, task_finished = actuate_gripper(self.robot, q, self.dt, action="open")
 
             self.init = False
 
@@ -168,7 +168,7 @@ class StateMahineScenario1:
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3))
-            q, task_finished = actuate_gripper(self.robot, q, self.dt, close=True)
+            q, task_finished = actuate_gripper(self.robot, q, self.dt, action="open")
             
             self.init = False
             
