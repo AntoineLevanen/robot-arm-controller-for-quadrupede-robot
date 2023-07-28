@@ -9,3 +9,7 @@ Move a box arround
 
 Scenario 4:
 Look behind obstacle
+
+Scenario 5:
+Actuate lever
+press button
