@@ -6,7 +6,7 @@ Remove the '//' charater in .OBJ file after conversion from .STL ( in the face d
 """
 
 # folder path
-dir_path = r'/home/alevanen/Documents/StageM1/sassa'
+dir_path = os.path.abspath("sassa")
 
 # Iterate directory
 for file in os.listdir(dir_path):

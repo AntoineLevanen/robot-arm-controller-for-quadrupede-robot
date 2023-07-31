@@ -5,7 +5,7 @@ from pinocchio.robot_wrapper import RobotWrapper
 Get the robot frames name
 """
 
-sassa = RobotWrapper.BuildFromURDF("../sassa/robot.urdf", "../sassa/", pin.JointModelFreeFlyer())
+sassa = RobotWrapper.BuildFromURDF(os.path.abspath("../sassa/robot.urdf"), os.path.abspath("../sassa/"), pin.JointModelFreeFlyer())
 
 # print(sassa.model.existFrame)
 sassa.model.createData()

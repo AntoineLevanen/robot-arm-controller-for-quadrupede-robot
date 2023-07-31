@@ -12,8 +12,7 @@ from pinocchio.visualize import MeshcatVisualizer
  
 # Load the URDF model.
  
-model, collision_model, visual_model = pin.buildModelsFromUrdf(
-    "urdf/sassa-robot/robot.urdf", "urdf/sassa-robot/", pin.JointModelFreeFlyer())
+model, collision_model, visual_model = pin.buildModelsFromUrdf(os.path.abspath("urdf/sassa-robot/robot.urdf"), os.path.abspath("urdf/sassa-robot/"), pin.JointModelFreeFlyer())
  
 viz = MeshcatVisualizer(model, collision_model, visual_model)
  

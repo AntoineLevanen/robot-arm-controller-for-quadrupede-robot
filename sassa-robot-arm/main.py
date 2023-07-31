@@ -1,5 +1,6 @@
 import time
 import numpy as np
+import os
 import pinocchio as pin
 import matplotlib.pyplot as plt
 from init import initRobot, initViz
@@ -9,8 +10,8 @@ from visualObject import CenterOfMass
 from trajectory import CircleTrajectory
 import gepetto.corbaserver as gui
 
-urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm/robot.urdf"
-file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm/"
+urdf_path = os.path.abspath("urdf/sassa-robot-short-arm/robot.urdf")
+file_path = os.path.abspath("urdf/sassa-robot-short-arm/")
 sassa = initRobot(urdf_path, file_path)
 viz = initViz(sassa, 1, add_ground=False, add_box=False)
 
@@ -182,10 +183,10 @@ for node in node_name:
     node_list.append(node)
 
 if export_to_blender:
-    project_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/blender/"
+    project_path = os.path.abspath("blender/")
 
     python_file_path = project_path + "pinToBlender.py"
-    motion_file_path = project_path + "/motion.yaml"
+    motion_file_path = project_path + "motion.yaml"
     viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
     viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from scenario1 import scenario1
 from scenario2 import scenario2
 from scenario3 import scenario3
@@ -14,25 +15,30 @@ Plot the mean square error of the end effector.
 class MainScenario:
 
     def __init__(self, scenario_num=1):
+
+        urdf1 = os.path.abspath("urdf/sassa/robot_obj.urdf")
+        model1 = os.path.abspath("urdf/sassa/")
+        urdf2 = os.path.abspath("urdf/sassa-robot-short-arm/robot.urdf")
+        model2 = os.path.abspath("urdf/sassa-robot-short-arm/")
         
         if scenario_num == 1:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario1(robot_urdf_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf", robot_file_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/", enable_viz=True, export_to_blender=True)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario1(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
         elif scenario_num == 2:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario2(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
 
         elif scenario_num == 3:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario3(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario3(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario3(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
 
         elif scenario_num == 4:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=False, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario4(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=False, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
 
         elif scenario_num == 5:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario5(robot_urdf_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf", robot_file_path="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/", enable_viz=False, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario5(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=True, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+            self.log_com_2, self.log_goal_2, self.log_end_effector_2 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
 
 
     def plot_figure(self, info, plot_main_title="Pick and Place operation position"):

@@ -9,12 +9,11 @@ Pinocchio example to test Gepetto Viewer
 """
  
 # Load the URDF model. 
-urdf = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/robot.urdf" # "urdf/sassa-robot/robot.urdf"
-model_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/" # "urdf/sassa-robot/"
+urdf = os.path.abspath("urdf/sassa-robot/robot.urdf")
+model_path = os.path.abspath("urdf/sassa-robot/")
 model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf, model_path, pin.JointModelFreeFlyer())
 print(collision_model.geometryObjects[10].geometry)
 viz = GepettoVisualizer(model=model, collision_model=collision_model, visual_model=visual_model)
-# print(collision_model.geometryObjects[10].geometry)
  
 # Initialize the viewer.
 try:

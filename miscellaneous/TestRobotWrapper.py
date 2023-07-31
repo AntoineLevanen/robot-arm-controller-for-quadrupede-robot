@@ -31,8 +31,8 @@ if len(argv)>1:
  
 # Load the URDF model with RobotWrapper
 # Conversion with str seems to be necessary when executing this file with ipython 
-mesh_dir = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/"
-urdf_model_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot/robot.urdf"
+mesh_dir = os.path.abspath("urdf/sassa-robot/")
+urdf_model_path = os.path.abspath("urdf/sassa-robot/robot.urdf")
  
 robot = RobotWrapper.BuildFromURDF(urdf_model_path, mesh_dir, pin.JointModelFreeFlyer())
  

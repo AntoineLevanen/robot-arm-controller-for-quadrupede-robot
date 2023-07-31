@@ -104,7 +104,7 @@ def addGroundPlane(plane_URDF_path, mesh_path):
     """
     plane_model, plane_collision_model, plane_visual_model = pin.buildModelsFromUrdf(plane_URDF_path, mesh_path, pin.JointModelFreeFlyer())
     plane_data = plane_model.createData()
-    plane_geom_model = pin.buildGeomFromUrdf(plane_model, "urdf/objects/plane.urdf", pin.GeometryType.COLLISION, package_dirs="objects")
+    plane_geom_model = pin.buildGeomFromUrdf(plane_model, os.path.abspath("urdf/objects/plane.urdf"), pin.GeometryType.COLLISION, package_dirs="objects")
     plane_geom_data = pin.GeometryData(plane_geom_model)
     return (plane_model, plane_collision_model, plane_visual_model)
 
@@ -113,7 +113,7 @@ def addTable():
     Add a visual block to serve as a table where the robot can interact with
     return : model, collision model and visual model for displaying in the viewport
     """
-    box_model, box_collision_model, box_visual_model = pin.buildModelsFromUrdf("urdf/objects/box1.urdf", "urdf/objects", pin.JointModelFreeFlyer())
+    box_model, box_collision_model, box_visual_model = pin.buildModelsFromUrdf(os.path.abspath("urdf/objects/box1.urdf"), os.path.abspath("urdf/objects"), pin.JointModelFreeFlyer())
     return (box_model, box_collision_model, box_visual_model)
 
 def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45, -0.1, 0.1]):
@@ -172,7 +172,7 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45
 
         if add_ground:
             # Display the ground
-            plane_model, plane_collision_model, plane_visual_model = addGroundPlane("urdf/objects/plane.urdf", "urdf/objects")
+            plane_model, plane_collision_model, plane_visual_model = addGroundPlane(os.path.abspath("urdf/objects/plane.urdf"), os.path.abspath("urdf/objects"))
             viz2 = MeshcatVisualizer(plane_model, plane_collision_model, plane_visual_model)
             viz2.initViewer(viz.viewer)
             viz2.loadViewerModel(rootNodeName="ground")
@@ -206,7 +206,7 @@ class Door:
         Add a visual door which the robot can interact with
         return : model, collision model and visual model for displaying in the viewport
         """
-        door_model, door_collision_model, door_visual_model = pin.buildModelsFromUrdf("urdf/objects/door-urdf/robot.urdf", "urdf/objects/door-urdf", pin.JointModelFreeFlyer())
+        door_model, door_collision_model, door_visual_model = pin.buildModelsFromUrdf(os.path.abspath("urdf/objects/door-urdf/robot.urdf"), os.path.abspath("urdf/objects/door-urdf"), pin.JointModelFreeFlyer())
 
         # Display a door
         self.viz4 = MeshcatVisualizer(door_model, door_collision_model, door_visual_model)
@@ -229,7 +229,7 @@ class Cagette:
         Add a visual door which the robot can interact with
         return : model, collision model and visual model for displaying in the viewport
         """
-        cagette_model, cagette_collision_model, cagette_visual_model = pin.buildModelsFromUrdf("urdf/objects/cagette/robot.urdf", "urdf/objects/cagette", pin.JointModelFreeFlyer())
+        cagette_model, cagette_collision_model, cagette_visual_model = pin.buildModelsFromUrdf(os.path.abspath("urdf/objects/cagette/robot.urdf"), os.path.abspath("urdf/objects/cagette"), pin.JointModelFreeFlyer())
 
         # Display a door
         self.viz5 = MeshcatVisualizer(cagette_model, cagette_collision_model, cagette_visual_model)
@@ -258,7 +258,7 @@ class Table:
         Add a visual door which the robot can interact with
         return : model, collision model and visual model for displaying in the viewport
         """
-        table_model, table_collision_model, table_visual_model = pin.buildModelsFromUrdf("urdf/objects/table/table.urdf", "urdf/objects/table", pin.JointModelFreeFlyer())
+        table_model, table_collision_model, table_visual_model = pin.buildModelsFromUrdf(os.path.abspath("urdf/objects/table/table.urdf"), os.path.abspath("urdf/objects/table"), pin.JointModelFreeFlyer())
 
         # Display a door
         self.viz6 = MeshcatVisualizer(table_model, table_collision_model, table_visual_model)
