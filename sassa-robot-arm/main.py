@@ -6,19 +6,19 @@ from init import initRobot, initViz
 from controller import controllerCLIK2ndorderPositionOnly, controllerCLIK2ndorder
 from gripper import actuate_gripper
 from visualObject import CenterOfMass
-from trajectory import CircleTrajectory, Trajectory3D
+from trajectory import CircleTrajectory
 import gepetto.corbaserver as gui
 
-urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/robot_obj.urdf"
-file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa/"
+urdf_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm/robot.urdf"
+file_path = "/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm/"
 sassa = initRobot(urdf_path, file_path)
-viz = initViz(sassa, 2, add_ground=False, add_box=False)
+viz = initViz(sassa, 1, add_ground=False, add_box=False)
 
 duration = 30 # vizualization duration
 dt = 0.04 # delta time
 trajectory_step = int(duration / dt)
-realtime_viz = True # 
-export_to_blender = False
+realtime_viz = True
+export_to_blender = True
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
@@ -37,11 +37,11 @@ is_close = "open"
 # circular trajectory
 my_trajectory = CircleTrajectory()
 # origine x, y, z, raduis, omega
-my_trajectory.circleTrajectoryXY(0.45, -0.01, 0.3, 0.04, 2)
+my_trajectory.circleTrajectoryXY(0.35, -0.01, 0.3, 0.02, 2)
 
 err = [[0, 0, 0]]
 
-# capture to export to blender
+# to export to blender
 
 node_name = [
     "world/pinocchio/collisions/body_sasm_0", 
@@ -190,7 +190,7 @@ if export_to_blender:
     viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
 # main loop, updating the configuration vector q
-for i in range(int(duration / dt)): # int(duration / dt)
+for i in range(int(duration / dt)):
     # start time for loop duration
     t0 = time.time()
 
@@ -198,7 +198,6 @@ for i in range(int(duration / dt)): # int(duration / dt)
 
     # WORKING controller
     goal = my_trajectory.getPoint(i%360) # circular trajectory
-    # goal = my_3d_trajectory.getPoint(i % trajectory_step) # 3D B-spline
     q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, \
                                             init, viz, q0_ref, goal, add_goal_sphere=False)
 
@@ -206,15 +205,12 @@ for i in range(int(duration / dt)): # int(duration / dt)
         viz.viewer.gui.refresh ()
         viz.viewer.gui.captureTransform ()
 
-    # sassa.forwardKinematics(q_current)
-    # pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous
-    # print(pos)
 
     # ACTUATE gripper
-    q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, action="sdqfgs")
-    if is_gripper_end_actuated:
-        is_close = "close" if is_close == "open" else "open"
-        is_gripper_end_actuated = False
+    # q_current, is_gripper_end_actuated = actuate_gripper(sassa, q_current, dt, action="close")
+    # if is_gripper_end_actuated:
+    #     is_close = "close" if is_close == "open" else "open"
+    #     is_gripper_end_actuated = False
 
     init = False
     viz.display(q_current)
@@ -222,12 +218,7 @@ for i in range(int(duration / dt)): # int(duration / dt)
     ### end controler
 
     # wait to have a real time sim
-
-    # if i % (1/dt) == 0:
-    #     print("time remaining :", duration-(i*dt))
-
     if realtime_viz:
         tsleep = dt - (time.time() - t0)
-        # print(tsleep)
         if tsleep > 0:
             time.sleep(tsleep)
