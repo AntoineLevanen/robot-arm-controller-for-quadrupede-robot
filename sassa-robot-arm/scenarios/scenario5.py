@@ -188,8 +188,8 @@ def scenario5(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     if export_to_blender:
         project_path = os.path.abspath("blender/")
 
-        python_file_path = project_path + "pinToBlender.py"
-        motion_file_path = project_path + "motion.yaml"
+        python_file_path = project_path + "/pinToBlender.py"
+        motion_file_path = project_path + "/motion.yaml"
         viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 

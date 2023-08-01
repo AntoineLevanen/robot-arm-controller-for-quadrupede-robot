@@ -194,8 +194,8 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     if export_to_blender:
         project_path = os.path.abspath("blender/")
 
-        python_file_path = project_path + "pinToBlender.py"
-        motion_file_path = project_path + "motion.yaml"
+        python_file_path = project_path + "/pinToBlender.py"
+        motion_file_path = project_path + "/motion.yaml"
         viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
@@ -241,23 +241,23 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=True)
+    _, _, _ = scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=True)
 
-    plt.subplot(3, 1, 1)
-    e1 = [point[0][0] for point in log_goal]
-    plt.plot(e1, label='X CoM position')
-    plt.plot(np.zeros(len(e1)), label='X CoM desired position')
-    plt.legend()
+    # plt.subplot(3, 1, 1)
+    # e1 = [point[0][0] for point in log_goal]
+    # plt.plot(e1, label='X CoM position')
+    # plt.plot(np.zeros(len(e1)), label='X CoM desired position')
+    # plt.legend()
 
-    plt.subplot(3, 1, 2)
-    e2 = [point[0][1] for point in log_goal]
-    plt.plot(e2, label='Y CoM position')
-    plt.plot(np.zeros(len(e2)), label='Y CoM desired position')
-    plt.legend()
+    # plt.subplot(3, 1, 2)
+    # e2 = [point[0][1] for point in log_goal]
+    # plt.plot(e2, label='Y CoM position')
+    # plt.plot(np.zeros(len(e2)), label='Y CoM desired position')
+    # plt.legend()
 
-    plt.subplot(3, 1, 3)
-    e3 = [point[0][2] for point in log_goal]
-    plt.plot(e3, label='Z CoM position')
-    plt.legend()
+    # plt.subplot(3, 1, 3)
+    # e3 = [point[0][2] for point in log_goal]
+    # plt.plot(e3, label='Z CoM position')
+    # plt.legend()
 
-    plt.show()
+    # plt.show()

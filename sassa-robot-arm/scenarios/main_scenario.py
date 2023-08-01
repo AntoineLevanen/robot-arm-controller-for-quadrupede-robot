@@ -26,7 +26,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Pick and place"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_1"
 
@@ -35,7 +35,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Look on top of a table"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_2"
 
@@ -44,7 +44,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario3(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Move a box around"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_3"
 
@@ -53,7 +53,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Look closely to something on the ground"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_4"
 
@@ -62,7 +62,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Actuate lever and button"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_5"
 
@@ -463,8 +463,8 @@ class MainScenario:
             pass
 
 if __name__ == "__main__":
-    test1 = MainScenario(scenario_num=5)
-    for i in range(3):
-        info_to_plot = i+1
-        test1.plot_figure(info_to_plot, save_image=False)
-        test1.meanSquaredError(info_to_plot, save_image=False)
+    test1 = MainScenario(scenario_num=1)
+    # for i in range(3):
+    #     info_to_plot = i+1
+    #     test1.plot_figure(info_to_plot, save_image=False)
+    #     test1.meanSquaredError(info_to_plot, save_image=False)

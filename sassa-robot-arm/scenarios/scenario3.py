@@ -23,10 +23,16 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
     sassa = initRobot(robot_urdf_path, robot_file_path)
     viz = None
     com_projection = None
-    if enable_viz:
-        viz = initViz(sassa, 2, add_ground=True, add_box=False)
+    visual_object = False
+    if enable_viz == 1:
+        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object)
+    elif enable_viz == 2:
+        visual_object = True
+        viz = initViz(sassa, 2, add_ground=visual_object, add_box=False)
         # Object to show the projection on the ground of the center of masse 
         com_projection = CenterOfMass(viz, sassa, "com")
+    else:
+        enable_viz = False
 
     duration = 60 # vizualization duration
     dt = 0.05 # delta time
@@ -187,8 +193,8 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
     if export_to_blender:
         project_path = os.path.abspath("blender/")
 
-        python_file_path = project_path + "pinToBlender.py"
-        motion_file_path = project_path + "motion.yaml"
+        python_file_path = project_path + "/pinToBlender.py"
+        motion_file_path = project_path + "/motion.yaml"
         viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
@@ -201,7 +207,7 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
 
         ### start controler
 
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=enable_viz)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=visual_object)
 
         ### end controler
 

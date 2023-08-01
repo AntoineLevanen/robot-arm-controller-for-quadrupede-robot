@@ -1,5 +1,6 @@
 import sys
 import pinocchio as pin
+import os
 import numpy as np
 import hppfcl
 from pinocchio.robot_wrapper import RobotWrapper

@@ -102,13 +102,13 @@ class TrajectoryExactCubic:
 
 
     def getPoint3d(self, i, dt): 
-        # get the point position, velocity and acceleration       
+        # get the point position, velocity and acceleration
         return [self.ec(i*dt), self.ec.derivate(i*dt, 1), self.ec.derivate(i*dt, 2)]
 
     def getPoint6d(self, i, dt):
         return None
 
-    def printCurve(self, dt=0.01):
+    def printCurve(self, dt=0.04):
         # print the curve in 3D
         pos = []
         for i in range(int((self.time_waypoints[-1] - self.time_waypoints[0]) / dt)):

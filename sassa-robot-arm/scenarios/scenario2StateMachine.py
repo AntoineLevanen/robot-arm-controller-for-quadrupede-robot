@@ -25,7 +25,7 @@ class StateMahineScenario2:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.5, -0.015, 0.4], [0.4, 0.0, 0.4], [0.4, 0.0, 0.6], [0.45, 0.0, 0.6]]
+            self.control_point = [[0.5, -0.015, 0.4], [0.4, -0.015, 0.4], [0.4, -0.015, 0.6], [0.45, -0.015, 0.6]]
         
         self.end_time = 20
         self.trajectory = TrajectoryExactCubic(self.control_point, 0, self.end_time)
@@ -33,7 +33,7 @@ class StateMahineScenario2:
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self.t0 = 0
-
+        # self.trajectory.printCurve()
 
     def updateState(self, q, dq, i, add_goal_viz=True):
         """

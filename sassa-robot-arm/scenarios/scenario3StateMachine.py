@@ -19,10 +19,10 @@ class StateMahineScenario3:
         Also actuate the gripper 
         """
         self.current_state = 0
-        if viz is not None:
-            self.ma_cagette = Cagette(viz, initial_position=[0.4, 0.1, 0.1])
-        else:
-            self.ma_cagette = None
+        # if viz is not None:
+        #     self.ma_cagette = Cagette(viz, initial_position=[0.4, 0.1, 0.1])
+        # else:
+        #     self.ma_cagette = None
 
         self.robot = robot
         self.curve_resolution = curve_resolution
@@ -113,8 +113,8 @@ class StateMahineScenario3:
             a = -0.2/(box_actuate_end_time - box_actuate_start_time)
             b = -0.1 - (-0.2/(box_actuate_end_time - box_actuate_start_time) * box_actuate_end_time)
             y = a * self.trajectory_i + b
-            if self.viz is not None:
-                self.ma_cagette.actuate(y=y)
+            # if self.viz is not None:
+                # self.ma_cagette.actuate(y=y)
 
             self.init = False
 
