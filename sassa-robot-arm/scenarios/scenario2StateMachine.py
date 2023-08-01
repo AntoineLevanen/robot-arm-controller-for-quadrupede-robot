@@ -88,7 +88,7 @@ class StateMahineScenario2:
             self.init = False
             
             if task_finished and self.trajectory_i <= 0:
-                self.current_state = 3
+                self.current_state = 4
                 self.trajectory_i = 0
                 self.init = True
                 self.t0 = i
@@ -101,5 +101,5 @@ class StateMahineScenario2:
                 # start again to loop
                 self.current_state = 0
 
-
+        
         return q, dq, self.goal

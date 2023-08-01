@@ -11,13 +11,12 @@ from trajectory2 import TrajectoryExactCubic
 
 class StateMahineScenario1:
 
-    def __init__(self,robot, viz, dt, q0_ref, curve_resolution=50, control_point=None):
+    def __init__(self,robot, viz, dt, q0_ref, control_point=None):
         """
         State machine to pick and place
         Also actuate the gripper 
         """
         self.robot = robot
-        self.curve_resolution = curve_resolution
         self.viz = viz
         self.dt = dt
         self.q0_ref = q0_ref
@@ -65,35 +64,6 @@ class StateMahineScenario1:
         if self.current_state == 1:
             # go to first pick point and open the gripper
             # make sure to avoid Index out of range error (try, except...)
-            time_before_gripper = 5
-            if self.trajectory_i < time_before_gripper / self.dt:
-                self.trajectory_i = time_before_gripper / self.dt
-
-            self.goal = self.trajectory.getPoint3d(self.trajectory_i, self.dt)
-            self.trajectory_i = self.trajectory_i - 1
-
-            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2))
-            q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
-
-            self.init = False
-            
-            if task_finished and self.trajectory_i <= time_before_gripper /self.dt:
-                self.current_state = 11
-                self.trajectory_i = int(time_before_gripper / self.dt)
-                self.init = True
-                self.t0 = i
-
-
-        elif self.current_state == 11:
-            # wait 3s to take a picture
-            if i - self.t0 >= (3 / self.dt):
-                self.current_state = 12
-                self.t0 = i
-
-        elif self.current_state == 12:
-            # go to first pick point and open the gripper
-            # make sure to avoid Index out of range error (try, except...)
             if self.trajectory_i < 0:
                 self.trajectory_i = 0
 
@@ -101,7 +71,7 @@ class StateMahineScenario1:
             self.trajectory_i = self.trajectory_i - 1
 
             q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3))
+                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2), eps=0.03)
             q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
 
             self.init = False
@@ -172,7 +142,7 @@ class StateMahineScenario1:
             self.init = False
             
             if task_finished and self.trajectory_i <= int((self.end_time / self.dt) / 2):
-                self.current_state = 0
+                self.current_state = 6
                 self.trajectory_i = int((self.end_time / self.dt) / 2)
                 self.init = True
 

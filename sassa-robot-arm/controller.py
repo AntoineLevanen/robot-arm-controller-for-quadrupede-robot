@@ -96,150 +96,6 @@ def controller2IK(q, dq, dt, robot, i, viz, goal):
 
     return q, vq
 
-def controllerCLIK2ndorderPositionOnly(q_current, dq_current, dt, robot, init, viz, goal, q0_ref):
-    """
-    The gripper follow the desired trajectory using second order inverse kinematics with close loop (CLIK)
-    Controlling in Position only
-    q_current : current configuration of the robot
-    dq_current : current velocity of the robot
-    dt : time step
-    robot : Instance of the class RobotWrapper from Pinocchio
-    init : flag to init variable
-    i : indice of current main loop scutation
-    viz : instance of the used vizualizer
-    goal : goal position, velocity and acceleration of the end effector
-    return : robot configuration, robot velocity
-    """
-
-    global sphere_goal
-
-    # Get the robot frames
-    IDX_Base = robot.model.getFrameId('body_sasm')
-    IDX_Gripper = robot.model.getFrameId('framegripper')
-    IDX_FLfoot = robot.model.getFrameId('FL_foot_frame')
-    IDX_FRfoot = robot.model.getFrameId('FR_foot_frame')
-    IDX_HLfoot = robot.model.getFrameId('HL_foot_frame')
-    IDX_HRfoot = robot.model.getFrameId('HR_foot_frame')
-
-    feet_height = 0.016
-
-    # define the target frame of each foot
-    oMflfootGoal = pin.SE3(np.zeros((3,3)), np.array([0.221, 0.140, feet_height]))
-    oMfrfootGoal = pin.SE3(np.zeros((3,3)), np.array([0.221, -0.140, feet_height]))
-    oMhlfootGoal = pin.SE3(np.zeros((3,3)), np.array([-0.221, 0.140, feet_height]))
-    oMhrfootGoal = pin.SE3(np.zeros((3,3)), np.array([-0.221, -0.140, feet_height]))
-
-    # define the target frame of the end effector
-    
-    goal_Gripper_position = goal[0]
-    goal_Gripper_velocity = goal[1]
-    goal_Gripper_acceleration = goal[2]
-
-    # target position of the end effector
-    oMgoalGripper = pin.SE3(np.eye(3), np.array([goal_Gripper_position[0], goal_Gripper_position[1], goal_Gripper_position[2]]))
-
-    if init:
-        sphere_goal = SphereGoal(viz, oMgoalGripper.translation, "goal1")
-    sphere_goal.moveGoalVisual(oMgoalGripper.translation)
-
-    # second order Inverse kinematics
-    # Run the algorithms that outputs values in robot.data
-    robot.forwardKinematics(q_current, v=dq_current, a=0 * dq_current)
-    pin.computeJointJacobians(robot.model,robot.data,q_current)
-
-    # compute feet position error and Jacobian
-    oMflfoot = robot.data.oMf[IDX_FLfoot] # get placement from world frame o to frame f
-    o_Jflfoot3 = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_FLfoot, pin.LOCAL_WORLD_ALIGNED)[:3,:] # take only linear velocity
-    o_flfoot = oMflfootGoal.translation - oMflfoot.translation # desired velocity of the foot frame (position error)
-    err_vel_fl_foot = o_flfoot - (o_Jflfoot3 @ dq_current) # velocity error
-
-    oMfrfoot = robot.data.oMf[IDX_FRfoot]
-    o_Jfrfoot3 = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_FRfoot, pin.LOCAL_WORLD_ALIGNED)[:3,:]
-    o_frfoot = oMfrfootGoal.translation - oMfrfoot.translation
-    err_vel_fr_foot = o_frfoot - pin.getFrameVelocity(robot.model, robot.data, IDX_FRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3] # two posibility to compute the current frame velocity
-
-    oMhlfoot = robot.data.oMf[IDX_HLfoot]
-    o_Jhlfoot3 = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_HLfoot, pin.LOCAL_WORLD_ALIGNED)[:3,:]
-    o_hlfoot = oMhlfootGoal.translation - oMhlfoot.translation
-    err_vel_hl_foot = o_hlfoot - pin.getFrameVelocity(robot.model, robot.data, IDX_HLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3]
-
-    oMhrfoot = robot.data.oMf[IDX_HRfoot]
-    o_Jhrfoot3 = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_HRfoot, pin.LOCAL_WORLD_ALIGNED)[:3,:]
-    o_hrfoot = oMhrfootGoal.translation - oMhrfoot.translation
-    err_vel_hr_foot = o_hrfoot - pin.getFrameVelocity(robot.model, robot.data, IDX_HRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3]
-
-    # Gripper jacobian and error
-    oMGripper = robot.data.oMf[IDX_Gripper]
-
-    # gripper_nu = pin.log(oMGripper.inverse() * oMgoalGripper).vector
-    o_JGripper = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)[:3,:]
-    o_Gripper = oMgoalGripper.translation - oMGripper.translation
-    err_vel_gripper = o_Gripper - (o_JGripper @ dq_current)
-    
-    oMgoal_gripper = pin.SE3(np.eye(3), np.array(goal_Gripper_position))
-
-    # Base jacobian and error
-    oMBase = robot.data.oMf[IDX_Base]
-
-    oMgoal_base = pin.SE3(np.eye(3), np.array([0, 0, 0.4]))
-    base_nu = pin.log(oMBase.inverse() * oMgoal_base).vector
-
-    o_JBase = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Base, pin.LOCAL_WORLD_ALIGNED)
-    err_vel_base = np.array([0, 0, 0, 0, 0, 0]) - pin.getFrameVelocity(robot.model, robot.data, IDX_Base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector
-
-
-    # Stack the different terme in vectors to have on task for all four feet
-    e = np.hstack([o_flfoot, o_frfoot, o_hlfoot, o_hrfoot])
-    e_dot = np.hstack([err_vel_fl_foot, err_vel_fr_foot, err_vel_hl_foot, err_vel_hr_foot])
-    J = np.vstack([o_Jflfoot3, o_Jfrfoot3, o_Jhlfoot3, o_Jhrfoot3])
-    x_ddot = np.hstack([np.zeros(12)])
-
-    # getFrameClassicalAcceleration give directly the terme (J_dot(q, q_dot) * q_dot)
-    a_fl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_FLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-    a_fr_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_FRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-    a_hl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-    a_hr_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-    a_gripper = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-    a_base = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
-
-    # Stack the current acceleration of each feet frame
-    J_dot_q_dot = np.hstack([a_fl_foot, a_fr_foot, a_hl_foot, a_hr_foot])
-
-    # gains
-    K1 = 300
-    K2 = 2*np.sqrt(K1)
-
-    # Tasks in order of priority
-    # It is posible to scale task to affect the extremum of the velocity and acceleration, scale factor [0;1]
-    # first task with higher priority, fixe the feet on the ground 
-    d2q = pinv(J) @ (x_ddot - J_dot_q_dot + K2 * e_dot + K1 * e) 
-
-    # Null Space of the first task
-    P0 = np.eye(robot.model.nv) - pinv(J) @ J
-    # second task with less priority, move the gripper
-    d2q += pinv(o_JGripper @ P0) @ (goal_Gripper_acceleration - a_gripper + K2 * err_vel_gripper + K1 * np.array(o_Gripper))
-
-    P1 = P0 - pinv(o_JGripper @ P0) @ o_JGripper @ P0
-    d2q += pinv(o_JBase @ P1) @ (np.array([0, 0, 0, 0, 0, 0]) - a_base + K2 * err_vel_base + K1 * base_nu)
-
-    # Add a Regulation task to fill the free remaining dof
-    # computing the error in position in the configuration space base : xyz,abc
-    q_temp = q0_ref - q_current
-    q_temp = np.hstack([[0, 0, 0, 0, 0, 0], q_temp[7:]])
-
-    K3 = 1
-    J_posture = np.eye(robot.model.nv)
-    J_posture[:6, :6] = 0
-    # d2q += K3 * J_posture @ q_temp
-
-    # compute the velocity
-    dq_next = d2q * dt
-
-    # compute the next configuration
-    q_next = pin.integrate(robot.model, q_current, dq_next * dt)
-
-    return q_next, dq_next
-
 def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, goal, orientation=pin.utils.rotate('y', np.pi/2), eps=0.015, add_goal_sphere=True):
     """
     The gripper follow the desired trajectory using second order closed loop inverse kinematics (CLIK)
@@ -253,10 +109,9 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     i : indice of current main loop scutation
     viz : instance of the used vizualizer
     goal : goal position, velocity and acceleration of the end effector
-    return : robot configuration, robot velocity
+    return : robot configuration, robot velocity, if the task is finish or not
     """
     
-
     global sphere_goal
 
     # Get the robot frames
@@ -276,7 +131,6 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     oMhrfootGoal = pin.SE3(np.zeros((3,3)), np.array([-0.221, -0.140, feet_height]))
 
     # define the target frame of the end effector
-
     goal_Gripper_position = goal[0]
     goal_Gripper_velocity = goal[1]
     goal_Gripper_acceleration = goal[2]
@@ -288,7 +142,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
             sphere_goal = SphereGoal(viz, oMgoalGripper.translation, "goal1")
         sphere_goal.moveGoalVisual(oMgoalGripper.translation)
 
-    # second order Closed Loop Inverse kinematics
+    # second order Closed Loop Inverse Kinematics, CLIK
     # Run the algorithms that outputs values in robot.data
     robot.forwardKinematics(q_current, v=dq_current, a=0 * dq_current)
     pin.computeJointJacobians(robot.model,robot.data,q_current)
@@ -343,7 +197,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     J = np.vstack([o_Jflfoot3, o_Jfrfoot3, o_Jhlfoot3, o_Jhrfoot3])
     x_ddot = np.hstack([np.zeros(12)])
 
-    # getFrameClassicalAcceleration give directly the terme (J_dot(q, q_dot) * q_dot)
+    # getFrameClassicalAcceleration give directly the terme (J_dot(q, q_dot) * q_dot) in the 2ndCLIK equation
     a_fl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_FLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_fr_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_FRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_hl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
@@ -357,7 +211,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
 
     # gains
     # tune the gain to compensate the overshoot
-    K1 = 40
+    K1 = 60
     K2 = 2*np.sqrt(K1)
 
     # Tasks in order of priority
@@ -591,26 +445,3 @@ def baseTask(robot, q_current, dq_current, d2q, priority_order=1, null_space=Non
 
     return d2q, P_base
 
-# not used
-def QUATTOXYZ(q1):
-    """
-    Convert a Quaternion in angle axis 
-    q1 : Normalized quaternion
-    return : axis angle
-    """
-    x, y, z = 0, 0, 0
-    if (q1[3] > 1):
-        q1 = pin.Quaternion(qi).normalize
-    angle = 2 * np.arccos(q1[3])
-    s = np.sqrt(1-q1[3]*q1[3]) # assuming quaternion normalised then w is less than 1, so term always positive.
-    if (s < 0.001): # test to avoid divide by zero, s is always positive due to sqrt
-        # if s close to zero then direction of axis not important
-        x = q1[0] # if it is important that axis is normalised then replace with x=1; y=z=0;
-        y = q1[1]
-        z = q1[2]
-    else:
-        x = q1[0] / s # normalise axis
-        y = q1[1] / s
-        z = q1[2] / s
-    
-    return np.array([x, y, z])

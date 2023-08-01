@@ -17,23 +17,29 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     Description:
     robot_urdf_path : path to urdf file
     robot_file_path : path to robot geometry file (STL, OBJ...)
-    enable_viz : enable the visualizer
+    enable_viz : enable the visualizer, 1 Gepetto Viewer, 2 Meshcat, False
 
     """
     sassa = initRobot(robot_urdf_path, robot_file_path)
     # sassa = initRobot("urdf/sassa-robot-short-arm/robot.urdf", "urdf/sassa-robot-short-arm/")
     viz = None
     com_projection = None
-    if enable_viz:
-        viz = initViz(sassa, 2, add_ground=enable_viz, add_box=enable_viz, box_config=[0.4, 0.0, 0.04])
-        # Object to show the projection on the ground of the center of masse 
-        # com_projection = CenterOfMass(viz, sassa, "com")
+    visual_object = False
+    if enable_viz == 1:
+        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object, box_config=[0.4, 0.0, 0.04])
         
-
-    duration = 50 # vizualization duration
+    elif enable_viz == 2:
+        visual_object = True
+        viz = initViz(sassa, 2, add_ground=visual_object, add_box=visual_object, box_config=[0.4, 0.0, 0.04])
+        # Object to show the projection on the ground of the center of masse 
+        com_projection = CenterOfMass(viz, sassa, "com")
+    else:
+        enable_viz = False
+        
+    duration = 45.5 # vizualization duration
     dt = 0.04 # delta time
 
-    # robot start configuration, velocity and acceleration
+    # robot start configuration, velocity
     q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                             np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
 
@@ -41,7 +47,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
     dq_current = np.zeros((sassa.model.nv,))
 
-    my_state_machine = StateMahineScenario1(sassa, viz, dt, q0_ref, curve_resolution=500)
+    my_state_machine = StateMahineScenario1(sassa, viz, dt, q0_ref)
 
     log_com = []
     log_goal = []
@@ -195,14 +201,13 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
 
     # main loop, updating the configuration vector q
-    for i in range(int(duration / dt)): # int(duration / dt)
+    for i in range(int(duration / dt)):
         # start time for loop duration
         t0 = time.time()
 
         ### start controler
 
-        # Implement the scenario here (State Machine, ...)
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=False)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=visual_object)
 
         ### end controler
 

@@ -5,10 +5,10 @@ Scenario 2:
 Look on top of a table
 
 Scenario 3:
-Move a box arround
+Move a box around
 
 Scenario 4:
-Look behind obstacle
+Look closely to something on the ground
 
 Scenario 5:
 Actuate lever

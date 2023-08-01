@@ -23,16 +23,21 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     sassa = initRobot(robot_urdf_path, robot_file_path)
     viz = None
     com_projection = None
-    if enable_viz:
-        viz = initViz(sassa, 2, add_ground=True, add_box=False)
-        viz.setCameraPose()
+    visual_object = False
+    if enable_viz == 1:
+        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object, box_config=[0.4, 0.0, 0.04])
+        
+    elif enable_viz == 2:
+        visual_object = True
+        viz = initViz(sassa, 2, add_ground=visual_object, add_box=False)
         # Object to show the projection on the ground of the center of masse 
         com_projection = CenterOfMass(viz, sassa, "com")
         my_table = Table(viz, initial_position=[0.7, 0.0, -0.1])
+    else:
+        enable_viz = False
 
-    duration = 60 # vizualization duration
-    dt = 0.05 # delta time
-    trajectory_step = int(duration / dt)
+    dt = 0.04 # delta time
+    duration = 1100*dt # vizualization duration
 
     # robot start configuration, velocity and acceleration
     q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
@@ -205,7 +210,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         # Implement the scenario here (State Machine, ...)
         # my_door.actuateDoor(np.sin(np.deg2rad(i%180)))
 
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=enable_viz)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=visual_object)
 
         ### end controler
 
