@@ -14,29 +14,7 @@ def initRobot(urdfFilePath, meshFilePath):
     return : Instance of the robot containing collision model & data, visual model & data
     """
     robot = RobotWrapper.BuildFromURDF(urdfFilePath, meshFilePath, pin.JointModelFreeFlyer())
-    # robot.collision_model.addAllCollisionPairs()
     
-    """ height_field = hppfcl.HeightFieldOBBRSS(4, 4, np.zeros((20, 20)), 0)
-    height_field_placement = pin.SE3.Identity()
-
-    height_field = hppfcl.Box(4.0, 4.0, 0.01)
-    # height_field = hppfcl.Plane(0.0, 0.0, 1.0, 0.0) # not working segmentation fault
-
-    # print(height_field.getNodeType())
-
-    go_height_field = pin.GeometryObject("plane", 0, height_field, height_field_placement)
-    go_height_field.meshColor = np.ones(4)
-    height_field_collision_id = robot.collision_model.addGeometryObject(go_height_field)
-    robot.visual_model.addGeometryObject(go_height_field)
-
-    fl_foot_collision_id = robot.collision_model.getGeometryId("gripper_0")
-    go_fl_foot = robot.collision_model.geometryObjects[fl_foot_collision_id]
-    go_fl_foot.geometry.buildConvexRepresentation(False)
-    go_fl_foot.geometry = go_fl_foot.geometry.convex
-
-    collision_pair = pin.CollisionPair(height_field_collision_id, fl_foot_collision_id)
-    robot.collision_model.addCollisionPair(collision_pair) """
-
     addGripperFrame(robot, add_visual=True, transparency=0.1)
     # addCameraFrame(robot)
 
@@ -198,7 +176,6 @@ def initViz(robot, viz_choice, add_ground=False, add_box=False, box_config=[0.45
         sys.exit(1)
         
     return viz
-
 
 class Door:
 

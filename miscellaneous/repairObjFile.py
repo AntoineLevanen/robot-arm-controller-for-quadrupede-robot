@@ -3,6 +3,7 @@ import os
 
 """
 Remove the '//' charater in .OBJ file after conversion from .STL ( in the face definition part in the file)
+when usin ctmconv
 """
 
 # folder path

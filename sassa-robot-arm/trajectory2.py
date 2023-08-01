@@ -1,8 +1,6 @@
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-from scipy.interpolate import CubicSpline as Spline
-from numpy import sin, cos
 from ndcurves import bezier, piecewise_bezier, exact_cubic, curve_constraints, polynomial
 
 """
@@ -112,7 +110,8 @@ class TrajectoryExactCubic:
         # print the curve in 3D
         pos = []
         for i in range(int((self.time_waypoints[-1] - self.time_waypoints[0]) / dt)):
-            pos.append(self.ec(i * dt))
+            # pos.append(self.ec(i * dt))
+            pos.append(self.ec.derivate(i * dt, 2))
         
         x = [point[0] for point in pos]
         y = [point[1] for point in pos]
@@ -124,6 +123,32 @@ class TrajectoryExactCubic:
         ax.scatter([point[0] for point in self.waypoints.T], [point[1] for point in self.waypoints.T], [point[2] for point in self.waypoints.T])
         plt.show()
 
+    def plotCurve(self, dt=0.04):
+        # print the curve in 3D
+
+        print(self.ec.getNumberSplines())
+
+        pos = []
+        vel = []
+        acc = []
+        axis = 0
+        for i in range(int((self.time_waypoints[-1] - self.time_waypoints[0]) / dt)):
+            pos.append(self.ec(i * dt)[axis])
+            vel.append(self.ec.derivate(i * dt, 1)[axis])
+            acc.append(self.ec.derivate(i * dt, 2)[axis])
+
+        x_axis = np.arange(len(pos)) * dt
+        
+        plt.plot(x_axis, pos, label="position")
+        plt.plot(x_axis, vel, label="velocity")
+        plt.plot(x_axis, acc, label="acceleration")
+        plt.xlabel("time in seconds")
+        plt.ylabel("meters")
+        plt.title("Piecewise polynomial curve with it's derivative")
+        plt.legend()
+        plt.show()
+
+
 def mainTrajectory():
     control_points = [[0.35, 0.0, 0.4], [0.35, 0.13, 0.22], [0.35, 0.05, 0.17], [0.35, -0.15, 0.17], [0.35, -0.15, 0.2], [0.35, 0.0, 0.3]]
     control_points = [[0.4, 0.1, 0.2], [0.4, 0.1, 0.25], [0.4, 0.0, 0.4], [0.4, -0.1, 0.25], [0.4, -0.1, 0.2]]
@@ -132,7 +157,8 @@ def mainTrajectory():
     end_time = 10
     traj = TrajectoryExactCubic(control_points, start_time, end_time)
     
-    traj.printCurve(dt=0.01)
+    # traj.printCurve(dt=0.04)
+    traj.plotCurve()
 
 
 if __name__ == "__main__":
