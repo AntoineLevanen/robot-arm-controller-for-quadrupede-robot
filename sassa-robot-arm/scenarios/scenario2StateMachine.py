@@ -25,10 +25,14 @@ class StateMahineScenario2:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.5, -0.015, 0.4], [0.4, -0.015, 0.4], [0.4, -0.015, 0.6], [0.45, -0.015, 0.6]]
+            self.control_point = [[0.5, -0.015, 0.4], [0.4, -0.015, 0.45], [0.45, -0.015, 0.6]]
         
-        self.end_time = 20
-        self.trajectory = TrajectoryExactCubic(self.control_point, 0, self.end_time)
+        self.end_time = 5
+        init_vel = [0, 0, 0]
+        end_vel = [0, 0, 0]
+        init_acc = [0, 0, 0]
+        end_acc = [0, 0, 0]
+        self.trajectory = TrajectoryExactCubic(self.control_point, 0, self.end_time, constraints=[init_vel, end_vel, init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -55,7 +59,7 @@ class StateMahineScenario2:
             self.trajectory_i = self.trajectory_i + 1
 
             q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
-                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.02)
+                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.0003)
 
             self.init = False
 
@@ -69,7 +73,7 @@ class StateMahineScenario2:
         elif self.current_state == 1:
             # wait 4 sec to take a picture
             
-            if i - self.t0 > (4 / self.dt):
+            if i - self.t0 > (2 / self.dt):
                 self.current_state = 2
 
 
@@ -83,12 +87,12 @@ class StateMahineScenario2:
             self.trajectory_i = self.trajectory_i - 1
 
             q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
-                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.02)
+                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.0003)
             
             self.init = False
             
             if task_finished and self.trajectory_i <= 0:
-                self.current_state = 4
+                self.current_state = 3
                 self.trajectory_i = 0
                 self.init = True
                 self.t0 = i
@@ -97,9 +101,9 @@ class StateMahineScenario2:
         elif self.current_state == 3:
             # wait 4 sec to take a picture
             
-            if i - self.t0 > (4 / self.dt):
+            if i - self.t0 > (2 / self.dt):
                 # start again to loop
-                self.current_state = 0
+                self.current_state = 4
 
         
         return q, dq, self.goal

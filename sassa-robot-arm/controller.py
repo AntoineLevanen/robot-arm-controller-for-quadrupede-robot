@@ -96,7 +96,7 @@ def controller2IK(q, dq, dt, robot, i, viz, goal):
 
     return q, vq
 
-def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, goal, orientation=pin.utils.rotate('y', np.pi/2), eps=0.015, add_goal_sphere=True):
+def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, goal, orientation=pin.utils.rotate('y', np.pi/2), eps=0.015, add_goal_sphere=True, base_task=None):
     """
     The gripper follow the desired trajectory using second order closed loop inverse kinematics (CLIK)
     Controlling Position and Orientation of the end effector with the four leg stick to the ground, 
@@ -114,7 +114,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     add_goal_sphere : adding a goal sphere that that follow the exact goal trajectory
     return : robot configuration, robot velocity, if the task is finish or not
     """
-    
+
     global sphere_goal
 
     # Get the robot frames
@@ -134,12 +134,12 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     oMhrfootGoal = pin.SE3(np.zeros((3,3)), np.array([-0.221, -0.140, feet_height]))
 
     # define the target frame of the end effector
-    goal_Gripper_position = goal[0]
-    goal_Gripper_velocity = goal[1]
-    goal_Gripper_acceleration = goal[2]
+    gripper = goal[0]
+    gripper_dot = goal[1]
+    gripper_ddot = goal[2]
 
     # target position of the end effector
-    oMgoalGripper = pin.SE3(np.eye(3), np.array(goal_Gripper_position))
+    oMgoalGripper = pin.SE3(np.eye(3), np.array(gripper))
     if add_goal_sphere:
         if init:
             sphere_goal = SphereGoal(viz, oMgoalGripper.translation, "goal1")
@@ -172,66 +172,85 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     o_hrfoot = oMhrfootGoal.translation - oMhrfoot.translation
     err_vel_hr_foot = o_hrfoot - pin.getFrameVelocity(robot.model, robot.data, IDX_HRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3]
 
+
     # Gripper jacobian and error
     oMGripper = robot.data.oMf[IDX_Gripper]
     o_JGripper = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)
     # get the jacobian matrix of translation part and on orientation (y axis)
-    o_JGripper = np.vstack([o_JGripper[:3], o_JGripper[4]])
-    o_Gripper = oMgoalGripper.translation - oMGripper.translation
-    err_vel_gripper = np.hstack([o_Gripper, [0, 0, 0]]) - pin.getFrameVelocity(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector
-    err_vel_gripper = np.hstack([err_vel_gripper[:3], err_vel_gripper[4]])
+    # o_JGripper = np.vstack([o_JGripper[:3], o_JGripper[4]]) # jacobian matrix for xyz and one orientation
+    e_gripper = oMgoalGripper.translation - oMGripper.translation # traget pos - current pos
+    e_dot_gripper = np.hstack([e_gripper, [0, 0, 0]]) - pin.getFrameVelocity(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector
+    e_dot_gripper = e_gripper - (o_JGripper[:3,:] @ dq_current)
+    # e_dot_gripper = np.hstack([err_vel_gripper[:3], err_vel_gripper[4]])
 
-    # define a rotation for the end effector
-    oMgoalGripper.rotation = orientation
-    gripper_nu = pin.log(oMGripper.inverse() * oMgoalGripper).vector
-    # error vector position + one orientation
-    gripper_nu = np.hstack([gripper_nu[:3], gripper_nu[4]])
+    # # define a rotation for the end effector
+    # oMgoalGripper.rotation = orientation
+    # e_gripper = pin.log(oMGripper.inverse() * oMgoalGripper).vector
+    # # error vector position + one orientation
+    # e_gripper = np.hstack([gripper_nu[:3], gripper_nu[4]])
+
 
     # Base jacobian and error
     oMBase = robot.data.oMf[IDX_Base]
     oMgoal_base = pin.SE3(np.eye(3), np.array([0, 0, 0.35]))
+    if base_task is not None:
+        oMgoal_base.translation = base_task[0]
     base_nu = pin.log(oMBase.inverse() * oMgoal_base).vector
     o_JBase = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Base, pin.LOCAL_WORLD_ALIGNED)
     err_vel_base = np.array([0, 0, 0, 0, 0, 0]) - pin.getFrameVelocity(robot.model, robot.data, IDX_Base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector
+    if base_task is not None:
+        o_JBase = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Base, pin.LOCAL_WORLD_ALIGNED)[:3, :]
+        err_vel_base = base_task[1] - pin.getFrameVelocity(robot.model, robot.data, IDX_Base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3]
 
 
     # Stack the different terme in vectors to have on task for all four feet
-    e = np.hstack([o_flfoot, o_frfoot, o_hlfoot, o_hrfoot])
-    e_dot = np.hstack([err_vel_fl_foot, err_vel_fr_foot, err_vel_hl_foot, err_vel_hr_foot])
+    e_feet = np.hstack([o_flfoot, o_frfoot, o_hlfoot, o_hrfoot])
+    e_dot_feet = np.hstack([err_vel_fl_foot, err_vel_fr_foot, err_vel_hl_foot, err_vel_hr_foot])
     J = np.vstack([o_Jflfoot3, o_Jfrfoot3, o_Jhlfoot3, o_Jhrfoot3])
-    x_ddot = np.hstack([np.zeros(12)])
+    feet_ddot = np.hstack([np.zeros(12)])
 
     # getFrameClassicalAcceleration give directly the terme (J_dot(q, q_dot) * q_dot) in the 2ndCLIK equation
     a_fl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_FLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_fr_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_FRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_hl_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HLfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
     a_hr_foot = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_HRfoot, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-    a_gripper = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).np
-    a_gripper = np.hstack([a_gripper[:3], a_gripper[4]])
+    a_gripper = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
+    # a_gripper = np.hstack([a_gripper[:3], a_gripper[4]])
     a_base = pin.getFrameClassicalAcceleration(robot.model, robot.data, IDX_Base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).np
 
     # Stack the current acceleration of each feet frame
-    J_dot_q_dot = np.hstack([a_fl_foot, a_fr_foot, a_hl_foot, a_hr_foot])
+    a_feet = np.hstack([a_fl_foot, a_fr_foot, a_hl_foot, a_hr_foot])
+
+
 
     # gains
-    # tune the gain to compensate the overshoot
-    K1 = 60
+    K1 = 1
     K2 = 2*np.sqrt(K1)
 
     # Tasks in order of priority
     # It is posible to scale task to affect the max and min of the velocity and acceleration, scale factor [0;1]
 
     # first task with higher priority, fixe the feet on the ground 
-    d2q = pinv(J) @ (x_ddot - J_dot_q_dot + K2 * e_dot + K1 * e)
+    # d2q = pinv(J) @ (feet_ddot - a_feet + K2 * e_dot_feet + K1 * e_feet)
+
+
 
     # Null Space of the first task
-    P0 = np.eye(robot.model.nv) - pinv(J) @ J
+    # P0 = np.eye(robot.model.nv) - pinv(J) @ J
     # second task with less priority, move the gripper
-    d2q += pinv(o_JGripper @ P0) @ (np.hstack([goal_Gripper_acceleration, [0]]) - a_gripper + K2 * err_vel_gripper + K1 * gripper_nu)
+    # d2q += pinv(o_JGripper @ P0) @ (np.hstack([goal_Gripper_acceleration, [0]]) - a_gripper + K2 * err_vel_gripper + K1 * gripper_nu)
+    d2q = pinv(o_JGripper[:3,:]) @ (gripper_ddot - a_gripper + K2 * e_dot_gripper[:3] + K1 * e_gripper)
+    print(e_gripper)
 
-    P1 = P0 - pinv(o_JGripper @ P0) @ o_JGripper @ P0
-    # constrain the CoM position in the center of the support polygone, only in X and Y
-    d2q += pinv(o_JBase[:2,:] @ P1) @ (np.array([0, 0]) - a_base[:2] + K2 * err_vel_base[:2] + K1 * base_nu[:2])
+    
+    # P1 = P0 - pinv(o_JGripper @ P0) @ o_JGripper @ P0
+    # # constrain the CoM position in the center of the support polygone, only in X and Y
+    # if base_task is not None:
+    #     d2q += pinv(o_JBase @ P1) @ (base_task[2] - a_base[:3] + K2 * err_vel_base + K1 * base_nu[:3])
+    # else:
+    #     d2q += pinv(o_JBase[:2,:] @ P1) @ (np.array([0, 0]) - a_base[:2] + K2 * err_vel_base[:2] + K1 * base_nu[:2])
+
+
 
     # Add a Regulation Task to fill the free remaining dof
     # computing the error in position in the configuration space base : xyz,abc
@@ -241,7 +260,9 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     K3 = 1
     J_posture = np.eye(robot.model.nv)
     J_posture[:6, :6] = 0
-    d2q += K3 * J_posture @ q_temp
+    # d2q += K3 * J_posture @ q_temp
+
+
 
     # compute the joints velocity
     dq_next = d2q * dt
@@ -249,9 +270,11 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     # compute the next configuration
     q_next = pin.integrate(robot.model, q_current, dq_next * dt)
 
+
+
     flag = False
-    # print(norm(o_Gripper))
-    if norm(o_Gripper) < eps: # default 0.015
+    # print(norm(e_gripper))
+    if norm(e_gripper) < eps: # default 0.015
         # the goal position is reach
         flag = True
 

@@ -37,7 +37,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         enable_viz = False
 
     dt = 0.04 # delta time
-    duration = 1100*dt # vizualization duration
+    duration = 30 # vizualization duration
 
     # robot start configuration, velocity and acceleration
     q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \

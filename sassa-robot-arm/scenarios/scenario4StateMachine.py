@@ -30,7 +30,7 @@ class StateMahineScenario4:
         else:
             self.control_point = [[0.5, -0.015, 0.35], [0.35, 0.1, 0.2], [0.35, -0.1, 0.2], [0.5, -0.015, 0.35]]
         
-        self.end_time = 10
+        self.end_time = 4
         self.trajectory1 = TrajectoryExactCubic(self.control_point[:2], 0, self.end_time)
         self.trajectory2 = TrajectoryExactCubic(self.control_point[1:3], 0, self.end_time)
         self.trajectory3 = TrajectoryExactCubic(self.control_point[2:], 0, self.end_time)
@@ -135,8 +135,8 @@ class StateMahineScenario4:
 
 
         elif self.current_state == 5:
-            # wait 5 sec 
-            if i - self.t0 >= (5 / self.dt):
+            # wait 3 sec 
+            if i - self.t0 >= (3 / self.dt):
                 self.current_state = 0
                 self.t0 = i
 

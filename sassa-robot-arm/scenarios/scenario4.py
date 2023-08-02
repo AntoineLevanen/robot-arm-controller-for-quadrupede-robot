@@ -212,14 +212,13 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
             viz.viewer.gui.refresh ()
             viz.viewer.gui.captureTransform ()
             
-        # log values
-        if not enable_viz:
-            log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
-            log_goal.append(goal)
-            IDX_Gripper = sassa.model.getFrameId('framegripper')
-            frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
-            log_end_effector.append(frame_EF)
+        
+        log_com.append(pin.centerOfMass(sassa.model, sassa.data, q_current))
+        log_goal.append(goal)
+        IDX_Gripper = sassa.model.getFrameId('framegripper')
+        frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
+            pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
+        log_end_effector.append(frame_EF)
 
         # wait to have a real time sim
         if i % (1/dt) == 0:

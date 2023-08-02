@@ -9,34 +9,29 @@ sys.path.append(path)
 from init import initRobot, initViz
 from visualObject import CenterOfMass
 
-from scenario3StateMachine import StateMahineScenario3
+from scenario6StateMachine import StateMahineScenario6
 
-def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf/sassa/", enable_viz=True, export_to_blender=False):
+
+def scenario6(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=True, export_to_blender=False):
     """
     Description:
     robot_urdf_path : path to urdf file
     robot_file_path : path to robot geometry file (STL, OBJ...)
     enable_viz : enable the visualizer
-
+    export_to_blender : using Gepetto viewer to export scene in blender 2.75a
     """
-
     sassa = initRobot(robot_urdf_path, robot_file_path)
+    # sassa = initRobot("urdf/sassa-robot-short-arm/robot.urdf", "urdf/sassa-robot-short-arm/")
     viz = None
     com_projection = None
-    visual_object = False
-    if enable_viz == 1:
-        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object)
-    elif enable_viz == 2:
-        visual_object = True
-        viz = initViz(sassa, 2, add_ground=visual_object, add_box=False)
+    if enable_viz:
+        viz = initViz(sassa, 1, add_ground=False, add_box=False)
         # Object to show the projection on the ground of the center of masse 
-        com_projection = CenterOfMass(viz, sassa, "com")
-    else:
-        enable_viz = False
+        # com_projection = CenterOfMass(viz, sassa, "com")
+        
 
-    duration = 40 # vizualization duration
-    dt = 0.05 # delta time
-    trajectory_step = int(duration / dt)
+    duration = 60 # vizualization duration
+    dt = 0.04 # delta time
 
     # robot start configuration, velocity and acceleration
     q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
@@ -46,7 +41,7 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
 
     dq_current = np.zeros((sassa.model.nv,))
 
-    my_state_machine = StateMahineScenario3(sassa, viz, dt, q0_ref, curve_resolution=500)
+    my_state_machine = StateMahineScenario6(sassa, viz, dt, q0_ref)
 
     log_com = []
     log_goal = []
@@ -199,7 +194,6 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
 
-
     # main loop, updating the configuration vector q
     for i in range(int(duration / dt)): # int(duration / dt)
         # start time for loop duration
@@ -207,13 +201,15 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
 
         ### start controler
 
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=visual_object)
+        # Implement the scenario here (State Machine, ...)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=False)
 
         ### end controler
 
         if enable_viz:
             # to display the movement in a 3D viewport
-            viz.display(q_current)
+            viz.display(q_current)  
+            
 
         if export_to_blender:
             viz.viewer.gui.refresh ()
@@ -224,9 +220,10 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
         log_goal.append(goal)
         IDX_Gripper = sassa.model.getFrameId('framegripper')
         frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-            pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector[:3], np.array([0, 0, 0])]
+            pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
         log_end_effector.append(frame_EF)
-
+        
+        
         # wait to have a real time sim
         if i % (1/dt) == 0 and enable_viz:
             # print the remaining time of the simulation in second
@@ -238,12 +235,14 @@ def scenario3(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf
                 # wait to have a consitente frame rate
                 time.sleep(tsleep)
 
+
     return log_com, log_goal, log_end_effector
 
 
 if __name__ == "__main__":
     log_com, log_goal, log_end_effector = \
-        scenario3(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=1)
+        scenario6(robot_urdf_path=os.path.abspath("urdf/sassa-robot-short-arm/robot.urdf"),\
+                  robot_file_path=os.path.abspath("urdf/sassa-robot-short-arm/"), enable_viz=1)
 
     # plt.subplot(3, 1, 1)
     # e1 = [point[0] for point in log_com]

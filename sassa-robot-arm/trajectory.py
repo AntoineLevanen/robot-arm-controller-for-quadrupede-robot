@@ -8,28 +8,23 @@ from numpy import sin, cos
 Generate circle and sin trajectory
 """
 
-class sinTrajectory:
+class SinTrajectory:
 
-    def __init__(self, q0, omega, amplitude):
-        self.q0 = q0.copy()
-        self.q = q0.copy()
-        self.dq = np.zeros((len(self.q0)-1, ))
-        self.d2q = np.zeros((len(self.q0)-1, ))
+    def __init__(self, omega, amplitude):
         self.amplitude = amplitude
         self.omega = omega # frequency
 
-    def pos(self, idx, t):
-        self.q.flat[:] = self.q0
-        self.q.flat[idx] += self.amplitude * np.sin(self.omega * t)
-        return self.q
+    def pos(self, t):
+        return self.amplitude * np.sin(self.omega * t)
 
-    def vel(self, idx, t):
-        self.dq.flat[idx] = self.omega * self.amplitude * np.cos(self.omega * t)
-        return self.dq
+    def vel(self, t):
+        return self.omega * self.amplitude * np.cos(self.omega * t)
 
-    def acc(self, idx, t):
-        self.d2q.flat[idx] = -self.omega**2 * self.amplitude * np.sin(self.omega * t)
-        return self.d2q
+    def acc(self, t):
+        return -self.omega**2 * self.amplitude * np.sin(self.omega * t)
+
+    def getPoint3D(self, i):
+        return [self.pos(i), self.vel(i), self.acc(i)]
 
 class CircleTrajectory:
 
@@ -102,7 +97,7 @@ class CircleTrajectory:
         return [[self.x[i], self.y[i], self.z[i]], [self.dx[i], self.dy[i], self.dz[i]], [self.d2x[i], self.d2y[i], self.d2z[i]]]
 
 def mainSinTrajectory():
-    qdes = sinTrajectory(np.array([0, 0, 0]), omega=20, amplitude=0.3)
+    qdes = SinTrajectory(np.array([0, 0, 0]), omega=20, amplitude=0.3)
     dt = 0.01
     idx = 0
 

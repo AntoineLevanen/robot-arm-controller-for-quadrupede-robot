@@ -1,3 +1,4 @@
+import os
 import pinocchio as pin
 from pinocchio.visualize import GepettoVisualizer, MeshcatVisualizer
 
