@@ -25,7 +25,7 @@ class StateMahineScenario2:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.5, -0.015, 0.4], [0.4, -0.015, 0.45], [0.45, -0.015, 0.6]]
+            self.control_point = [[0.485, -0.015, 0.457], [0.4, -0.015, 0.45], [0.45, -0.015, 0.6]]
         
         self.end_time = 5
         init_vel = [0, 0, 0]
@@ -59,12 +59,12 @@ class StateMahineScenario2:
             self.trajectory_i = self.trajectory_i + 1
 
             q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
-                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.0003)
+                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.0005)
 
             self.init = False
 
             if task_finished and self.trajectory_i >= self.end_time / self.dt:
-                self.current_state = 1
+                self.current_state = 2
                 self.init = True
                 self.trajectory_i = self.end_time / self.dt - 1
                 self.t0 = i
@@ -87,12 +87,12 @@ class StateMahineScenario2:
             self.trajectory_i = self.trajectory_i - 1
 
             q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
-                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.0003)
+                                                    add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.0005)
             
             self.init = False
             
             if task_finished and self.trajectory_i <= 0:
-                self.current_state = 3
+                self.current_state = 0
                 self.trajectory_i = 0
                 self.init = True
                 self.t0 = i
@@ -103,7 +103,7 @@ class StateMahineScenario2:
             
             if i - self.t0 > (2 / self.dt):
                 # start again to loop
-                self.current_state = 4
+                self.current_state = 0
 
         
         return q, dq, self.goal

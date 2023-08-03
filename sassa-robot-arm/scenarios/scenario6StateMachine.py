@@ -7,7 +7,7 @@ import os
 path = os.path.abspath("sassa-robot-arm")
 sys.path.append(path)
 from trajectory import SinTrajectory
-from controller import controllerCLIK2ndorder
+from controller import controllerCLIK2ndorder, controllerCLIK2ndorderBase
 from gripper import actuate_gripper
 
 class StateMahineScenario6:
@@ -29,9 +29,9 @@ class StateMahineScenario6:
         self.end_time1 = 20
 
 
-        self.trajectory_x = SinTrajectory(0.01, 0.2)
-        self.trajectory_y = SinTrajectory(0.01, 0.2)
-        self.trajectory_z = SinTrajectory(0.01, 0.1)
+        self.trajectory_x = SinTrajectory(2, 0.05)
+        self.trajectory_y = SinTrajectory(4, 0.05)
+        self.trajectory_z = SinTrajectory(8, 0.05)
 
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -56,15 +56,13 @@ class StateMahineScenario6:
             self.goal_x = np.array(self.trajectory_x.getPoint3D(math.radians(i)))
             self.goal_y = np.array(self.trajectory_y.getPoint3D(math.radians(i)))
             self.goal_z = np.array(self.trajectory_z.getPoint3D(math.radians(i)))
+            self.goal_z[0] += 0.38
             self.goal = np.concatenate([[self.goal_x.T], [self.goal_y.T], [self.goal_z.T]]).T
 
-            goal_gripper = [[0.4, 0.0, 0.4], [0, 0, 0], [0, 0, 0]]
+            goal_gripper = [[0.4, -0.015, 0.35], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]]
 
-
-            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, goal_gripper,\
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.003, base_task=self.goal)
-
-            q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
+            q, dq, task_finished = controllerCLIK2ndorderBase(q, dq, self.dt, self.robot, self.init,\
+                                                             self.viz, self.q0_ref, goal_gripper, base_task=self.goal, add_goal_sphere=False)
 
             self.init = False
 

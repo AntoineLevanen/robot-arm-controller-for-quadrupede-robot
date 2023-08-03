@@ -24,10 +24,17 @@ def scenario6(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     # sassa = initRobot("urdf/sassa-robot-short-arm/robot.urdf", "urdf/sassa-robot-short-arm/")
     viz = None
     com_projection = None
-    if enable_viz:
-        viz = initViz(sassa, 1, add_ground=False, add_box=False)
+    
+    visual_object = False
+    if enable_viz == 1:
+        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object)
+    elif enable_viz == 2:
+        visual_object = True
+        viz = initViz(sassa, 2, add_ground=visual_object, add_box=False)
         # Object to show the projection on the ground of the center of masse 
-        # com_projection = CenterOfMass(viz, sassa, "com")
+        com_projection = CenterOfMass(viz, sassa, "com")
+    else:
+        enable_viz = False
         
 
     duration = 60 # vizualization duration
@@ -202,7 +209,7 @@ def scenario6(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         ### start controler
 
         # Implement the scenario here (State Machine, ...)
-        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=False)
+        q_current, dq_current, goal = my_state_machine.updateState(q_current, dq_current, i, add_goal_viz=visual_object)
 
         ### end controler
 
