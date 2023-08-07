@@ -178,7 +178,7 @@ def controllerCLIK2ndorder(q_current, dq_current, dt, robot, init, viz, q0_ref, 
     o_JGripper = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)
     # get the jacobian matrix of translation part and on orientation (y axis)
     o_JGripper = np.vstack([o_JGripper[:3], o_JGripper[4]]) # jacobian matrix for xyz and one orientation
-    # e_gripper = oMgoalGripper.translation - oMGripper.translation # traget pos - current pos
+    # e_gripper = oMgoalGripper.translation - oMGripper.translation # target pos - current pos
 
     # define a rotation for the end effector
     oMgoalGripper.rotation = orientation
@@ -347,7 +347,7 @@ def controllerCLIK2ndorderBase(q_current, dq_current, dt, robot, init, viz, q0_r
     o_JGripper = pin.computeFrameJacobian(robot.model, robot.data, q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)
     # get the jacobian matrix of translation part and on orientation (y axis)
     o_JGripper = np.vstack([o_JGripper[:3], o_JGripper[4]]) # jacobian matrix for xyz and one orientation
-    # e_gripper = oMgoalGripper.translation - oMGripper.translation # traget pos - current pos
+    # e_gripper = oMgoalGripper.translation - oMGripper.translation # target pos - current pos
 
     # define a rotation for the end effector
     oMgoalGripper.rotation = orientation

@@ -25,18 +25,18 @@ class TestController:
         # Load the URDF model. 
         urdf = os.path.abspath("urdf/sassa-robot/robot.urdf")
         model_path = os.path.abspath("urdf/sassa-robot/")
-        model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf, model_path, pin.JointModelFreeFlyer())
+        self.model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf, model_path, pin.JointModelFreeFlyer())
 
         # for the new frame
         Z = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]) # np.eye(3)
-        FIDX = model.getFrameId('OT')
-        JIDX = model.frames[FIDX].parent
+        FIDX = self.model.getFrameId('OT')
+        JIDX = self.model.frames[FIDX].parent
         eff = np.array([0.09, -0.008, 0.03])
-        FIDX = model.addFrame(pin.Frame('framegripper', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
+        FIDX = self.model.addFrame(pin.Frame('framegripper', JIDX, FIDX, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
 
-        data = model.createData()
+        self.data = self.model.createData()
 
-        self.viz = GepettoVisualizer(model=model, collision_model=collision_model, visual_model=visual_model)
+        self.viz = GepettoVisualizer(model=self.model, collision_model=collision_model, visual_model=visual_model)
         
         # Initialize the viewer.
         try:
@@ -57,12 +57,13 @@ class TestController:
         self.viz.viewer.gui.addSphere("world/pinocchio/gripper", 0.01, Color.red)
         
         # Display a robot configuration.
-        self.q_current = pin.neutral(model)
-        self.dq_current = np.zeros(model.nv)
+        self.q_current = pin.neutral(self.model)
+        self.dq_current = np.zeros(self.model.nv)
+        self.ddq_current = np.zeros(self.model.nv)
 
         # trajectory
         circle_trajectory = CircleTrajectory()
-        circle_trajectory.circleTrajectoryXY(0.55, 0, 0.3, 0.02, 1)
+        circle_trajectory.circleTrajectoryXY(0.55, 0, 0.09, 0.02, 1)
 
         self.log_com = []
         self.log_goal = []
@@ -72,65 +73,64 @@ class TestController:
             t0 = time.time()
 
             goal = circle_trajectory.getPoint(i%360)
-            self.q_current, self.dq_current = self.controller(model, data, self.q_current, self.dq_current, goal)
+            self.q_current, self.dq_current, self.ddq_current = self.controller(goal)
 
             # log values
-            self.log_com.append(pin.centerOfMass(model, data, self.q_current))
+            self.log_com.append(pin.centerOfMass(self.model, self.data, self.q_current))
             self.log_goal.append(goal)
-            IDX_Gripper = model.getFrameId('framegripper')
-            frame_EF = [data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(model, data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
+            IDX_Gripper = self.model.getFrameId('framegripper')
+            frame_EF = [self.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
+                pin.getFrameVelocity(self.model, self.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
             self.log_end_effector.append(frame_EF)
 
-
-            a = np.hstack([goal[0], [0, 0, 0, 1]])
-            self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal", list(a))
-            self.viz.viewer.gui.refresh()
-
-
-            if False:
+            if True:
                 self.viz.display(self.q_current)
+                a = np.hstack([goal[0], [0, 0, 0, 1]])
+                self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal", list(a))
+                self.viz.viewer.gui.refresh()
                 tsleep = self.dt - (time.time() - t0)
                 if tsleep > 0:
                     # wait to have a consitente frame rate
                     time.sleep(tsleep)
 
 
-    def controller(self, model, data, q, dq, goal):
+    def controller(self, goal):
 
         # Run the algorithms that outputs values in robot.data
-        pin.forwardKinematics(model, data, q)
-        pin.computeJointJacobians(model, data,q)
+        pin.forwardKinematics(self.model, self.data, self.q_current, self.dq_current, self.ddq_current)
+        pin.framesForwardKinematics(self.model, self.data, self.q_current)
+        pin.computeJointJacobians(self.model, self.data, self.q_current)
 
         # Gripper jacobian and error
-        IDX_Gripper = model.getFrameId('framegripper')
-        oMGripper = data.oMf[IDX_Gripper]
+        IDX_Gripper = self.model.getFrameId('framegripper')
+        oMGripper = self.data.oMf[IDX_Gripper]
         
         a = np.hstack([oMGripper.translation, [0, 0, 0, 1]])
         self.viz.viewer.gui.applyConfiguration("world/pinocchio/gripper", list(a))
 
-        o_JGripper = pin.computeFrameJacobian(model, data, q, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)[:3,:]
+        o_JGripper = pin.computeFrameJacobian(self.model, self.data, self.q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)[:3,:]
 
-        e_gripper = np.array(goal[0]) - oMGripper.translation # traget pos - current pos
-        e_dot_gripper = goal[1] - pin.getFrameVelocity(model, data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-
-        a_gripper = pin.getFrameClassicalAcceleration(model, data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
+        e_gripper = goal[0] - oMGripper.translation # target pos - current pos
+        e_dot_gripper = goal[1] - (o_JGripper @ self.dq_current)
+        
+        a_gripper = pin.getFrameClassicalAcceleration(self.model, self.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
+        # print(goal[2] + a_gripper[:3])
 
         # gains
         K1 = 1
         K2 = 2*np.sqrt(K1)
 
-        d2q = pinv(o_JGripper) @ (goal[2] - a_gripper[:3] + K2 * e_dot_gripper + K1 * e_gripper)
+        ddq_next = pinv(o_JGripper) @ (goal[2] + a_gripper[:3] + K2 * e_dot_gripper + K1 * e_gripper)
 
         # compute the joints velocity
-        dq_next = d2q * self.dt
+        dq_next = ddq_next * self.dt
 
         # compute the next configuration
-        q_next = pin.integrate(model, q, dq_next * self.dt)
+        q_next = pin.integrate(self.model, self.q_current, dq_next * self.dt)
 
-        print(norm(e_gripper))
+        # print(norm(e_gripper))
 
-        return q_next, dq_next
+        return q_next, dq_next, ddq_next
 
     def plot(self, info):
 
