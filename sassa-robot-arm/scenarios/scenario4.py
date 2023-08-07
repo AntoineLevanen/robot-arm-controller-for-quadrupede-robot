@@ -2,6 +2,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import pinocchio as pin
+from gepetto.corbaserver import Color
 import sys
 import os
 path = os.path.abspath("sassa-robot-arm")
@@ -38,6 +39,10 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
     q_current = q0_ref.copy()
 
     dq_current = np.zeros((sassa.model.nv,))
+
+    sassa.forwardKinematics(q_current)
+    pin.updateFramePlacements(sassa.model, sassa.data)
+    viz.display(q_current)
 
     my_state_machine = StateMahineScenario4(sassa, viz, dt, q0_ref)
 
@@ -191,7 +196,10 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
         viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
-
+    viz.viewer.gui.addCurve("world/pinocchio/curve_0", my_state_machine.trajectory0.getAllPoint(dt), Color.lightBrown)
+    viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
+    viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightGreen)
+    viz.viewer.gui.addCurve("world/pinocchio/curve_3", my_state_machine.trajectory3.getAllPoint(dt), Color.lightRed)
 
     # main loop, updating the configuration vector q
     for i in range(int(duration / dt)):
@@ -230,6 +238,15 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
             if tsleep > 0:
                 # wait to have a consitente frame rate
                 time.sleep(tsleep)
+
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_0", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_1", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_2", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_3", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_1", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_2", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm3_sasm_0", True)
 
     return log_com, log_goal, log_end_effector
 

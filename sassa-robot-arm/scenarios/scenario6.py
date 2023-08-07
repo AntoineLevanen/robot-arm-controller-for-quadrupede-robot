@@ -242,7 +242,11 @@ def scenario6(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
                 # wait to have a consitente frame rate
                 time.sleep(tsleep)
 
-
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_1", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_2", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm3_sasm_0", True)
+    
     return log_com, log_goal, log_end_effector
 
 

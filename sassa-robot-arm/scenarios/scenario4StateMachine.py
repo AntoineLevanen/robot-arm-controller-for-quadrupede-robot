@@ -15,11 +15,11 @@ class StateMahineScenario4:
 
     def __init__(self,robot, viz, dt, q0_ref, control_point=None):
         """
-        State machine to look at two posision near the ground with a 2 nd order CLIK controller
+        State machine to look at two posision near the ground with a 2nd order CLIK controller
         Also actuate the gripper 
 
         """
-        self.current_state = 0
+        self.current_state = -1
 
         self.robot = robot
         self.viz = viz
@@ -31,6 +31,10 @@ class StateMahineScenario4:
             self.control_point = [[0.5, -0.015, 0.35], [0.35, 0.1, 0.2], [0.35, -0.1, 0.2], [0.5, -0.015, 0.35]]
         
         self.end_time = 4
+        init_vel = [0, 0, 0]
+        end_vel = [0, 0, 0]
+        init_acc = [0, 0, 0]
+        end_acc = [0, 0, 0]
         self.trajectory1 = TrajectoryExactCubic(self.control_point[:2], 0, self.end_time)
         self.trajectory2 = TrajectoryExactCubic(self.control_point[1:3], 0, self.end_time)
         self.trajectory3 = TrajectoryExactCubic(self.control_point[2:], 0, self.end_time)
@@ -38,6 +42,10 @@ class StateMahineScenario4:
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self.t0 = 0
+        # init trajectory
+        IDX_Gripper = self.robot.model.getFrameId('framegripper')
+        frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
+        self.trajectory0 = TrajectoryExactCubic([frame_EF, self.control_point[0]], 0, 2, constraints=[init_vel, end_vel, init_acc, end_acc])
 
 
     def updateState(self, q, dq, i, add_goal_viz=True):
@@ -49,8 +57,29 @@ class StateMahineScenario4:
         """
 
         # print(self.current_state)
+        if self.current_state == -1:
+            # initial state
+            # update q and dq here
 
-        if self.current_state == 0:
+            # go to the initial position
+            if self.trajectory_i > int(2 / self.dt) - 1:
+                self.trajectory_i = int(2 / self.dt) - 1
+
+            self.goal = self.trajectory0.getPoint3d(self.trajectory_i, self.dt)
+            self.trajectory_i = self.trajectory_i + 1
+
+            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.01)
+
+            self.init = False
+
+            if task_finished and self.trajectory_i >= int(2 / self.dt) - 1:
+                self.current_state = 0
+                self.init = True
+                self.trajectory_i = 0
+
+
+        elif self.current_state == 0:
             # initial state, go to end position
             # update q and dq here
             if self.trajectory_i > ((self.end_time / self.dt) - 1):

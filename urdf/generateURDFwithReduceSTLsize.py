@@ -8,7 +8,7 @@ build URDF file and reduce the size of STL file
 """
 
 # folder path in which the file will be download
-dir_path = os.path.abspath("sassa-robot-short-arm")
+dir_path = os.path.abspath("sassa-robot")
 
 launchBullet = False
 

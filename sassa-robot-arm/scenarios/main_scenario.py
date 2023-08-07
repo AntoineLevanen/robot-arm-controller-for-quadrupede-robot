@@ -6,6 +6,7 @@ from scenario2 import scenario2
 from scenario3 import scenario3
 from scenario4 import scenario4
 from scenario5 import scenario5
+from scenario6 import scenario6
 
 """
 Choose the scenario to be played, add URDF file path and choose to vizualize the robot or not.
@@ -24,16 +25,16 @@ class MainScenario:
         # pick and place
         if scenario_num == 1:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Pick and place"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_1"
 
         # Look on top of a table
         elif scenario_num == 2:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
                  = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Look on top of a table"
@@ -51,7 +52,7 @@ class MainScenario:
         # look closely to somthing on the ground
         elif scenario_num == 4:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
                  = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Look closely to something on the ground"
@@ -60,7 +61,7 @@ class MainScenario:
         # actuate lever and button
         elif scenario_num == 5:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
                  = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Actuate lever and button"
@@ -69,9 +70,9 @@ class MainScenario:
         # actuate lever and button
         elif scenario_num == 6:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
 
     def plot_figure(self, info, save_image=False):
         """
@@ -470,9 +471,9 @@ class MainScenario:
             pass
 
 if __name__ == "__main__":
-    test1 = MainScenario(scenario_num=2)
+    test1 = MainScenario(scenario_num=6)
     # for i in range(3):
     #     info_to_plot = i+1
     test1.plot_figure(2, save_image=False)
-    test1.plot_figure(3, save_image=False)
+    # test1.plot_figure(3, save_image=False)
     #     test1.meanSquaredError(info_to_plot, save_image=False)

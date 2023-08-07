@@ -84,7 +84,9 @@ class TrajectoryExactCubic:
         end_time : end time of the spline
         """
         self.waypoints = np.array(control_point).transpose() # control point of the curve
-        self.time_waypoints = np.linspace(start_time, end_time, num=len(self.waypoints.T)).transpose() # uniforme time
+        self.start_time = start_time
+        self.end_time = end_time
+        self.time_waypoints = np.linspace(self.start_time, self.end_time, num=len(self.waypoints.T)).transpose() # uniforme time
         
         if constraints is None:
             self.ec = exact_cubic(self.waypoints, self.time_waypoints) # create the curve
@@ -124,6 +126,13 @@ class TrajectoryExactCubic:
 
     def getPoint6d(self, i, dt):
         return None
+
+    def getAllPoint(self, step):
+        liste = []
+        for i in np.arange(self.start_time, self.end_time, step):
+            liste.append(list(self.ec(i)))
+        
+        return list(liste)
 
     def printCurve(self, dt=0.04):
         # print the curve in 3D

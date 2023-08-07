@@ -2,6 +2,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import pinocchio as pin
+from gepetto.corbaserver import Color
 import sys
 import os
 path = os.path.abspath("sassa-robot-arm")
@@ -26,7 +27,8 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     com_projection = None
     visual_object = False
     if enable_viz == 1:
-        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object, box_config=[0.4, 0.0, 0.04])
+        viz = initViz(sassa, 1, add_ground=visual_object, add_box=visual_object)
+        viz.viewer.gui.addSphere("world/pinocchio/CoM", 0.01, Color.green)
         
     elif enable_viz == 2:
         visual_object = True
@@ -46,6 +48,10 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     q_current = q0_ref.copy()
 
     dq_current = np.zeros((sassa.model.nv,))
+
+    sassa.forwardKinematics(q_current)
+    pin.updateFramePlacements(sassa.model, sassa.data)
+    viz.display(q_current)
 
     my_state_machine = StateMahineScenario1(sassa, viz, dt, q0_ref)
 
@@ -199,6 +205,10 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
+    # Tests
+    viz.viewer.gui.addCurve("world/pinocchio/curve_0", my_state_machine.trajectory0.getAllPoint(dt), Color.lightBrown)
+    viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
+    viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightYellow)
 
     # main loop, updating the configuration vector q
     for i in range(int(duration / dt)):
@@ -231,7 +241,16 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
             pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
         log_end_effector.append(frame_EF)
+
+        # Add visual objects, CoM and trajectory
+        if enable_viz == 1:
+            CoM = list(sassa.com(q=q_current, v=dq_current))
+            CoM = np.hstack([CoM[0], CoM[1], 1])
+            CoM[2] = 0
+            viz.viewer.gui.applyConfiguration("world/pinocchio/CoM", list(CoM))
         
+        elif enable_viz == 2:
+            com_projection.updatePlacement(q_current)
         
         # wait to have a real time sim
         if i % (1/dt) == 0 and enable_viz:
@@ -244,6 +263,13 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
                 # wait to have a consitente frame rate
                 time.sleep(tsleep)
 
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_0", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_1", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/curve_2", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_1", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_2", True)
+    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm3_sasm_0", True)
 
     return log_com, log_goal, log_end_effector
 

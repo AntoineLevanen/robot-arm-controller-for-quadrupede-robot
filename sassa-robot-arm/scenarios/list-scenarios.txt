@@ -5,7 +5,7 @@ Scenario 2:
 Look on top of a table
 
 Scenario 3:
-Move a box around
+Move a box around # to remove
 
 Scenario 4:
 Look closely to something on the ground
@@ -13,3 +13,6 @@ Look closely to something on the ground
 Scenario 5:
 Actuate lever
 press button
+
+Scenario 6:
+Move the body while the head is static

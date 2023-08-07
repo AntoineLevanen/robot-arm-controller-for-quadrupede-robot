@@ -6,7 +6,7 @@ import sys
 import os
 path = os.path.abspath("sassa-robot-arm")
 sys.path.append(path)
-from trajectory import SinTrajectory
+from trajectory import SinTrajectory, CircleTrajectory
 from controller import controllerCLIK2ndorder, controllerCLIK2ndorderBase
 from gripper import actuate_gripper
 
@@ -32,6 +32,9 @@ class StateMahineScenario6:
         self.trajectory_x = SinTrajectory(2, 0.05)
         self.trajectory_y = SinTrajectory(4, 0.05)
         self.trajectory_z = SinTrajectory(8, 0.05)
+
+        self.circle_trajectory = CircleTrajectory()
+        self.circle_trajectory.circleTrajectoryYZ(0, 0, 0.3, 0.02, 8)
 
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -59,10 +62,12 @@ class StateMahineScenario6:
             self.goal_z[0] += 0.38
             self.goal = np.concatenate([[self.goal_x.T], [self.goal_y.T], [self.goal_z.T]]).T
 
-            goal_gripper = [[0.4, -0.015, 0.35], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]]
+            # self.goal = self.circle_trajectory.getPoint(int(math.radians(i)))
+
+            goal_gripper = [[0.4, -0.015, 0.3], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]]
 
             q, dq, task_finished = controllerCLIK2ndorderBase(q, dq, self.dt, self.robot, self.init,\
-                                                             self.viz, self.q0_ref, goal_gripper, base_task=self.goal, add_goal_sphere=False)
+                    self.viz, self.q0_ref, goal_gripper, base_task=self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', 0))
 
             self.init = False
 
