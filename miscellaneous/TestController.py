@@ -21,7 +21,7 @@ Pinocchio example to test Gepetto Viewer
 class TestController:
 
     def __init__(self):
-        self.dt = 0.04
+        self.dt = 0.01
         # Load the URDF model. 
         urdf = os.path.abspath("urdf/sassa-robot/robot.urdf")
         model_path = os.path.abspath("urdf/sassa-robot/")
@@ -53,179 +53,178 @@ class TestController:
             print(err)
             sys.exit(0)
 
+        # to visualize the trajectory
         self.viz.viewer.gui.addSphere("world/pinocchio/goal", 0.01, Color.green)
-        self.viz.viewer.gui.addSphere("world/pinocchio/gripper", 0.01, Color.red)
         
-        # Display a robot configuration.
-        self.q_current = pin.neutral(self.model)
-        self.dq_current = np.zeros(self.model.nv)
-        self.ddq_current = np.zeros(self.model.nv)
+        # current robot configuration and velocity
+        q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0,\
+                                    -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
+        q_current = q0_ref.copy() # pin.neutral(self.model)
+        q_dot_current = np.zeros(self.model.nv)
 
         # trajectory
         circle_trajectory = CircleTrajectory()
-        circle_trajectory.circleTrajectoryXY(0.55, 0, 0.09, 0.02, 1)
+        circle_trajectory.circleTrajectoryXY(0.559, -0.035, 0.457, 0.02, 1)
 
-        self.log_com = []
         self.log_goal = []
         self.log_end_effector = []
 
-        for i in range(int(30 / self.dt)):
+        for i in range(int(10 / self.dt)):
             t0 = time.time()
 
+
             goal = circle_trajectory.getPoint(i%360)
-            self.q_current, self.dq_current, self.ddq_current = self.controller(goal)
+
+            q_current, q_dot_current = self.controller(q_current, q_dot_current, goal)
+
 
             # log values
-            self.log_com.append(pin.centerOfMass(self.model, self.data, self.q_current))
             self.log_goal.append(goal)
             IDX_Gripper = self.model.getFrameId('framegripper')
-            frame_EF = [self.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
-                pin.getFrameVelocity(self.model, self.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
-            self.log_end_effector.append(frame_EF)
+            self.data.oMf[IDX_Gripper].homogeneous[:3, -1]
+            self.log_end_effector.append(self.data.oMf[IDX_Gripper].homogeneous[:3, -1])
 
-            if True:
-                self.viz.display(self.q_current)
-                a = np.hstack([goal[0], [0, 0, 0, 1]])
-                self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal", list(a))
+            if False: # visualize in gepetto viewer
+                self.viz.display(q_current)
+
+                goal_gepetto_configuration = np.hstack([goal[0], [0, 0, 0, 1]])
+                self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal", list(goal_gepetto_configuration))
                 self.viz.viewer.gui.refresh()
+
                 tsleep = self.dt - (time.time() - t0)
                 if tsleep > 0:
                     # wait to have a consitente frame rate
                     time.sleep(tsleep)
 
 
-    def controller(self, goal):
+    def controller(self, q, q_dot, goal):
+        
+        x_star = goal[0]
+        x_star_dot = goal[1]
+        x_star_ddot = goal[2]
 
-        # Run the algorithms that outputs values in robot.data
-        pin.forwardKinematics(self.model, self.data, self.q_current, self.dq_current, self.ddq_current)
-        pin.framesForwardKinematics(self.model, self.data, self.q_current)
-        pin.computeJointJacobians(self.model, self.data, self.q_current)
+        # Run the algorithms that outputs values in data
+        pin.forwardKinematics(self.model, self.data, q, q_dot, q_dot * 0)
+        pin.updateFramePlacements(self.model, self.data)
 
         # Gripper jacobian and error
-        IDX_Gripper = self.model.getFrameId('framegripper')
-        oMGripper = self.data.oMf[IDX_Gripper]
-        
-        a = np.hstack([oMGripper.translation, [0, 0, 0, 1]])
-        self.viz.viewer.gui.applyConfiguration("world/pinocchio/gripper", list(a))
+        index_gripper = self.model.getFrameId('framegripper')     
 
-        o_JGripper = pin.computeFrameJacobian(self.model, self.data, self.q_current, IDX_Gripper, pin.LOCAL_WORLD_ALIGNED)[:3,:]
+        J_gripper = pin.computeFrameJacobian(self.model, self.data, q, index_gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)[:3,:]
 
-        e_gripper = goal[0] - oMGripper.translation # target pos - current pos
-        e_dot_gripper = goal[1] - (o_JGripper @ self.dq_current)
+        x = self.data.oMf[index_gripper] # get the current position of the end effector
+        x_dot = (J_gripper @ q_dot)
+        e = x_star - x.translation # position error
+        e_dot = x_star_dot - x_dot
         
-        a_gripper = pin.getFrameClassicalAcceleration(self.model, self.data, IDX_Gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
-        # print(goal[2] + a_gripper[:3])
+        Jdot_qdot = pin.getFrameClassicalAcceleration(self.model, self.data, index_gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
 
         # gains
         K1 = 1
         K2 = 2*np.sqrt(K1)
 
-        ddq_next = pinv(o_JGripper) @ (goal[2] + a_gripper[:3] + K2 * e_dot_gripper + K1 * e_gripper)
+        q_ddot = pinv(J_gripper) @ (x_star_ddot - Jdot_qdot + K2 * e_dot + K1 * e)
 
         # compute the joints velocity
-        dq_next = ddq_next * self.dt
+        q_dot = q_ddot * self.dt + q_dot
 
         # compute the next configuration
-        q_next = pin.integrate(self.model, self.q_current, dq_next * self.dt)
+        q = pin.integrate(self.model, q, q_dot * self.dt)
 
-        # print(norm(e_gripper))
-
-        return q_next, dq_next, ddq_next
+        return q, q_dot
 
     def plot(self, info):
 
-        x_time_axis = np.arange(len(self.log_end_effector)) * 0.04
+        x_time_axis = np.arange(len(self.log_end_effector)) * self.dt
 
         if info == 1:
-                # log test 1
-                # Position error of the CoM
-                fig = plt.figure()
-                plt.subplot(3, 1, 1)
-                e1 = [point[0] for point in self.log_com]
-                plt.plot(x_time_axis, e1, label='X CoM position')
-                plt.plot(x_time_axis, np.zeros(len(e1)), label='X CoM desired position', linestyle='dashed')
-                plt.legend()
-                # plt.ylim([-0.03, 0.042])
-                plt.title("Sassa with long arm")
-                plt.xlabel("time (s)")
-                plt.ylabel("meters")
+            # log test 1
+            # Position error of the end effector
+            fig = plt.figure()
 
-                plt.subplot(3, 1, 2)
-                e2 = [point[1] for point in self.log_com]
-                plt.plot(x_time_axis, e2, label='Y CoM position')
-                plt.plot(x_time_axis, np.zeros(len(e2)), label='Y CoM desired position', linestyle='dashed')
-                plt.legend()
-                # plt.ylim([-0.01, 0.016])
-                plt.xlabel("time (s)")
-                plt.ylabel("meters")
+            plt.subplot(3, 1, 1)
+            e1 = [point[0] for point in self.log_end_effector]
+            plt.plot(x_time_axis, e1, label='X end effector position')
+            e1 = [point[0][0] for point in self.log_goal]
+            plt.plot(x_time_axis, e1, label='X goal position', linestyle='dashed')
+            plt.legend()
+            plt.title("Position error on X axis")
+            plt.xlabel("time (s)")
+            plt.ylabel("meters")
 
-                plt.subplot(3, 1, 3)
-                e3 = [point[2] for point in self.log_com]
-                plt.plot(x_time_axis, e3, label='Z CoM position')
-                plt.legend()
-                # plt.ylim([0.275, 0.4])
-                plt.xlabel("time (s)")
-                plt.ylabel("meters")
+            plt.subplot(3, 1, 2)
+            e2 = [point[1] for point in self.log_end_effector]
+            plt.plot(x_time_axis, e2, label='Y end effector position')
+            e2 = [point[0][1] for point in self.log_goal]
+            plt.plot(x_time_axis, e2, label='Y goal position', linestyle='dashed')
+            plt.legend()
+            plt.title("Position error on Y axis")
+            plt.xlabel("time (s)")
+            plt.ylabel("meters")
 
-                plt.suptitle("title")
-                fig.supxlabel("dt = 0.04 seconds")
+            plt.subplot(3, 1, 3)
+            e3 = [point[2] for point in self.log_end_effector]
+            plt.plot(x_time_axis, e3, label='Z end effector position')
+            e3 = [point[0][2] for point in self.log_goal]
+            plt.plot(x_time_axis, e3, label='Z goal position', linestyle='dashed')
+            plt.legend()
+            plt.title("Position error on Z axis")
+            plt.xlabel("time (s)")
+            plt.ylabel("meters")
 
-                plt.subplots_adjust(left=0.125,
+            plt.suptitle("title")
+            fig.supxlabel("dt = 0.04 seconds")
+            plt.subplots_adjust(left=0.125,
                     bottom=0.075,
                     right=0.9,
                     top=0.92,
                     wspace=0.45, # 0.2
                     hspace=0.37)
-
-                plt.show()
+            
+            plt.show()
 
         elif info == 2:
-                # log test 1
-                # Position error of the end effector
-                fig = plt.figure()
+            plt.subplot(3, 1, 1)
+            e1 = [point[0] for point in self.log_end_effector]
+            e2 = [point[0][0] for point in self.log_goal]
+            mse_x = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, mse_x, label='X MSE')
+            plt.legend()
+            plt.title("Position error on X axis")
+            plt.xlabel("time (s)")
+            plt.ylabel("Mean square error")
 
-                plt.subplot(3, 1, 1)
-                e1 = [point[0][0]for point in self.log_end_effector]
-                plt.plot(x_time_axis, e1, label='X end effector position')
-                e1 = [point[0][0] for point in self.log_goal]
-                plt.plot(x_time_axis, e1, label='X goal position', linestyle='dashed')
-                plt.legend()
-                # plt.ylim([0.3, 0.56])
-                plt.title("Sassa with long arm" + "\n" + "Position error on X axis")
-                plt.xlabel("time (s)")
-                plt.ylabel("meters")
+            plt.subplot(3, 1, 2)
+            e1 = [point[1] for point in self.log_end_effector]
+            e2 = [point[0][1] for point in self.log_goal]
+            mse_y = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, mse_y, label='Y MSE')
+            plt.legend()
+            plt.title("Position error on Y axis")
+            plt.xlabel("time (s)")
+            plt.ylabel("Mean square error")
 
-                plt.subplot(3, 1, 2)
-                e2 = [point[0][1] for point in self.log_end_effector]
-                plt.plot(x_time_axis, e2, label='Y end effector position')
-                e2 = [point[0][1] for point in self.log_goal]
-                plt.plot(x_time_axis, e2, label='Y goal position', linestyle='dashed')
-                plt.legend()
-                plt.title("Position error on Y axis")
-                plt.xlabel("time (s)")
-                plt.ylabel("meters")
+            plt.subplot(3, 1, 3)
+            e1 = [point[2] for point in self.log_end_effector]
+            e2 = [point[0][2] for point in self.log_goal]
+            mse_z = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, mse_z, label='Z MSE')
+            plt.legend()
+            plt.title("Position error on Z axis")
+            plt.xlabel("time (s)")
+            plt.ylabel("Mean square error")
 
-                plt.subplot(3, 1, 3)
-                e3 = [point[0][2] for point in self.log_end_effector]
-                plt.plot(x_time_axis, e3, label='Z end effector position')
-                e3 = [point[0][2] for point in self.log_goal]
-                plt.plot(x_time_axis, e3, label='Z goal position', linestyle='dashed')
-                plt.legend()
-                plt.title("Position error on Z axis")
-                plt.xlabel("time (s)")
-                plt.ylabel("meters")
-
-                plt.suptitle("title")
-                fig.supxlabel("dt = 0.04 seconds")
-                # plt.subplot_tool()
-                plt.subplots_adjust(left=0.125,
-                        bottom=0.075,
-                        right=0.9,
-                        top=0.92,
-                        wspace=0.45,
-                        hspace=0.37)
-                plt.show()
+            plt.suptitle("Mean Square Error")
+            plt.subplots_adjust(left=0.125,
+                    bottom=0.075,
+                    right=0.9,
+                    top=0.92,
+                    wspace=0.45, # 0.2
+                    hspace=0.37)
+           
+            plt.show()
 
 if __name__ == "__main__":
     my_controller = TestController()
-    my_controller.plot(2)
+    my_controller.plot(1) # trajectory
+    # my_controller.plot(2) # mean square error
