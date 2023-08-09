@@ -13,7 +13,7 @@ bl_info = {
 }
 
 import bpy
-from .gepettoimport_copy import (UrdfToBlendImport, YamlPathImport)
+from .gepettoimport import (UrdfToBlendImport, YamlPathImport, OBJECT_OT_add_ground_plane)
 
 
 class CustomPanel(bpy.types.Panel):
@@ -30,14 +30,17 @@ class CustomPanel(bpy.types.Panel):
         column = layout.column()
         row.operator(UrdfToBlendImport.bl_idname, text="Import URDF file", icon='FILE_SCRIPT')
         column.operator(YamlPathImport.bl_idname, text="Import YAML file", icon='FILE')
+        column.operator(OBJECT_OT_add_ground_plane.bl_idname, text="Add a ground plane", icon='MESH_PLANE')
    
 
 def register():
     bpy.utils.register_class(CustomPanel)
     bpy.utils.register_class(YamlPathImport)
     bpy.utils.register_class(UrdfToBlendImport)
+    bpy.utils.register_class(OBJECT_OT_add_ground_plane)
 
 def unregister():
     bpy.utils.unregister_class(CustomPanel)
     bpy.utils.unregister_class(YamlPathImport)
     bpy.utils.unregister_class(UrdfToBlendImport)
+    bpy.utils.unregister_class(OBJECT_OT_add_ground_plane)

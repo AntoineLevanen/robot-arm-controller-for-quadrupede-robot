@@ -227,4 +227,4 @@ class TestController:
 if __name__ == "__main__":
     my_controller = TestController()
     my_controller.plot(1) # trajectory
-    # my_controller.plot(2) # mean square error
+    # my_controller.plot(2) # mean square error  

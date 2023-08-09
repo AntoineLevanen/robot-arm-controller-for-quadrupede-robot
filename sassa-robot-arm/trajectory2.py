@@ -106,8 +106,8 @@ class TrajectoryExactCubic:
         elif len(constraints) == 2:
             try:
                 c = curve_constraints()
-                c.init_vel = np.array(constraints[0]).transpose()
-                c.end_vel = np.array(constraints[1]).transpose()
+                c.init_acc = np.array(constraints[0]).transpose()
+                c.end_acc = np.array(constraints[1]).transpose()
 
                 self.ec = exact_cubic(self.waypoints, self.time_waypoints, c)
 
@@ -159,7 +159,7 @@ class TrajectoryExactCubic:
         pos = []
         vel = []
         acc = []
-        axis = 0
+        axis = 1
         for i in range(int((self.time_waypoints[-1] - self.time_waypoints[0]) / dt)):
             pos.append(self.ec(i * dt)[axis])
             vel.append(self.ec.derivate(i * dt, 1)[axis])
@@ -178,14 +178,14 @@ class TrajectoryExactCubic:
 
 
 def mainTrajectory():
-    control_points = [[0.35, -0.13, 0.25], [0.35, -0.13, 0.30], [0.4, 0.02, 0.45]]
+    control_points = [[0.35, 0.1, 0.2], [0.35, 0.0, 0.24], [0.35, -0.1, 0.2]]
     start_time = 0
     end_time = 10
     init_vel = [0, 0, 0]
     end_vel = [0, 0, 0]
     init_acc = [0, 0, 0]
     end_acc = [0, 0, 0]
-    traj = TrajectoryExactCubic(control_points, start_time, end_time, constraints=[init_acc, end_acc])
+    traj = TrajectoryExactCubic(control_points, start_time, end_time)# , constraints=[init_acc, end_acc])
     
     traj.printCurve(dt=0.04)
     traj.plotCurve()

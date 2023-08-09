@@ -31,7 +31,7 @@ def scenario5(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         # com_projection = CenterOfMass(viz, sassa, "com")
         
 
-    duration = 80 # vizualization duration
+    duration = 60 # vizualization duration
     dt = 0.04 # delta time
 
     # robot start configuration, velocity and acceleration

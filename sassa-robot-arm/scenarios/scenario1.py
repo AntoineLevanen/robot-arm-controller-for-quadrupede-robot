@@ -208,7 +208,6 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
     # Tests
     if enable_viz == 1:
-        viz.viewer.gui.addCurve("world/pinocchio/curve_0", my_state_machine.trajectory0.getAllPoint(dt), Color.lightBrown)
         viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
         viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightYellow)
 
@@ -266,7 +265,6 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
                 time.sleep(tsleep)
 
     if enable_viz == 1:
-        viz.viewer.gui.deleteNode("world/pinocchio/curve_0", True)
         viz.viewer.gui.deleteNode("world/pinocchio/curve_1", True)
         viz.viewer.gui.deleteNode("world/pinocchio/curve_2", True)
         viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)

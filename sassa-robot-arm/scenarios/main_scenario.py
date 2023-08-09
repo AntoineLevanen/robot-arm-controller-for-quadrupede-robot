@@ -27,7 +27,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Pick and place"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_1"
 
@@ -70,7 +70,7 @@ class MainScenario:
         # actuate lever and button
         elif scenario_num == 6:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
                  = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
 

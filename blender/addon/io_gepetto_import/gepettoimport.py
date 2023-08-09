@@ -27,6 +27,8 @@ import os
 import bpy
 import bpy_extras.io_utils
 from bpy.types import (Panel, Operator)
+from bpy_extras.object_utils import AddObjectHelper
+from bpy.props import FloatVectorProperty
 
 
 def loadmotion(filename):
@@ -64,6 +66,40 @@ def checkframe(filename, frameId):
                 currentObj.rotation_quaternion = posF[3:7]
             else:
                 print("Unknown object " + objName)
+
+
+def new_plane(mylocation, mysize, myname):
+    bpy.ops.mesh.primitive_plane_add(
+        size=mysize,
+        calc_uvs=True,
+        enter_editmode=False,
+        align='WORLD',
+        location=mylocation,
+        rotation=(0, 0, 0),
+        scale=(0, 0, 0))
+    current_name = bpy.context.selected_objects[0].name
+    plane = bpy.data.objects[current_name]
+    plane.name = myname
+    plane.data.name = myname + "_mesh"
+
+    # adding a checker material for the ground
+    MAT_NAME = "CheckerMat"
+    bpy.data.materials.new(MAT_NAME)
+    material = bpy.data.materials[MAT_NAME]
+    material.use_nodes = True
+    material.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.2
+    material.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (1,0,1,1)
+
+    texture = material.node_tree.nodes.new(type='ShaderNodeTexChecker')
+    texture.location[0] += -200
+    texture.inputs[3].default_value = 100
+    material.node_tree.links.new(texture.outputs[0], material.node_tree.nodes['Principled BSDF'].inputs['Base Color'])
+    if len(plane.data.materials.items()) != 0:
+        plane.data.materials.clear()
+    else:
+        plane.data.materials.append(material)
+
+    return
 
 
 class YamlPathImport(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
@@ -105,3 +141,23 @@ class UrdfToBlendImport(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
         return {"RUNNING_MODAL"}
+
+
+class OBJECT_OT_add_ground_plane(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_ground_plane"
+    bl_label = "Add a ground plane"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    scale: FloatVectorProperty(
+        name="scale",
+        default=(1.0, 1.0, 1.0),
+        subtype='TRANSLATION',
+        description="scaling",
+    )
+
+    def execute(self, context):
+
+        new_plane((0, 0, 0), 40, "Ground plane")
+
+        return {'FINISHED'}

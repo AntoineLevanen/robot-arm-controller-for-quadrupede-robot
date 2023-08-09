@@ -22,12 +22,6 @@ class StateMahineScenario6:
         self.dt = dt
         self.q0_ref = q0_ref
         self.current_state = 0
-        
-        x_offset = -0.04
-        self.control_point1 = [[0.55+x_offset, -0.015, 0.40], [0.47+x_offset, 0.0, 0.40], [0.47+x_offset, 0.1, 0.40], [0.52+x_offset, 0.1, 0.40]]
-
-        self.end_time1 = 20
-
 
         self.trajectory_x = SinTrajectory(2, 0.05)
         self.trajectory_y = SinTrajectory(4, 0.05)
@@ -62,7 +56,7 @@ class StateMahineScenario6:
             self.goal_z[0] += 0.38
             self.goal = np.concatenate([[self.goal_x.T], [self.goal_y.T], [self.goal_z.T]]).T
 
-            # self.goal = self.circle_trajectory.getPoint(int(math.radians(i)))
+            # self.goal = self.circle_trajectory.getPoint(int(math.radians(i%360)))
 
             goal_gripper = [[0.4, -0.015, 0.3], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]]
 
