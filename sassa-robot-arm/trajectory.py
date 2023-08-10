@@ -28,7 +28,7 @@ class SinTrajectory:
 
 class CircleTrajectory:
 
-    def __init__(self):
+    def __init__(self, duration=1, dt=0.01):
         self.x = []
         self.y = []
         self.z = []
@@ -37,7 +37,8 @@ class CircleTrajectory:
         self.dz = []
         self.d2x = []
         self.d2y = []
-        self.d2z = [] 
+        self.d2z = []
+        self.loop_duration = int(duration / dt) 
 
     def circleTrajectoryXY(self, x_center, y_center, z_center, raduis, omega):
         
@@ -51,17 +52,18 @@ class CircleTrajectory:
         self.d2y = []
         self.d2z = []
         from numpy import deg2rad as d2r
-        for i in range(360):
-            self.x.append(x_center + raduis * sin(omega * d2r(i)))
-            self.y.append(y_center + raduis * cos(omega * d2r(i)))
+        a = 360 / self.loop_duration
+        for i in range(self.loop_duration):
+            self.x.append(x_center + raduis * sin(omega * d2r(a * i)))
+            self.y.append(y_center + raduis * cos(omega * d2r(a * i)))
             self.z.append(z_center)
 
-            self.dx.append(omega * raduis * cos(omega * d2r(i)))
-            self.dy.append(- omega * raduis * sin(omega * d2r(i)))
+            self.dx.append(omega * raduis * cos(omega * d2r(a * i)))
+            self.dy.append(- omega * raduis * sin(omega * d2r(a * i)))
             self.dz.append(0)
 
-            self.d2x.append(- omega**2 * raduis * sin(omega * d2r(i)))
-            self.d2y.append(- omega**2 * raduis * cos(omega * d2r(i)))
+            self.d2x.append(- omega**2 * raduis * sin(omega * d2r(a * i)))
+            self.d2y.append(- omega**2 * raduis * cos(omega * d2r(a * i)))
             self.d2z.append(0)
 
     def circleTrajectoryYZ(self, x_center, y_center, z_center, raduis, omega):
@@ -127,8 +129,8 @@ def mainCircleTrajectory():
     """
     Seulement en position, pas d(iformation sur la vitesse ou l'acceleration)
     """
-    my_trajectory = CircleTrajectory()
-    my_trajectory.circleTrajectoryXY(0.4, -0.05, 0.2, 0.14, 8)
+    my_trajectory = CircleTrajectory(duration=4, dt=0.01)
+    my_trajectory.circleTrajectoryXY(0.4, -0.05, 0.2, 0.14, 1)
 
     dt = 0.01
     idx = 0
@@ -141,7 +143,7 @@ def mainCircleTrajectory():
     err3y = []
 
 
-    for i in range(360):
+    for i in range(my_trajectory.loop_duration):
         t = i * dt
         err1x.append(my_trajectory.getPoint(i)[0][0])
         err1y.append(my_trajectory.getPoint(i)[0][1])

@@ -32,7 +32,7 @@ class StateMahineScenario2:
         end_vel = [0, 0, 0]
         init_acc = [0, 0, 0]
         end_acc = [0, 0, 0]
-        self.trajectory1 = TrajectoryExactCubic(self.control_point, 0, self.end_time, constraints=[init_vel, end_vel, init_acc, end_acc])
+        self.trajectory1 = TrajectoryExactCubic(self.control_point, 0, self.end_time) # , constraints=[init_vel, end_vel, init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -41,7 +41,7 @@ class StateMahineScenario2:
         # init trajectory
         IDX_Gripper = self.robot.model.getFrameId('framegripper')
         frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
-        self.trajectory0 = TrajectoryExactCubic([frame_EF, self.control_point[0]], 0, 2, constraints=[init_vel, end_vel, init_acc, end_acc])
+        self.trajectory0 = TrajectoryExactCubic([frame_EF, self.control_point[0]], 0, 2) # , constraints=[init_vel, end_vel, init_acc, end_acc])
 
 
     def updateState(self, q, dq, i, add_goal_viz=True):

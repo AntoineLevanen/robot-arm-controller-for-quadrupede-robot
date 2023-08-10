@@ -27,7 +27,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=0, export_to_blender=False)
             self.plot_title = "Pick and place"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_1"
 
@@ -52,7 +52,7 @@ class MainScenario:
         # look closely to somthing on the ground
         elif scenario_num == 4:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
+                 = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
                  = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Look closely to something on the ground"
@@ -63,7 +63,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=0, export_to_blender=False)
             self.plot_title = "Actuate lever and button"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_5"
 
@@ -475,5 +475,5 @@ if __name__ == "__main__":
     # for i in range(3):
     #     info_to_plot = i+1
     test1.plot_figure(2, save_image=False)
-    # test1.plot_figure(3, save_image=False)
-    #     test1.meanSquaredError(info_to_plot, save_image=False)
+    #     test1.plot_figure(3, save_image=False)
+    test1.meanSquaredError(2, save_image=False)

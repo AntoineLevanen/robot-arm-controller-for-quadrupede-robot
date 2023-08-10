@@ -27,23 +27,24 @@ class StateMahineScenario1:
         else:
             IDX_Gripper = self.robot.model.getFrameId('framegripper')
             frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
-            self.control_point1 = [frame_EF, [0.35, 0.045, 0.28], [0.35, 0.1, 0.05]] # [0.35, 0.0, 0.30]
-            self.control_point2 = [self.control_point1[-1], [0.35, 0.0, 0.11], [0.35, -0.1, 0.05]]
-        self.end_time = 16
-        self.end_time2 = 32
+            self.control_point1 = [frame_EF, [0.35, 0.05, 0.05]] # [0.35, 0.045, 0.4],
+            self.control_point2 = [self.control_point1[-1], [0.35, 0.0, 0.11], [0.35, -0.05, 0.05]]
+        self.end_time = 40
+        self.end_time2 = 40
         init_vel = [0, 0, 0]
         end_vel = [0, 0, 0]
         init_acc = [0, 0, 0]
         end_acc = [0, 0, 0]
-        self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time)# , constraints=[init_vel, end_vel, init_acc, end_acc])
-        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2)# , constraints=[init_vel, end_vel, init_acc, end_acc])
+        self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time, constraints=[init_acc, end_acc])
+        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2, constraints=[init_vel, end_vel, init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self.t0 = 0
 
-        # to visualize the trajectory
-        self.viz.viewer.gui.addSphere("world/pinocchio/goal", 0.01, Color.green)
+        if self.viz is not None:
+            # to visualize the trajectory
+            self.viz.viewer.gui.addSphere("world/pinocchio/goal", 0.01, Color.green)
 
 
     def updateState(self, q, dq, i, add_goal_viz=True):
@@ -66,16 +67,18 @@ class StateMahineScenario1:
             self.goal = self.trajectory1.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i + 1
 
-            end_effector_rotation = ((np.pi/3) / (self.end_time / self.dt) ) * self.trajectory_i
+            end_effector_rotation = 0 # ((np.pi/3) / ((self.end_time/3) / self.dt) ) * self.trajectory_i
+            if self.trajectory_i > int((self.end_time/3) / self.dt):
+                end_effector_rotation = ((np.pi/3) / (((self.end_time) - (self.end_time/3)) / self.dt) ) * self.trajectory_i
 
-            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', end_effector_rotation), eps=0.01)
 
-            q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
+            # q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
 
             self.init = False
 
-            if task_finished and self.trajectory_i >= int(self.end_time / self.dt) - 1:
+            if self.trajectory_i >= int(self.end_time / self.dt) - 1:
                 self.current_state = 1
                 self.init = True
                 self.trajectory_i = 0
@@ -102,8 +105,8 @@ class StateMahineScenario1:
             self.goal = self.trajectory2.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i + 1
 
-            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2), eps=0.01)
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/2), eps=0.01) # np.pi/2
 
             self.init = False
             
@@ -135,8 +138,8 @@ class StateMahineScenario1:
             self.goal = self.trajectory2.getPoint3d(self.trajectory_i, self.dt)
             self.trajectory_i = self.trajectory_i - 1
 
-            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3), eps=0.01)
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
+                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3), eps=0.01) # np.pi/3
             q, task_finished = actuate_gripper(self.robot, q, self.dt, action="open")
             
             self.init = False
@@ -145,9 +148,11 @@ class StateMahineScenario1:
                 self.current_state = 2
                 self.trajectory_i = 0
                 self.init = True
-        a = self.goal[0]
-        a = np.hstack([a, [0, 0, 0, 1]])
-        self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal", list(a))
-        self.viz.viewer.gui.refresh()
+
+        if self.viz is not None:       
+            a = self.goal[0]
+            a = np.hstack([a, [0, 0, 0, 1]])
+            self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal", list(a))
+            self.viz.viewer.gui.refresh()
 
         return q, dq, self.goal

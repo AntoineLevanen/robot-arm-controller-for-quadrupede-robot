@@ -4,7 +4,7 @@ import os
 import pinocchio as pin
 import matplotlib.pyplot as plt
 from init import initRobot, initViz
-from controller import controllerCLIK2ndorderPositionOnly, controllerCLIK2ndorder
+from controller import controllerCLIK2ndorder
 from gripper import actuate_gripper
 from visualObject import CenterOfMass
 from trajectory import CircleTrajectory
@@ -19,7 +19,7 @@ duration = 30 # vizualization duration
 dt = 0.04 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True
-export_to_blender = True
+export_to_blender = False
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])

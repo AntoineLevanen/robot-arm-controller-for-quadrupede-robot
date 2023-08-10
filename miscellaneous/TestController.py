@@ -21,14 +21,13 @@ Pinocchio example to test Gepetto Viewer
 class TestController:
 
     def __init__(self):
-        self.dt = 0.01
         # Load the URDF model. 
         urdf = os.path.abspath("urdf/sassa-robot/robot.urdf")
         model_path = os.path.abspath("urdf/sassa-robot/")
         self.model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf, model_path, pin.JointModelFreeFlyer())
 
         # for the new frame
-        Z = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]) # np.eye(3)
+        Z = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]])
         FIDX = self.model.getFrameId('OT')
         JIDX = self.model.frames[FIDX].parent
         eff = np.array([0.09, -0.008, 0.03])
@@ -62,18 +61,20 @@ class TestController:
         q_current = q0_ref.copy() # pin.neutral(self.model)
         q_dot_current = np.zeros(self.model.nv)
 
-        # trajectory
-        circle_trajectory = CircleTrajectory()
-        circle_trajectory.circleTrajectoryXY(0.559, -0.035, 0.457, 0.02, 1)
-
         self.log_goal = []
         self.log_end_effector = []
+
+        self.dt = 0.001
+
+        # trajectory
+        circle_trajectory = CircleTrajectory(duration=10, dt=self.dt)
+        circle_trajectory.circleTrajectoryXY(0.559, -0.035, 0.457, 0.02, 1)
 
         for i in range(int(10 / self.dt)):
             t0 = time.time()
 
 
-            goal = circle_trajectory.getPoint(i%360)
+            goal = circle_trajectory.getPoint(i%circle_trajectory.loop_duration)
 
             q_current, q_dot_current = self.controller(q_current, q_dot_current, goal)
 
@@ -99,41 +100,42 @@ class TestController:
 
     def controller(self, q, q_dot, goal):
         
-        x_star = goal[0]
-        x_star_dot = goal[1]
-        x_star_ddot = goal[2]
-
         # Run the algorithms that outputs values in data
-        pin.forwardKinematics(self.model, self.data, q, q_dot, q_dot * 0)
-        pin.updateFramePlacements(self.model, self.data)
-
-        # Gripper jacobian and error
-        index_gripper = self.model.getFrameId('framegripper')     
-
-        J_gripper = pin.computeFrameJacobian(self.model, self.data, q, index_gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)[:3,:]
-
-        x = self.data.oMf[index_gripper] # get the current position of the end effector
-        x_dot = (J_gripper @ q_dot)
-        e = x_star - x.translation # position error
-        e_dot = x_star_dot - x_dot
+        pin.forwardKinematics(self.model, self.data, q=q, v=q_dot, a=q_dot * 0)
+        # pin.framesForwardKinematics(self.model, self.data, q=q)
         
-        Jdot_qdot = pin.getFrameClassicalAcceleration(self.model, self.data, index_gripper, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
+        # Gripper jacobian and error
+        index_end_effector = self.model.getFrameId('framegripper')     
 
+        J_end_effector = pin.computeFrameJacobian(self.model, self.data, q, index_end_effector, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)[:3,:]
+
+        x_end_effector = self.data.oMf[index_end_effector] # get the current position of the end effector
+        x_star_end_effector = goal[0]
+
+        x_dot_end_effector = (J_end_effector @ q_dot)
+        x_star_dot_end_effector = goal[1]
+
+        Jdot_qdot = pin.getFrameClassicalAcceleration(self.model, self.data, index_end_effector, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
+        x_star_ddot_end_effector = goal[2]
+
+        error_end_effector = x_star_end_effector - x_end_effector.translation # position error
+        error_dot_end_effector = x_star_dot_end_effector - x_dot_end_effector # velocity error
+        
         # gains
         K1 = 1
         K2 = 2*np.sqrt(K1)
 
-        q_ddot = pinv(J_gripper) @ (x_star_ddot - Jdot_qdot + K2 * e_dot + K1 * e)
+        q_ddot = pinv(J_end_effector) @ (x_star_ddot_end_effector - Jdot_qdot + K2 * error_dot_end_effector + K1 * error_end_effector)
 
         # compute the joints velocity
-        q_dot = q_ddot * self.dt + q_dot
+        q_dot = q_dot + q_ddot * self.dt
 
         # compute the next configuration
         q = pin.integrate(self.model, q, q_dot * self.dt)
 
         return q, q_dot
 
-    def plot(self, info):
+    def plotError(self, info):
 
         x_time_axis = np.arange(len(self.log_end_effector)) * self.dt
 
@@ -172,7 +174,7 @@ class TestController:
             plt.xlabel("time (s)")
             plt.ylabel("meters")
 
-            plt.suptitle("title")
+            plt.suptitle(" ")
             fig.supxlabel("dt = 0.04 seconds")
             plt.subplots_adjust(left=0.125,
                     bottom=0.075,
@@ -187,34 +189,34 @@ class TestController:
             plt.subplot(3, 1, 1)
             e1 = [point[0] for point in self.log_end_effector]
             e2 = [point[0][0] for point in self.log_goal]
-            mse_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_x, label='X MSE')
+            e_x = np.subtract(e2, e1)
+            plt.plot(x_time_axis, e_x, label='X error')
             plt.legend()
             plt.title("Position error on X axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             plt.subplot(3, 1, 2)
             e1 = [point[1] for point in self.log_end_effector]
             e2 = [point[0][1] for point in self.log_goal]
-            mse_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_y, label='Y MSE')
+            e_y = np.subtract(e2, e1)
+            plt.plot(x_time_axis, e_y, label='Y error')
             plt.legend()
             plt.title("Position error on Y axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             plt.subplot(3, 1, 3)
             e1 = [point[2] for point in self.log_end_effector]
             e2 = [point[0][2] for point in self.log_goal]
-            mse_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_z, label='Z MSE')
+            e_z = np.subtract(e2, e1)
+            plt.plot(x_time_axis, e_z, label='Z error')
             plt.legend()
             plt.title("Position error on Z axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
-            plt.suptitle("Mean Square Error")
+            plt.suptitle(" ")
             plt.subplots_adjust(left=0.125,
                     bottom=0.075,
                     right=0.9,
@@ -226,5 +228,5 @@ class TestController:
 
 if __name__ == "__main__":
     my_controller = TestController()
-    my_controller.plot(1) # trajectory
-    # my_controller.plot(2) # mean square error  
+    my_controller.plotError(1) # trajectory
+    my_controller.plotError(2) # mean square error  

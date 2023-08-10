@@ -90,6 +90,7 @@ class TrajectoryExactCubic:
         
         if constraints is None:
             self.ec = exact_cubic(self.waypoints, self.time_waypoints) # create the curve
+
         elif len(constraints) == 4:
             try:
                 c = curve_constraints()
@@ -103,10 +104,11 @@ class TrajectoryExactCubic:
                 print("Constraint vector is not correct 1")
                 print(e)
                 sys.exit(0)
+
         elif len(constraints) == 2:
             try:
                 c = curve_constraints()
-                c.init_acc = np.array(constraints[0]).transpose()
+                c.end_vel = np.array(constraints[0]).transpose()
                 c.end_acc = np.array(constraints[1]).transpose()
 
                 self.ec = exact_cubic(self.waypoints, self.time_waypoints, c)
@@ -115,6 +117,18 @@ class TrajectoryExactCubic:
                 print("Constraint vector is not correct 2")
                 print(e)
                 sys.exit(0)
+
+        elif len(constraints) == 1:
+            try:
+                c = curve_constraints()
+                c.end_vel = np.array(constraints[0]).transpose()
+                self.ec = exact_cubic(self.waypoints, self.time_waypoints, c)
+
+            except Exception as e:
+                print("Constraint vector is not correct 2")
+                print(e)
+                sys.exit(0)
+
         else:
             print("Constraint vector is not correct 3")
             sys.exit(0)

@@ -1,5 +1,6 @@
 import numpy as np
 import pinocchio as pin
+from gepetto.corbaserver import Color
 import math
 
 import sys
@@ -34,6 +35,12 @@ class StateMahineScenario6:
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self.t0 = 0
 
+        if self.viz is not None:
+            # to visualize the trajectory
+            self.viz.viewer.gui.addSphere("world/pinocchio/goal_end_effector", 0.01, Color.yellow)
+            self.viz.viewer.gui.addSphere("world/pinocchio/goal_base", 0.01, Color.green)
+            
+
 
     def updateState(self, q, dq, i, add_goal_viz=True):
         """
@@ -58,10 +65,10 @@ class StateMahineScenario6:
 
             # self.goal = self.circle_trajectory.getPoint(int(math.radians(i%360)))
 
-            goal_gripper = [[0.4, -0.015, 0.3], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]]
+            self.goal_gripper = [[0.4, -0.015, 0.3], [0.01, 0.01, 0.01], [0.01, 0.01, 0.01]]
 
             q, dq, task_finished = controllerCLIK2ndorderBase(q, dq, self.dt, self.robot, self.init,\
-                    self.viz, self.q0_ref, goal_gripper, base_task=self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', 0))
+                    self.viz, self.q0_ref, self.goal_gripper, base_task=self.goal, add_goal_sphere=False, orientation=pin.utils.rotate('y', 0))
 
             self.init = False
 
@@ -79,6 +86,14 @@ class StateMahineScenario6:
                 self.current_state = 2
                 self.trajectory_i = 0
 
-
+        if self.viz is not None:
+            a = self.goal[0]
+            a = np.hstack([a, [0, 0, 0, 1]])
+            self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal_base", list(a))
+            self.viz.viewer.gui.refresh()
+            a = self.goal_gripper[0]
+            a = np.hstack([a, [0, 0, 0, 1]])
+            self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal_end_effector", list(a))
+            self.viz.viewer.gui.refresh()
 
         return q, dq, self.goal
