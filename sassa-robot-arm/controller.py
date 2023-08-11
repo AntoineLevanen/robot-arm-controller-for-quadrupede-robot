@@ -143,7 +143,7 @@ def controllerCLIK2ndorder(q_current, q_dot_current, dt, robot, init, viz, q0_re
     # second order Closed Loop Inverse Kinematics, 2nd order CLIK
 
     # Run the algorithms that outputs values in robot.data
-    robot.forwardKinematics(q_current, v=q_dot_current, a=0 * q_dot_current)
+    pin.forwardKinematics(robot.model, robot.data, q_current, v=q_dot_current, a=0 * q_dot_current)
     pin.computeJointJacobians(robot.model,robot.data,q_current)
 
     # compute feet position error and Jacobian
