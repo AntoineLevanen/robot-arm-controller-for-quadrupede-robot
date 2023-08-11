@@ -38,6 +38,8 @@ class CircleTrajectory:
         self.d2x = []
         self.d2y = []
         self.d2z = []
+        self.dt = dt
+        self.duration = duration
         self.loop_duration = int(duration / dt) 
 
     def circleTrajectoryXY(self, x_center, y_center, z_center, raduis, omega):
@@ -65,6 +67,24 @@ class CircleTrajectory:
             self.d2x.append(- omega**2 * raduis * sin(omega * d2r(a * i)))
             self.d2y.append(- omega**2 * raduis * cos(omega * d2r(a * i)))
             self.d2z.append(0)
+
+    def circleTrajectoryXY2(self, x_center, y_center, z_center, raduis, i):
+        a = np.pi * 2 / self.loop_duration
+        x = x_center + raduis * sin(a * i)
+        y = y_center + raduis * cos(a * i)
+        z = z_center
+
+        dx = a * raduis * cos(a * i)
+        dy = -a * raduis * sin(a * i)
+        dz = 0
+
+        d2x = - a**2 * raduis * sin(a * i)
+        d2y = - a**2 * raduis * cos(a * i)
+        d2z = 0
+
+        return [[x, y, z], [dx, dy, dz], [d2x, d2y, d2z]]
+
+        
 
     def circleTrajectoryYZ(self, x_center, y_center, z_center, raduis, omega):
         
@@ -143,25 +163,52 @@ def mainCircleTrajectory():
     err3y = []
 
 
+    # for i in range(my_trajectory.loop_duration):
+    #     t = i * dt
+    #     err1x.append(my_trajectory.getPoint(i)[0][0])
+    #     err1y.append(my_trajectory.getPoint(i)[0][1])
+
+    #     err2x.append(my_trajectory.getPoint(i)[1][0])
+    #     err2y.append(my_trajectory.getPoint(i)[1][1])
+        
+    #     err3x.append(my_trajectory.getPoint(i)[2][0])
+    #     err3y.append(my_trajectory.getPoint(i)[2][1])
+
     for i in range(my_trajectory.loop_duration):
         t = i * dt
-        err1x.append(my_trajectory.getPoint(i)[0][0])
-        err1y.append(my_trajectory.getPoint(i)[0][1])
+        err1x.append(my_trajectory.circleTrajectoryXY2(0.4, -0.05, 0.2, 0.14, i)[0][0])
+        err1y.append(my_trajectory.circleTrajectoryXY2(0.4, -0.05, 0.2, 0.14, i)[0][1])
 
-        err2x.append(my_trajectory.getPoint(i)[1][0])
-        err2y.append(my_trajectory.getPoint(i)[1][1])
+        err2x.append(my_trajectory.circleTrajectoryXY2(0.4, -0.05, 0.2, 0.14, i)[1][0])
+        err2y.append(my_trajectory.circleTrajectoryXY2(0.4, -0.05, 0.2, 0.14, i)[1][1])
         
-        err3x.append(my_trajectory.getPoint(i)[2][0])
-        err3y.append(my_trajectory.getPoint(i)[2][1])
+        err3x.append(my_trajectory.circleTrajectoryXY2(0.4, -0.05, 0.2, 0.14, i)[2][0])
+        err3y.append(my_trajectory.circleTrajectoryXY2(0.4, -0.05, 0.2, 0.14, i)[2][1])
 
-    plt.subplot(1, 3, 1)
-    plt.plot(err1x, err1y)
+    print(len(err1x))
+    
 
-    plt.subplot(1, 3, 2)
-    plt.plot(err2x, err2y)
+    # plt.subplot(1, 3, 1)
+    # plt.plot(err1x, err1y)
 
-    plt.subplot(1, 3, 3)
-    plt.plot(err3x, err3y)
+    # plt.subplot(1, 3, 2)
+    # plt.plot(err2x, err2y)
+
+    # plt.subplot(1, 3, 3)
+    # plt.plot(err3x, err3y)
+
+    # plt.show()
+
+    x_axis = np.arange(len(err1x)) * my_trajectory.dt
+
+    plt.subplot(3, 1, 1)
+    plt.plot(x_axis, err1x)
+
+    plt.subplot(3, 1, 2)
+    plt.plot(x_axis, err2x)
+
+    plt.subplot(3, 1, 3)
+    plt.plot(x_axis, err3x)
 
     plt.show()
 
