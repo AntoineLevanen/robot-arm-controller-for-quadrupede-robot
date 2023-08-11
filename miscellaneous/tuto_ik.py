@@ -20,26 +20,36 @@ from IPython import embed
 
 class Controller:
 
-    def __init__(self):
-        mesh_dir_path = os.path.abspath("urdf/sassa-robot/")
-        urdf_model_path = os.path.abspath("urdf/sassa-robot/robot.urdf")
-        self.robot = RobotWrapper.BuildFromURDF(urdf_model_path, mesh_dir_path, pin.JointModelFreeFlyer())
-        self.robot.initViewer(loadModel=True)
-        self.viz = initViz(self.robot, 1)
+    def __init__(self, robot=None, viz=None, q=None):
+        if robot is None:
+            mesh_dir_path = os.path.abspath("urdf/sassa-robot/")
+            urdf_model_path = os.path.abspath("urdf/sassa-robot/robot.urdf")
+            self.robot = RobotWrapper.BuildFromURDF(urdf_model_path, mesh_dir_path, pin.JointModelFreeFlyer())
+            self.robot.initViewer(loadModel=True)
+
+            # for the new frame
+            Z = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]) # np.eye(3)
+            frame_index = self.robot.model.getFrameId('OT')
+            parent_frame_index = self.robot.model.frames[frame_index].parent
+            eff = np.array([0.09, -0.008, 0.03])
+            new_frame_index = self.robot.model.addFrame(pin.Frame('framegripper', parent_frame_index, frame_index, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
+
+            self.robot.data = self.robot.model.createData()
+        else:
+            self.robot = robot
+
+        if viz is None:
+            self.viz = initViz(self.robot, 1)
+        else:
+            self.viz = viz
  
         # create valid configuration
-        self.q = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
+        if q is None:
+            self.q = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                                     np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
+        else:
+            self.q = q
         self.robot.display(self.q)
-
-        # for the new frame
-        Z = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]) # np.eye(3)
-        frame_index = self.robot.model.getFrameId('OT')
-        parent_frame_index = self.robot.model.frames[frame_index].parent
-        eff = np.array([0.09, -0.008, 0.03])
-        new_frame_index = self.robot.model.addFrame(pin.Frame('framegripper', parent_frame_index, frame_index, pin.SE3(Z, eff), pin.FrameType.OP_FRAME))
-
-        self.robot.data = self.robot.model.createData()
 
         x_star_end_effector = pin.SE3(np.eye(3), np.array([0.58679037, -0.035, 0.09079037]))
         self.robot.viewer.gui.addXYZaxis('world/framegoal', [1., 0., 0., 1.], .015, 0.1)
@@ -51,15 +61,25 @@ class Controller:
         self.dt = 0.001
         self.duration = 20
 
-        # trajectory
-        control_point = [[0.5586, -0.015, 0.4569], [0.5, -0.015, 0.44], [0.4, -0.1, 0.3], [0.4, 0.0, 0.4], [0.4, 0.1, 0.3], [0.5, -0.2, 0.4], [0.4, 0.2, 0.4]]
-        c_vel = [0, 0, 0]
-        self.my_trajectory = TrajectoryExactCubic(control_point, 0, self.duration) #, constraints=[c_vel, c_vel, c_vel, c_vel])
-
-        self.viz.viewer.gui.addCurve("world/pinocchio/curve_1", self.my_trajectory.getAllPoint(self.dt), Color.lightBlue)
-
         self.index_end_effector = self.robot.model.getFrameId('framegripper')
         self.q_dot = np.zeros(self.robot.model.nv)
+
+
+    def defineTrajectory(self, control_point=None, constrain=None):
+        # trajectory
+        if control_point is None:
+            control_point = [[0.5586, -0.015, 0.4569], [0.5, -0.015, 0.44], [0.4, -0.1, 0.3], [0.4, 0.0, 0.4], [0.4, 0.1, 0.3], [0.5, -0.2, 0.4], [0.4, 0.2, 0.4]]
+        
+        if constrain is None:
+            # add contrains
+            c_vel = [0, 0, 0]
+
+        self.my_trajectory = TrajectoryExactCubic(control_point, 0, self.duration) # , constraints=[c_vel, c_vel, c_vel, c_vel])
+
+
+    def showTrajectory(self):
+        self.viz.viewer.gui.addCurve("world/pinocchio/curve_1", self.my_trajectory.getAllPoint(self.dt), Color.lightBlue)
+
 
     def place(self, name, M):
         """move frame in gepetto viewer"""
@@ -144,7 +164,7 @@ class Controller:
             trajectory_point_velocity = trajectory_point[1]
             trajectory_point_acceleration = trajectory_point[2]
 
-            orientation = pin.utils.rotate('y', np.pi/3)
+            orientation = pin.utils.rotate('y', 0)
 
             J_end_effector = pin.computeFrameJacobian(self.robot.model, self.robot.data, self.q, self.index_end_effector, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
             J_end_effector = np.vstack([J_end_effector[:3,:], J_end_effector[4,:]])
@@ -296,5 +316,7 @@ class Controller:
 
 if __name__ == "__main__":
     my_controller = Controller()
+    my_controller.defineTrajectory()
+    my_controller.showTrajectory()
     my_controller.controllerCLIK(enable_viz=False)
     my_controller.plotValues()

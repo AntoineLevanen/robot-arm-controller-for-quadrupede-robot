@@ -29,14 +29,14 @@ class StateMahineScenario1:
             frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
             self.control_point1 = [frame_EF, [0.35, 0.05, 0.05]] # [0.35, 0.045, 0.4],
             self.control_point2 = [self.control_point1[-1], [0.35, 0.0, 0.11], [0.35, -0.05, 0.05]]
-        self.end_time = 40
-        self.end_time2 = 40
+        self.end_time = 10
+        self.end_time2 = 10
         init_vel = [0, 0, 0]
         end_vel = [0, 0, 0]
         init_acc = [0, 0, 0]
         end_acc = [0, 0, 0]
         self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time, constraints=[init_acc, end_acc])
-        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2, constraints=[init_vel, end_vel, init_acc, end_acc])
+        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2, constraints=[init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -74,7 +74,7 @@ class StateMahineScenario1:
             q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
                                                  add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', end_effector_rotation), eps=0.01)
 
-            # q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
+            q, _ = actuate_gripper(self.robot, q, self.dt, action="open")
 
             self.init = False
 
@@ -110,7 +110,7 @@ class StateMahineScenario1:
 
             self.init = False
             
-            if task_finished and self.trajectory_i >= int(self.end_time2 / self.dt) - 1:
+            if self.trajectory_i >= int(self.end_time2 / self.dt) - 1:
                 self.current_state = 3
                 self.trajectory_i = 0
                 self.init = True
@@ -144,7 +144,7 @@ class StateMahineScenario1:
             
             self.init = False
             
-            if task_finished and self.trajectory_i <= 0:
+            if self.trajectory_i <= 0:
                 self.current_state = 2
                 self.trajectory_i = 0
                 self.init = True
