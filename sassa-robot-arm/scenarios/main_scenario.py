@@ -72,7 +72,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
 
     def plot_figure(self, info, save_image=False):
         """
@@ -80,7 +80,7 @@ class MainScenario:
         info = 2 : plot Gripper error, position
         info = 3 : plot Gripper error, velocity
         """
-        x_time_axis = np.arange(len(self.log_end_effector_1)) * 0.04
+        x_time_axis = np.arange(len(self.log_end_effector_1)) * 0.001
 
         if info == 1:
             # log test 1
@@ -226,8 +226,8 @@ class MainScenario:
             plt.xlabel("time (s)")
             plt.ylabel("meters")
 
-            plt.suptitle(self.plot_title)
-            fig.supxlabel("dt = 0.04 seconds")
+            plt.suptitle(" ")
+            # fig.supxlabel("dt = 0.04 seconds")
             # plt.subplot_tool()
             plt.subplots_adjust(left=0.125,
                     bottom=0.075,
@@ -309,7 +309,7 @@ class MainScenario:
             if save_image:
                 plt.savefig(self.plot_path + "/EndEffectorVelocity.png")
 
-    def meanSquaredError(self, info, save_image=False):       
+    def plot_Error(self, info, save_image=False):       
         """
         Mean square error
         info = 1 : plot CoM error, position
@@ -318,14 +318,14 @@ class MainScenario:
         """
         fig = plt.figure()
 
-        x_time_axis = np.arange(len(self.log_end_effector_1)) * 0.04
+        x_time_axis = np.arange(len(self.log_end_effector_1)) * 0.001
 
         if info == 1:
             plt.subplot(3, 2, 1)
             e1 = [point[0] for point in self.log_com_1]
             e2 = np.zeros(len(e1))
-            mse_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_x, label='X MSE')
+            error_x = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_x, label='X MSE')
             plt.legend()
             # plt.ylim([0.3, 0.56])
             plt.title("Sassa with long arm" + "\n" + "Position error on X axis")
@@ -334,8 +334,8 @@ class MainScenario:
 
             plt.subplot(3, 2, 3)
             e1 = [point[1] for point in self.log_com_1]
-            mse_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_y, label='Y MSE')
+            error_y = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_y, label='Y MSE')
             plt.legend()
             plt.title("Position error on Y axis")
             plt.xlabel("time (s)")
@@ -343,8 +343,8 @@ class MainScenario:
 
             plt.subplot(3, 2, 5)
             e1 = [point[2] for point in self.log_com_1]
-            mse_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_z, label='Z MSE')
+            error_z = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_z, label='Z MSE')
             plt.legend()
             plt.title("Position error on Z axis")
             plt.xlabel("time (s)")
@@ -353,8 +353,8 @@ class MainScenario:
             # log test 2
             plt.subplot(3, 2, 2)
             e1 = [point[0] for point in self.log_com_2]
-            mse_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_x, label='X MSE')
+            error_x = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_x, label='X MSE')
             plt.legend()
             plt.title("Sassa with short arm" + "\n" + "Position error on X axis")
             plt.xlabel("time (s)")
@@ -362,8 +362,8 @@ class MainScenario:
 
             plt.subplot(3, 2, 4)
             e1 = [point[1] for point in self.log_com_2]
-            mse_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_y, label='Y MSE')
+            error_y = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_y, label='Y MSE')
             plt.legend()
             plt.title("Position error on Y axis")
             plt.xlabel("time (s)")
@@ -371,8 +371,8 @@ class MainScenario:
 
             plt.subplot(3, 2, 6)
             e1 = [point[2] for point in self.log_com_2]
-            mse_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_z, label='Z MSE')
+            error_z = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_z, label='Z MSE')
             plt.legend()
 
             plt.title("Position error on Z axis")
@@ -395,66 +395,66 @@ class MainScenario:
             plt.subplot(3, 2, 1)
             e1 = [point[0][0] for point in self.log_end_effector_1]
             e2 = [point[0][0] for point in self.log_goal_1]
-            mse_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_x, label='X MSE')
+            error_x = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_x, label='X axis error')
             plt.legend()
             # plt.ylim([0.3, 0.56])
             plt.title("Sassa with long arm" + "\n" + "Position error on X axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             plt.subplot(3, 2, 3)
             e1 = [point[0][1] for point in self.log_end_effector_1]
             e2 = [point[0][1] for point in self.log_goal_1]
-            mse_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_y, label='Y MSE')
+            error_y = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_y, label='Y axis error')
             plt.legend()
             plt.title("Position error on Y axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             plt.subplot(3, 2, 5)
             e1 = [point[0][2] for point in self.log_end_effector_1]
             e2 = [point[0][2] for point in self.log_goal_1]
-            mse_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_z, label='Z MSE')
+            error_z = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_z, label='Z axis error')
             plt.legend()
             plt.title("Position error on Z axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             # log test 2
             plt.subplot(3, 2, 2)
             e1 = [point[0][0] for point in self.log_end_effector_2]
             e2 = [point[0][0] for point in self.log_goal_2]
-            mse_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_x, label='X MSE')
+            error_x = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_x, label='X axis error')
             plt.legend()
             plt.title("Sassa with short arm" + "\n" + "Position error on X axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             plt.subplot(3, 2, 4)
             e1 = [point[0][1] for point in self.log_end_effector_2]
             e2 = [point[0][1] for point in self.log_goal_2]
-            mse_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_y, label='Y MSE')
+            error_y = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_y, label='Y axis error')
             plt.legend()
             plt.title("Position error on Y axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            plt.ylabel("meter")
 
             plt.subplot(3, 2, 6)
             e1 = [point[0][2] for point in self.log_end_effector_2]
             e2 = [point[0][2] for point in self.log_goal_2]
-            mse_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, mse_z, label='Z MSE')
+            error_z = np.square(np.subtract(e2, e1))
+            plt.plot(x_time_axis, error_z, label='Z axis error')
             plt.legend()
 
             plt.title("Position error on Z axis")
             plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
-            plt.suptitle(self.plot_title)
+            plt.ylabel("meter")
+            plt.suptitle(" ")
             # plt.subplot_tool()
             plt.subplots_adjust(left=0.125,
                     bottom=0.075,
@@ -476,4 +476,4 @@ if __name__ == "__main__":
     #     info_to_plot = i+1
     test1.plot_figure(2, save_image=False)
     #     test1.plot_figure(3, save_image=False)
-    test1.meanSquaredError(2, save_image=False)
+    test1.plot_Error(2, save_image=False)

@@ -29,7 +29,8 @@ class StateMahineScenario1:
             frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
             self.control_point1 = [frame_EF, [0.35, 0.05, 0.05]] # [0.35, 0.045, 0.4],
             self.control_point2 = [self.control_point1[-1], [0.35, 0.0, 0.11], [0.35, -0.05, 0.05]]
-        self.end_time = 10
+            self.control_point3 = [[0.35, -0.05, 0.05], [0.35, 0.0, 0.11], self.control_point1[-1]]
+        self.end_time = 6
         self.end_time2 = 10
         init_vel = [0, 0, 0]
         end_vel = [0, 0, 0]
@@ -37,6 +38,7 @@ class StateMahineScenario1:
         end_acc = [0, 0, 0]
         self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time, constraints=[init_acc, end_acc])
         self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2, constraints=[init_acc, end_acc])
+        self.trajectory3 = TrajectoryExactCubic(self.control_point3, 0, self.end_time2, constraints=[init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -126,21 +128,20 @@ class StateMahineScenario1:
 
             if task_finished:
                 self.current_state = 4
-                self.trajectory_i = int(self.end_time2 / self.dt) - 1
+                self.trajectory_i = 0 # int(self.end_time2 / self.dt) - 1
                 self.init = True
 
         
         elif self.current_state == 4:
             # go to first pick point
-            if self.trajectory_i < 0:
-                self.trajectory_i = 0
+            if self.trajectory_i > int(self.end_time2 / self.dt) - 1:
+                self.trajectory_i = int(self.end_time2 / self.dt) - 1
 
-            self.goal = self.trajectory2.getPoint3d(self.trajectory_i, self.dt)
-            self.trajectory_i = self.trajectory_i - 1
+            self.goal = self.trajectory3.getPoint3d(self.trajectory_i, self.dt)
+            self.trajectory_i = self.trajectory_i + 1
 
             q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal, \
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3), eps=0.01) # np.pi/3
-            q, task_finished = actuate_gripper(self.robot, q, self.dt, action="open")
+                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', np.pi/3), eps=0.01)
             
             self.init = False
             

@@ -31,8 +31,8 @@ def scenario5(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         # com_projection = CenterOfMass(viz, sassa, "com")
         
 
-    duration = 60 # vizualization duration
-    dt = 0.01 # delta time
+    duration = 40 # vizualization duration
+    dt = 0.001 # delta time
 
     # robot start configuration, velocity and acceleration
     q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
@@ -203,7 +203,8 @@ def scenario5(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
         viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightGreen)
         viz.viewer.gui.addCurve("world/pinocchio/curve_3", my_state_machine.trajectory3.getAllPoint(dt), Color.lightRed)
-        viz.viewer.gui.addCurve("world/pinocchio/curve_4", my_state_machine.trajectory3.getAllPoint(dt), Color.lightWhite)
+        viz.viewer.gui.addCurve("world/pinocchio/curve_4", my_state_machine.trajectory4.getAllPoint(dt), Color.lightWhite)
+        
 
 
     # main loop, updating the configuration vector q

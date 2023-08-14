@@ -136,7 +136,7 @@ class TrajectoryExactCubic:
 
     def getPoint3d(self, i, dt): 
         # get the point position, velocity and acceleration
-        return [self.ec(i*dt), self.ec.derivate(i*dt, 1), self.ec.derivate(i*dt, 2)]
+        return np.array([self.ec(i*dt), self.ec.derivate(i*dt, 1), self.ec.derivate(i*dt, 2)])
 
     def getPoint6d(self, i, dt):
         return None

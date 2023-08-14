@@ -26,18 +26,19 @@ class StateMahineScenario5:
         x_offset = -0.06
         IDX_Gripper = self.robot.model.getFrameId('framegripper')
         frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1] # [0.55+x_offset, -0.015, 0.40]
-        self.control_point1 = [frame_EF, [0.52+x_offset, 0.05, 0.40], [0.52+x_offset, 0.1, 0.40]]
-        self.control_point2 = [self.control_point1[-1], [0.50+x_offset, 0.1, 0.35], [0.52+x_offset, 0.1, 0.30]]
-        self.control_point3 = [self.control_point2[-1], [0.47+x_offset, 0.1, 0.30], [0.47+x_offset, -0.05, 0.40]]
+        self.control_point1 = [frame_EF, [0.52+x_offset, 0.05, 0.45], [0.52+x_offset, 0.1, 0.45]]
+        self.control_point2 = [self.control_point1[-1], [0.50+x_offset, 0.1, 0.40], [0.52+x_offset, 0.1, 0.35]]
+        self.control_point3 = [self.control_point2[-1], [0.47+x_offset, 0.1, 0.35], [0.47+x_offset, -0.05, 0.45], \
+                                                        [0.50+x_offset, -0.05, 0.45], [0.55+x_offset, -0.05, 0.45]]
 
-        self.control_point4 = [self.control_point3[-1], [0.50+x_offset, -0.05, 0.40], [0.55+x_offset, -0.05, 0.40], \
-                                                        [0.50+x_offset, -0.05, 0.40], [0.50+x_offset, 0.0, 0.40]]
-        self.control_point = np.concatenate([self.control_point1, self.control_point2])
+        self.control_point4 = [self.control_point3[-1], [0.50+x_offset, -0.05, 0.45], [0.55+x_offset, -0.05, 0.45]]
 
-        self.end_time1 = 30
-        self.end_time2 = 10
-        self.end_time3 = 30
-        self.end_time4 = 40
+        self.control_point5 = [[0.55+x_offset, -0.05, 0.45], [0.50+x_offset, -0.05, 0.45], self.control_point3[-1]]
+
+        self.end_time1 = 6
+        self.end_time2 = 8
+        self.end_time3 = 6
+        self.end_time4 = 10
 
         init_vel = [0, 0, 0]
         end_vel = [0, 0, 0]
@@ -45,9 +46,10 @@ class StateMahineScenario5:
         end_acc = [0, 0, 0]
 
         self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time1, constraints=[init_vel, end_vel, init_acc, end_acc])
-        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2, constraints=[init_acc, end_acc])
-        self.trajectory3 = TrajectoryExactCubic(self.control_point3, 0, self.end_time3, constraints=[init_acc, end_acc])
+        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time2)
+        self.trajectory3 = TrajectoryExactCubic(self.control_point3, 0, self.end_time3)# , constraints=[init_acc, end_acc])
         self.trajectory4 = TrajectoryExactCubic(self.control_point4, 0, self.end_time4, constraints=[init_acc, end_acc])
+        self.trajectory5 = TrajectoryExactCubic(self.control_point5, 0, self.end_time4, constraints=[init_vel, end_vel, init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -142,7 +144,7 @@ class StateMahineScenario5:
             self.init = False
 
             if self.trajectory_i >= int(self.end_time3 / self.dt) - 1:
-                self.current_state = 5
+                self.current_state = 6
                 self.init = True
                 self.trajectory_i = 0
 
@@ -167,6 +169,27 @@ class StateMahineScenario5:
                 self.current_state = 6
                 self.init = True
                 self.trajectory_i = 0
+
+        
+        elif self.current_state == 6:
+            # go back
+            if self.trajectory_i > ((self.end_time4 / self.dt) - 1):
+                self.trajectory_i = ((self.end_time4 / self.dt) - 1)
+
+            self.goal = self.trajectory5.getPoint3d(self.trajectory_i, self.dt)
+            self.trajectory_i = self.trajectory_i + 1
+
+            q, dq, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
+                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.003)
+
+
+            self.init = False
+
+            if task_finished and self.trajectory_i >= int(self.end_time4 / self.dt):
+                self.current_state = 7
+                self.init = True
+                self.trajectory_i = 0
+
 
         if self.viz is not None:
             a = self.goal[0]

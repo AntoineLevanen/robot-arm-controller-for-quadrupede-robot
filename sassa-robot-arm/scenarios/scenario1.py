@@ -38,7 +38,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     else:
         enable_viz = False
         
-    duration = 60 # vizualization duration
+    duration = 30 # vizualization duration
     dt = 0.001 # delta time
 
     # robot start configuration, velocity
@@ -210,6 +210,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     if enable_viz == 1:
         viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
         viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightYellow)
+        viz.viewer.gui.addCurve("world/pinocchio/curve_3", my_state_machine.trajectory3.getAllPoint(dt), Color.lightRed)
 
     # main loop, updating the configuration vector q
     for i in range(int(duration / dt)):
@@ -267,6 +268,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     if enable_viz == 1:
         viz.viewer.gui.deleteNode("world/pinocchio/curve_1", True)
         viz.viewer.gui.deleteNode("world/pinocchio/curve_2", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/curve_3", True)
         viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)
         viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_1", True)
         viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_2", True)
