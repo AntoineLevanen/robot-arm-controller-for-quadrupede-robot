@@ -25,27 +25,27 @@ class MainScenario:
         # pick and place
         if scenario_num == 1:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=0, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
             self.plot_title = "Pick and place"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_1"
 
         # Look on top of a table
         elif scenario_num == 2:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
+                 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
             self.plot_title = "Look on top of a table"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_2"
 
         # move a box around
         elif scenario_num == 3:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario3(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
+                 = scenario3(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
             self.plot_title = "Move a box around"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_3"
 
@@ -54,23 +54,23 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario4(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+                 = scenario4(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
             self.plot_title = "Look closely to something on the ground"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_4"
 
         # actuate lever and button
         elif scenario_num == 5:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=0, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
             self.plot_title = "Actuate lever and button"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_5"
 
         # actuate lever and button
         elif scenario_num == 6:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
+                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
                  = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
 
@@ -142,13 +142,12 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.suptitle(self.plot_title)
-            fig.supxlabel("dt = 0.04 seconds")
 
-            plt.subplots_adjust(left=0.125,
+            plt.subplots_adjust(left=0.2,
                 bottom=0.075,
-                right=0.9,
+                right=0.8,
                 top=0.92,
-                wspace=0.45, # 0.2
+                wspace=0.2, # 0.2
                 hspace=0.37)
 
             plt.show()
@@ -229,12 +228,12 @@ class MainScenario:
             plt.suptitle(" ")
             # fig.supxlabel("dt = 0.04 seconds")
             # plt.subplot_tool()
-            plt.subplots_adjust(left=0.125,
-                    bottom=0.075,
-                    right=0.9,
-                    top=0.92,
-                    wspace=0.45,
-                    hspace=0.37)
+            plt.subplots_adjust(left=0.2,
+                bottom=0.075,
+                right=0.8,
+                top=0.92,
+                wspace=0.2, # 0.2
+                hspace=0.37)
             plt.show()
             if save_image:
                 plt.savefig(self.plot_path + "/EndEffector.png")
@@ -296,13 +295,12 @@ class MainScenario:
             # plt.ylim([0.275, 0.4])
 
             plt.suptitle(self.plot_title)
-            fig.supxlabel('dt = 0.04 seconds, duration = 60 seconds')
 
-            plt.subplots_adjust(left=0.125,
+            plt.subplots_adjust(left=0.2,
                 bottom=0.075,
-                right=0.9,
+                right=0.8,
                 top=0.92,
-                wspace=0.45, # 0.2
+                wspace=0.2, # 0.2
                 hspace=0.37)
 
             plt.show()
@@ -321,75 +319,76 @@ class MainScenario:
         x_time_axis = np.arange(len(self.log_end_effector_1)) * 0.001
 
         if info == 1:
-            plt.subplot(3, 2, 1)
-            e1 = [point[0] for point in self.log_com_1]
-            e2 = np.zeros(len(e1))
-            error_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, error_x, label='X MSE')
-            plt.legend()
-            # plt.ylim([0.3, 0.56])
-            plt.title("Sassa with long arm" + "\n" + "Position error on X axis")
-            plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            # plt.subplot(3, 2, 1)
+            # e1 = [point[0] for point in self.log_com_1]
+            # e2 = np.zeros(len(e1))
+            # error_x = np.square(np.subtract(e2, e1))
+            # plt.plot(x_time_axis, error_x, label='X MSE')
+            # plt.legend()
+            # # plt.ylim([0.3, 0.56])
+            # plt.title("Sassa with long arm" + "\n" + "Position error on X axis")
+            # plt.xlabel("time (s)")
+            # plt.ylabel("Mean square error")
 
-            plt.subplot(3, 2, 3)
-            e1 = [point[1] for point in self.log_com_1]
-            error_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, error_y, label='Y MSE')
-            plt.legend()
-            plt.title("Position error on Y axis")
-            plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            # plt.subplot(3, 2, 3)
+            # e1 = [point[1] for point in self.log_com_1]
+            # error_y = np.square(np.subtract(e2, e1))
+            # plt.plot(x_time_axis, error_y, label='Y MSE')
+            # plt.legend()
+            # plt.title("Position error on Y axis")
+            # plt.xlabel("time (s)")
+            # plt.ylabel("Mean square error")
 
-            plt.subplot(3, 2, 5)
-            e1 = [point[2] for point in self.log_com_1]
-            error_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, error_z, label='Z MSE')
-            plt.legend()
-            plt.title("Position error on Z axis")
-            plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            # plt.subplot(3, 2, 5)
+            # e1 = [point[2] for point in self.log_com_1]
+            # error_z = np.square(np.subtract(e2, e1))
+            # plt.plot(x_time_axis, error_z, label='Z MSE')
+            # plt.legend()
+            # plt.title("Position error on Z axis")
+            # plt.xlabel("time (s)")
+            # plt.ylabel("Mean square error")
 
-            # log test 2
-            plt.subplot(3, 2, 2)
-            e1 = [point[0] for point in self.log_com_2]
-            error_x = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, error_x, label='X MSE')
-            plt.legend()
-            plt.title("Sassa with short arm" + "\n" + "Position error on X axis")
-            plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            # # log test 2
+            # plt.subplot(3, 2, 2)
+            # e1 = [point[0] for point in self.log_com_2]
+            # error_x = np.square(np.subtract(e2, e1))
+            # plt.plot(x_time_axis, error_x, label='X MSE')
+            # plt.legend()
+            # plt.title("Sassa with short arm" + "\n" + "Position error on X axis")
+            # plt.xlabel("time (s)")
+            # plt.ylabel("Mean square error")
 
-            plt.subplot(3, 2, 4)
-            e1 = [point[1] for point in self.log_com_2]
-            error_y = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, error_y, label='Y MSE')
-            plt.legend()
-            plt.title("Position error on Y axis")
-            plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
+            # plt.subplot(3, 2, 4)
+            # e1 = [point[1] for point in self.log_com_2]
+            # error_y = np.square(np.subtract(e2, e1))
+            # plt.plot(x_time_axis, error_y, label='Y MSE')
+            # plt.legend()
+            # plt.title("Position error on Y axis")
+            # plt.xlabel("time (s)")
+            # plt.ylabel("Mean square error")
 
-            plt.subplot(3, 2, 6)
-            e1 = [point[2] for point in self.log_com_2]
-            error_z = np.square(np.subtract(e2, e1))
-            plt.plot(x_time_axis, error_z, label='Z MSE')
-            plt.legend()
+            # plt.subplot(3, 2, 6)
+            # e1 = [point[2] for point in self.log_com_2]
+            # error_z = np.square(np.subtract(e2, e1))
+            # plt.plot(x_time_axis, error_z, label='Z MSE')
+            # plt.legend()
 
-            plt.title("Position error on Z axis")
-            plt.xlabel("time (s)")
-            plt.ylabel("Mean square error")
-            plt.suptitle(self.plot_title)
-            # plt.subplot_tool()
-            plt.subplots_adjust(left=0.125,
-                    bottom=0.075,
-                    right=0.9,
-                    top=0.92,
-                    wspace=0.45, # 0.2
-                    hspace=0.37)
+            # plt.title("Position error on Z axis")
+            # plt.xlabel("time (s)")
+            # plt.ylabel("Mean square error")
+            # plt.suptitle(self.plot_title)
+            # # plt.subplot_tool()
+            # plt.subplots_adjust(left=0.125,
+            #         bottom=0.075,
+            #         right=0.9,
+            #         top=0.92,
+            #         wspace=0.45, # 0.2
+            #         hspace=0.37)
 
-            plt.show()
-            if save_image:
-                plt.savefig(self.plot_path + "/CoM_MSE.png")
+            # plt.show()
+            # if save_image:
+            #     plt.savefig(self.plot_path + "/CoM_MSE.png")
+            pass
 
         elif info == 2:
             plt.subplot(3, 2, 1)
@@ -456,12 +455,12 @@ class MainScenario:
             plt.ylabel("meter")
             plt.suptitle(" ")
             # plt.subplot_tool()
-            plt.subplots_adjust(left=0.125,
-                    bottom=0.075,
-                    right=0.9,
-                    top=0.92,
-                    wspace=0.45, # 0.2
-                    hspace=0.37)
+            plt.subplots_adjust(left=0.2,
+                bottom=0.075,
+                right=0.8,
+                top=0.92,
+                wspace=0.2, # 0.2
+                hspace=0.37)
 
             plt.show()
             if save_image:
@@ -472,8 +471,7 @@ class MainScenario:
 
 if __name__ == "__main__":
     test1 = MainScenario(scenario_num=1)
-    # for i in range(3):
-    #     info_to_plot = i+1
-    test1.plot_figure(2, save_image=False)
-    #     test1.plot_figure(3, save_image=False)
-    test1.plot_Error(2, save_image=False)
+    for i in range(3):
+        info_to_plot = i+1
+        test1.plot_figure(i, save_image=False)
+        test1.plot_Error(i, save_image=False)

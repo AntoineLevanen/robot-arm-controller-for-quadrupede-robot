@@ -180,28 +180,53 @@ class TrajectoryExactCubic:
             acc.append(self.ec.derivate(i * dt, 2)[axis])
 
         x_axis = np.arange(len(pos)) * dt
-        
+
+        plt.subplot(3, 1, 1)
         plt.plot(x_axis, pos, label="position")
-        plt.plot(x_axis, vel, label="velocity")
-        plt.plot(x_axis, acc, label="acceleration")
+        plt.legend()
+        plt.title("Position")
         plt.xlabel("time in seconds")
         plt.ylabel("meters")
-        plt.title("Piecewise polynomial curve with it's derivative")
+
+        plt.subplot(3, 1, 2)
+        plt.plot(x_axis, vel, 'g', label="velocity")
         plt.legend()
+        plt.title("Velocity")
+        plt.xlabel("time in seconds")
+        plt.ylabel("meters/s")
+
+        plt.subplot(3, 1, 3)
+        plt.plot(x_axis, acc, 'r', label="acceleration")
+        plt.legend()
+        plt.title("Acceleration")
+        plt.xlabel("time in seconds")
+        plt.ylabel("meters/s²")
+        
+        plt.legend()
+
+        plt.subplots_adjust(left=0.125,
+                bottom=0.075,
+                right=0.9,
+                top=0.92,
+                wspace=0.45,
+                hspace=0.37)
+
+        plt.suptitle("Piecewise polynomial curve with it's derivative")
         plt.show()
 
 
 def mainTrajectory():
-    control_points = [[0.35, 0.1, 0.2], [0.35, 0.0, 0.24], [0.35, -0.1, 0.2]]
+    control_points = [[0.35, 0.1, 0.2], [0.35, -0.1, 0.3]] # [0.35, 0.0, 0.24]
+    control_points = [[0.35, 0.05, 0.05], [0.35, 0.05, 0.10], [0.35, 0.0, 0.3], [0.35, -0.05, 0.1], [0.35, -0.05, 0.05]]
     start_time = 0
     end_time = 10
     init_vel = [0, 0, 0]
     end_vel = [0, 0, 0]
     init_acc = [0, 0, 0]
     end_acc = [0, 0, 0]
-    traj = TrajectoryExactCubic(control_points, start_time, end_time)# , constraints=[init_acc, end_acc])
+    traj = TrajectoryExactCubic(control_points, start_time, end_time, constraints=[init_vel, end_vel, init_acc, end_acc])
     
-    traj.printCurve(dt=0.04)
+    # traj.printCurve(dt=0.04)
     traj.plotCurve()
 
 

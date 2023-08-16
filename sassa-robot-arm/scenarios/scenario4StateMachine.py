@@ -28,7 +28,9 @@ class StateMahineScenario4:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point = [[0.5, -0.015, 0.35], [0.35, 0.1, 0.2], [0.35, -0.1, 0.2], [0.5, -0.015, 0.35]]
+            IDX_Gripper = self.robot.model.getFrameId('framegripper')
+            frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
+            self.control_point = [[0.5, -0.015, 0.35], [0.5, 0.1, 0.2], [0.5, -0.1, 0.2], [0.5, -0.015, 0.35]]
         
         self.end_time = 4
         init_vel = [0, 0, 0]
@@ -73,7 +75,7 @@ class StateMahineScenario4:
 
             self.init = False
 
-            if task_finished and self.trajectory_i >= int(2 / self.dt) - 1:
+            if self.trajectory_i >= int(2 / self.dt) - 1:
                 self.current_state = 0
                 self.init = True
                 self.trajectory_i = 0
@@ -95,7 +97,7 @@ class StateMahineScenario4:
 
             self.init = False
 
-            if task_finished and self.trajectory_i >= self.end_time / self.dt:
+            if self.trajectory_i >= self.end_time / self.dt:
                 self.current_state = 1
                 self.init = True
                 self.trajectory_i = 0
@@ -112,7 +114,6 @@ class StateMahineScenario4:
 
         elif self.current_state == 2:
             # go second capture pos
-            # make sure to avoid Index out of range error (try, except...)
             if self.trajectory_i > ((self.end_time / self.dt) - 1):
                 self.trajectory_i = ((self.end_time / self.dt) - 1)
 
@@ -124,7 +125,7 @@ class StateMahineScenario4:
             
             self.init = False
             
-            if task_finished and self.trajectory_i >= self.end_time / self.dt:
+            if self.trajectory_i >= self.end_time / self.dt:
                 self.current_state = 3
                 self.trajectory_i = 0
                 self.init = True
@@ -156,7 +157,7 @@ class StateMahineScenario4:
             
             self.init = False
             
-            if task_finished and self.trajectory_i >= self.end_time / self.dt:
+            if self.trajectory_i >= self.end_time / self.dt:
                 self.current_state = 5
                 self.trajectory_i = 0
                 self.init = True

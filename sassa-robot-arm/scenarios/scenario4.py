@@ -40,9 +40,8 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
 
     dq_current = np.zeros((sassa.model.nv,))
 
-    sassa.forwardKinematics(q_current)
-    pin.updateFramePlacements(sassa.model, sassa.data)
-    viz.display(q_current)
+    if enable_viz:
+        viz.display(q_current)
 
     my_state_machine = StateMahineScenario4(sassa, viz, dt, q0_ref)
 
@@ -195,11 +194,11 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
         motion_file_path = project_path + "/motion.yaml"
         viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
-
-    viz.viewer.gui.addCurve("world/pinocchio/curve_0", my_state_machine.trajectory0.getAllPoint(dt), Color.lightBrown)
-    viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
-    viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightGreen)
-    viz.viewer.gui.addCurve("world/pinocchio/curve_3", my_state_machine.trajectory3.getAllPoint(dt), Color.lightRed)
+    if viz is not None:
+        viz.viewer.gui.addCurve("world/pinocchio/curve_0", my_state_machine.trajectory0.getAllPoint(dt), Color.lightBrown)
+        viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
+        viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightGreen)
+        viz.viewer.gui.addCurve("world/pinocchio/curve_3", my_state_machine.trajectory3.getAllPoint(dt), Color.lightRed)
 
     # main loop, updating the configuration vector q
     for i in range(int(duration / dt)):
@@ -238,21 +237,22 @@ def scenario4(robot_urdf_path="urdf/sassa-robot/robot_obj.urdf", robot_file_path
             if tsleep > 0:
                 # wait to have a consitente frame rate
                 time.sleep(tsleep)
-
-    viz.viewer.gui.deleteNode("world/pinocchio/curve_0", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/curve_1", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/curve_2", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/curve_3", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_1", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_2", True)
-    viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm3_sasm_0", True)
+    
+    if viz is not None:
+        viz.viewer.gui.deleteNode("world/pinocchio/curve_0", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/curve_1", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/curve_2", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/curve_3", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_0", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_1", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm2_sasm_2", True)
+        viz.viewer.gui.deleteNode("world/pinocchio/visuals/arm3_sasm_0", True)
 
     return log_com, log_goal, log_end_effector
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario4(robot_urdf_path="urdf/sassa/robot_obj.urdf", robot_file_path="urdf/sassa/", enable_viz=True)
+    log_com, log_goal, log_end_effector = scenario4(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=True)
 
     plt.subplot(3, 1, 1)
     e1 = [point[0][0] for point in log_goal]

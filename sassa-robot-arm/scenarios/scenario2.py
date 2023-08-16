@@ -37,7 +37,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     else:
         enable_viz = False
 
-    dt = 0.04 # delta time
+    dt = 0.001 # delta time
     duration = 20 # vizualization duration
 
     # robot start configuration, velocity and acceleration
@@ -50,7 +50,8 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
     sassa.forwardKinematics(q_current)
     pin.updateFramePlacements(sassa.model, sassa.data)
-    viz.display(q_current)
+    if viz is not None:
+        viz.display(q_current)
 
     my_state_machine = StateMahineScenario2(sassa, viz, dt, q0_ref)
 
