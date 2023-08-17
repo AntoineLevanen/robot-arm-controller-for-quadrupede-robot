@@ -81,9 +81,9 @@ for file in os.listdir(dir_path):
             m = ms.current_mesh()
             print('output mesh has', m.vertex_number(), 'vertex and', m.face_number(), 'faces')
 
-        file = file.replace('stl', 'obj') ### to be fixed
-        ms.save_current_mesh(dir_path + "/" + file)
-        print("Saving %s file..." % (file))
+        # file = file.replace('stl', 'obj') ### to be fixed
+        # ms.save_current_mesh(dir_path + "/" + file)
+        # print("Saving %s file..." % (file))
 
 # load the URDF file in Bullet
 if launchBullet:
