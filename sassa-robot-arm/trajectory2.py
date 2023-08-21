@@ -217,16 +217,17 @@ class TrajectoryExactCubic:
 
 def mainTrajectory():
     control_points = [[0.35, 0.1, 0.2], [0.35, -0.1, 0.3]] # [0.35, 0.0, 0.24]
-    control_points = [[0.35, 0.05, 0.05], [0.35, 0.05, 0.10], [0.35, 0.0, 0.3], [0.35, -0.05, 0.1], [0.35, -0.05, 0.05]]
+    # control_points = [[0.35, 0.05, 0.05], [0.35, 0.05, 0.10], [0.35, 0.0, 0.3], [0.35, -0.05, 0.1], [0.35, -0.05, 0.05]]
+    control_points = [[1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, -1, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, -1, 0]]
     start_time = 0
     end_time = 10
     init_vel = [0, 0, 0]
     end_vel = [0, 0, 0]
     init_acc = [0, 0, 0]
     end_acc = [0, 0, 0]
-    traj = TrajectoryExactCubic(control_points, start_time, end_time, constraints=[init_vel, end_vel, init_acc, end_acc])
+    traj = TrajectoryExactCubic(control_points, start_time, end_time) #, constraints=[init_vel, end_vel, init_acc, end_acc])
     
-    # traj.printCurve(dt=0.04)
+    traj.printCurve(dt=0.04)
     traj.plotCurve()
 
 

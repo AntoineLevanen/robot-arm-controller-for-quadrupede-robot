@@ -27,11 +27,11 @@ class StateMahineScenario1:
         else:
             IDX_Gripper = self.robot.model.getFrameId('framegripper')
             frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
-            self.control_point1 = [frame_EF, [0.35, 0.05, 0.05]] # [0.35, 0.045, 0.4],
+            self.control_point1 = [[0.35, 0.045, 0.4], [0.35, 0.05, 0.05]] #  frame_EF,
             self.control_point2 = [self.control_point1[-1], [0.35, 0.0, 0.11], [0.35, -0.05, 0.05]]
             self.control_point3 = [[0.35, -0.05, 0.05], [0.35, 0.0, 0.11], self.control_point1[-1]]
         self.end_time = 6
-        self.end_time2 = 10
+        self.end_time2 = 5
         init_vel = [0, 0, 0]
         end_vel = [0, 0, 0]
         init_acc = [0, 0, 0]

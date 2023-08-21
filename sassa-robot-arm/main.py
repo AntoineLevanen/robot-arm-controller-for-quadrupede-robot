@@ -4,10 +4,11 @@ import os
 import pinocchio as pin
 import matplotlib.pyplot as plt
 from init import initRobot, initViz
-from controller import controllerCLIK2ndorder
+from controller import controllerCLIK2ndorder, controllerIK
 from gripper import actuate_gripper
 from visualObject import CenterOfMass
 from trajectory import CircleTrajectory
+from trajectory2 import TrajectoryExactCubic
 import gepetto.corbaserver as gui
 
 urdf_path = os.path.abspath("urdf/sassa-robot-short-arm/robot.urdf")
@@ -16,7 +17,7 @@ sassa = initRobot(urdf_path, file_path)
 viz = initViz(sassa, 1, add_ground=False, add_box=False)
 
 duration = 30 # vizualization duration
-dt = 0.04 # delta time
+dt = 0.001 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True
 export_to_blender = False
@@ -36,9 +37,14 @@ is_close = "open"
 # com_projection = CenterOfMass(viz, sassa, "com")
 
 # circular trajectory
-my_trajectory = CircleTrajectory()
+my_trajectory = CircleTrajectory(duration=duration, dt=dt)
 # origine x, y, z, raduis, omega
 my_trajectory.circleTrajectoryXY(0.35, -0.01, 0.3, 0.02, 2)
+
+x_offset = 0.4
+z_offset = 0.4
+control_points = [[0.05 + x_offset, 0, z_offset], [0, 0.05, z_offset], [-0.05 + x_offset, 0, z_offset], [0, -0.05, z_offset], [0.05 + x_offset, 0, z_offset], [0, 0.05, z_offset], [-0.05 + x_offset, 0, z_offset], [0, -0.05, z_offset]]
+my_trajectory = TrajectoryExactCubic(control_points, 0, duration) # , constraints=[[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]])
 
 err = [[0, 0, 0]]
 
@@ -190,6 +196,9 @@ if export_to_blender:
     viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
     viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
+log_goal_1 = []
+log_end_effector_1 = []
+
 # main loop, updating the configuration vector q
 for i in range(int(duration / dt)):
     # start time for loop duration
@@ -198,13 +207,24 @@ for i in range(int(duration / dt)):
     ### start controler
 
     # WORKING controller
-    goal = my_trajectory.getPoint(i%360) # circular trajectory
+    # goal = my_trajectory.getPoint(i%360) # circular trajectory
+    # goal = my_trajectory.getPoint3d(i, dt)
+    # goal = [[0.3, 0.1, 0.3], [0, 0, 0], [0, 0, 0]]
+    goal = [[0.5, 0.0, 0.4], [0, 0, 0], [0, 0, 0]]
     q_current, dq_current, _ = controllerCLIK2ndorder(q_current, dq_current, dt, sassa, \
                                             init, viz, q0_ref, goal, add_goal_sphere=False)
+
+    # q_current, dq_current = controllerIK(q_current, dq_current, dt, sassa, init, viz, goal)
 
     if export_to_blender:
         viz.viewer.gui.refresh ()
         viz.viewer.gui.captureTransform ()
+
+    log_goal_1.append(goal)
+    IDX_Gripper = sassa.model.getFrameId('framegripper')
+    frame_EF = [sassa.data.oMf[IDX_Gripper].homogeneous[:3, -1], \
+        pin.getFrameVelocity(sassa.model, sassa.data, IDX_Gripper).vector[:3], np.array([0, 0, 0])]
+    log_end_effector_1.append(frame_EF)
 
 
     # ACTUATE gripper
@@ -223,3 +243,47 @@ for i in range(int(duration / dt)):
         tsleep = dt - (time.time() - t0)
         if tsleep > 0:
             time.sleep(tsleep)
+
+
+
+x_time_axis = np.arange(len(log_end_effector_1)) * dt
+
+plt.subplot(3, 1, 1)
+e1 = [point[0][0]for point in log_end_effector_1]
+plt.plot(x_time_axis, e1, label='X end effector position')
+e1 = [point[0][0] for point in log_goal_1]
+plt.plot(x_time_axis, e1, label='X goal position', linestyle='dashed')
+plt.legend()
+# plt.ylim([0.3, 0.56])
+plt.title("Sassa with long arm" + "\n" + "Position error on X axis")
+plt.xlabel("time (s)")
+plt.ylabel("meters")
+
+plt.subplot(3, 1, 2)
+e2 = [point[0][1] for point in log_end_effector_1]
+plt.plot(x_time_axis, e2, label='Y end effector position')
+e2 = [point[0][1] for point in log_goal_1]
+plt.plot(x_time_axis, e2, label='Y goal position', linestyle='dashed')
+plt.legend()
+plt.title("Position error on Y axis")
+plt.xlabel("time (s)")
+plt.ylabel("meters")
+
+plt.subplot(3, 1, 3)
+e3 = [point[0][2] for point in log_end_effector_1]
+plt.plot(x_time_axis, e3, label='Z end effector position')
+e3 = [point[0][2] for point in log_goal_1]
+plt.plot(x_time_axis, e3, label='Z goal position', linestyle='dashed')
+plt.legend()
+plt.title("Position error on Z axis")
+plt.xlabel("time (s)")
+plt.ylabel("meters")
+
+plt.subplots_adjust(left=0.2,
+                bottom=0.075,
+                right=0.8,
+                top=0.92,
+                wspace=0.2, # 0.2
+                hspace=0.37)
+
+plt.show()
