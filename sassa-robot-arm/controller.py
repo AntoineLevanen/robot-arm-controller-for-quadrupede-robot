@@ -234,8 +234,8 @@ def controllerCLIK2ndorder(q, q_dot, dt, robot, init, viz, q0_ref, goal, orienta
     q_error[-1] = 0
     J_regulation = np.eye(robot.model.nv)
     J_regulation[:6,:6] = 0
-    K3 = 0.1
-    # q_ddot += K3 * J_regulation @ q_error
+    K3 = 0.2
+    q_ddot += K3 * J_regulation @ q_error
 
     # integrate the acceleration to get the velocity
     q_dot += q_ddot * dt

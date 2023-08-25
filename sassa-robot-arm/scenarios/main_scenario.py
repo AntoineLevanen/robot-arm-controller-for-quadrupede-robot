@@ -33,10 +33,10 @@ class MainScenario:
 
         # Look on top of a table
         elif scenario_num == 2:
-            # self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-            #      = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
+            self.log_com_1, self.log_goal_1, self.log_end_effector_1\
+                 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=True)
+            # self.log_com_2, self.log_goal_2, self.log_end_effector_2\
+            #      = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Look on top of a table"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_2"
 

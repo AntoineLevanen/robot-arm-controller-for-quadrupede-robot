@@ -206,9 +206,8 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
         viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
     if viz is not None:
-        viz.viewer.gui.addCurve("world/pinocchio/curve_0", my_state_machine.trajectory0.getAllPoint(dt), Color.lightBrown)
         viz.viewer.gui.addCurve("world/pinocchio/curve_1", my_state_machine.trajectory1.getAllPoint(dt), Color.lightBlue)
-        # viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightRed)
+        viz.viewer.gui.addCurve("world/pinocchio/curve_2", my_state_machine.trajectory2.getAllPoint(dt), Color.lightRed)
 
 
     # main loop, updating the configuration vector q
@@ -229,7 +228,7 @@ def scenario2(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
             # to display the movement in a 3D viewport
             viz.display(q_current)  
             
-        if export_to_blender:
+        if export_to_blender and i%40 == 0:
             viz.viewer.gui.refresh ()
             viz.viewer.gui.captureTransform ()
             

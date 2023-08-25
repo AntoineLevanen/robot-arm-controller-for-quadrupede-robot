@@ -17,7 +17,7 @@ class StateMahineScenario2:
         Also actuate the gripper 
 
         """
-        self.current_state = -1
+        self.current_state = 0
 
         self.robot = robot
         self.viz = viz
@@ -26,26 +26,24 @@ class StateMahineScenario2:
         if control_point is not None:
             self.control_point = control_point
         else:
-            self.control_point1 = [[0.48, -0.015, 0.45], [0.4, -0.015, 0.45], [0.42, -0.015, 0.58]]
-            self.control_point2 = [[0.42, -0.015, 0.58], [0.35, -0.015, 0.45], [0.48, -0.015, 0.45]]
+            IDX_Gripper = self.robot.model.getFrameId('framegripper')
+            frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
+            self.control_point1 = [frame_EF, [0.4, -0.015, 0.45], [0.42, -0.015, 0.58]] # , [0.48, -0.015, 0.45]
+            self.control_point2 = [[0.42, -0.015, 0.58], [0.4, -0.015, 0.45], frame_EF] # [0.48, -0.015, 0.45]
         
         self.end_time = 8
         init_vel = [0, 0, 0]
         end_vel = [0, 0, 0]
         init_acc = [0, 0, 0]
         end_acc = [0, 0, 0]
-        self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time, constraints=[init_acc, end_acc])
-        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time, constraints=[init_acc, end_acc])
+        self.trajectory1 = TrajectoryExactCubic(self.control_point1, 0, self.end_time) # , constraints=[init_vel, end_vel, init_acc, end_acc])
+        self.trajectory2 = TrajectoryExactCubic(self.control_point2, 0, self.end_time) # , constraints=[init_vel, end_vel, init_acc, end_acc])
         self.trajectory_i = 0
         self.init = True
         self.goal = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self.t0 = 0
         # self.trajectory.printCurve()
         # init trajectory
-        IDX_Gripper = self.robot.model.getFrameId('framegripper')
-        frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
-        self.trajectory0 = TrajectoryExactCubic([frame_EF, self.control_point1[0]], 0, 2, constraints=[init_vel, end_vel, init_acc, end_acc])
-
         if self.viz is not None:
             # to visualize the trajectory
             self.viz.viewer.gui.addSphere("world/pinocchio/goal", 0.01, Color.green)
@@ -59,30 +57,7 @@ class StateMahineScenario2:
         return : new configuration and velocity vector to be displayed
         """
 
-        # print(self.current_state)
-        if self.current_state == -1:
-            # initial state
-            # update q and dq here
-
-            # go to the initial position
-            if self.trajectory_i > int(2 / self.dt) - 1:
-                self.trajectory_i = int(2 / self.dt) - 1
-
-            self.goal = self.trajectory0.getPoint3d(self.trajectory_i, self.dt)
-            self.trajectory_i = self.trajectory_i + 1
-
-            q, _, task_finished = controllerCLIK2ndorder(q, dq, self.dt, self.robot, self.init, self.viz, self.q0_ref, self.goal,\
-                                                 add_goal_sphere=add_goal_viz, orientation=pin.utils.rotate('y', 0), eps=0.01)
-
-            self.init = False
-
-            if self.trajectory_i >= int(2 / self.dt) - 1:
-                self.current_state = 0
-                self.init = True
-                self.trajectory_i = 0
-
-
-        elif self.current_state == 0:
+        if self.current_state == 0:
             # initial state, go to end position
             # update q and dq here
             if self.trajectory_i > int(self.end_time / self.dt) - 1:
@@ -110,7 +85,7 @@ class StateMahineScenario2:
                 self.current_state = 2
 
 
-        if self.current_state == 2:
+        elif self.current_state == 2:
             # return to start position
             # make sure to avoid Index out of range error (try, except...)
             if self.trajectory_i > int(self.end_time / self.dt) - 1:
@@ -137,6 +112,8 @@ class StateMahineScenario2:
             if i - self.t0 > (2 / self.dt):
                 # start again to loop
                 self.current_state = 0
+
+
 
 
         if self.viz is not None:       
