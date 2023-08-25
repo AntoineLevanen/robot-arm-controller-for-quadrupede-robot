@@ -16,16 +16,16 @@ file_path = os.path.abspath("urdf/sassa-robot-short-arm/")
 sassa = initRobot(urdf_path, file_path)
 viz = initViz(sassa, 1, add_ground=False, add_box=False)
 
-duration = 30 # vizualization duration
+duration = 10 # vizualization duration
 dt = 0.001 # delta time
 trajectory_step = int(duration / dt)
 realtime_viz = True
-export_to_blender = False
+export_to_blender = True
 
 q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                         np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
 
-q_current = q0_ref.copy()
+q_current = pin.neutral(sassa.model) # q0_ref.copy()
 
 dq_current = np.zeros((sassa.model.nv,))
 d2q_current = np.zeros((sassa.model.nv,))
@@ -191,8 +191,8 @@ for node in node_name:
 if export_to_blender:
     project_path = os.path.abspath("blender/")
 
-    python_file_path = project_path + "pinToBlender.py"
-    motion_file_path = project_path + "motion.yaml"
+    python_file_path = project_path + "/pinToBlender.py"
+    motion_file_path = project_path + "/motion.yaml"
     viz.viewer.gui.writeBlenderScript(python_file_path, node_list)
     viz.viewer.gui.setCaptureTransform(motion_file_path, node_list)
 
@@ -216,7 +216,7 @@ for i in range(int(duration / dt)):
 
     # q_current, dq_current = controllerIK(q_current, dq_current, dt, sassa, init, viz, goal)
 
-    if export_to_blender:
+    if export_to_blender and i%40 == 0:
         viz.viewer.gui.refresh ()
         viz.viewer.gui.captureTransform ()
 

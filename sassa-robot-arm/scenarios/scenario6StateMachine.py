@@ -41,7 +41,7 @@ class StateMahineScenario6:
 
         self.init = True
         self.goal_base = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        self.goal_gripper = [[0.4, -0.015, 0.35], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+        self.goal_gripper = [[0.5, -0.015, 0.35], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
         self.t0 = 0
         self.trajectory_i = 0
 
@@ -109,4 +109,4 @@ class StateMahineScenario6:
             self.viz.viewer.gui.applyConfiguration("world/pinocchio/goal_end_effector", list(a))
             self.viz.viewer.gui.refresh()
 
-        return q, dq, self.goal_gripper
+        return q, dq, self.goal_base

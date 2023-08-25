@@ -45,7 +45,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
     q0_ref = np.array([0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, -np.pi/6, \
                             np.pi/3, 0.0, -np.pi/6, np.pi/3, 0.0, np.pi/8, -np.pi/4, 0.0, 0.0])
 
-    q_current = q0_ref.copy()
+    q_current = q0_ref.copy() # pin.neutral(sassa.model)
 
     dq_current = np.zeros((sassa.model.nv,))
 
@@ -223,6 +223,9 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
         ### end controler
 
+        # if i == 1565:
+        #     print()
+
         if enable_viz:
             # to display the movement in a 3D viewport
             viz.display(q_current)  
@@ -232,7 +235,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
             # pos = sassa.data.oMf[sassa.model.getFrameId('framegripper')].homogeneous # @ rot_matrix
             # viz.setCameraPose(pos)
 
-        if export_to_blender:
+        if export_to_blender and i%40 == 0:
             viz.viewer.gui.refresh ()
             viz.viewer.gui.captureTransform ()
 
@@ -278,7 +281,7 @@ def scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
 
 
 if __name__ == "__main__":
-    log_com, log_goal, log_end_effector = scenario1(robot_urdf_path="urdf/sassa-robot-short-arm/robot.urdf", robot_file_path="urdf/sassa-robot-short-arm/", enable_viz=1)
+    log_com, log_goal, log_end_effector = scenario1(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="urdf/sassa-robot/", enable_viz=1)
 
     # plt.subplot(3, 1, 1)
     # e1 = [point[0] for point in log_com]

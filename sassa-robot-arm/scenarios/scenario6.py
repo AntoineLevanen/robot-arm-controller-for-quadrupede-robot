@@ -222,7 +222,7 @@ def scenario6(robot_urdf_path="urdf/sassa-robot/robot.urdf", robot_file_path="ur
             viz.display(q_current)  
             
 
-        if export_to_blender:
+        if export_to_blender and i%40 == 0:
             viz.viewer.gui.refresh ()
             viz.viewer.gui.captureTransform ()
 

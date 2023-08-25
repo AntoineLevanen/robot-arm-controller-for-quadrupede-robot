@@ -70,7 +70,7 @@ bpy.ops.view3d.snap_cursor_to_center()
 
 obj_stack = []
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//handle.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//handle.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_0__shape")
@@ -83,7 +83,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//body_panel.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//body_panel.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_1__shape")
@@ -96,7 +96,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_2__shape")
@@ -109,7 +109,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_3__shape")
@@ -122,7 +122,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//body.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//body.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_4__shape")
@@ -135,7 +135,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//body_panel.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//body_panel.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_5__shape")
@@ -148,7 +148,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_6__shape")
@@ -161,7 +161,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/body_sasm_7__shape")
@@ -174,7 +174,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_0__shape")
@@ -187,7 +187,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_1__shape")
@@ -200,7 +200,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_0__shape")
@@ -213,7 +213,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_1__shape")
@@ -226,7 +226,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2__shape")
@@ -239,7 +239,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3__shape")
@@ -252,7 +252,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4__shape")
@@ -265,7 +265,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_5__shape")
@@ -278,7 +278,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_0__shape")
@@ -291,7 +291,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_1__shape")
@@ -304,7 +304,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_2__shape")
@@ -317,7 +317,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_3__shape")
@@ -330,7 +330,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_2_0__shape")
@@ -343,7 +343,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_2_1__shape")
@@ -356,7 +356,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2_0__shape")
@@ -369,7 +369,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2_1__shape")
@@ -382,7 +382,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2_2__shape")
@@ -395,7 +395,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2_3__shape")
@@ -408,7 +408,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2_4__shape")
@@ -421,7 +421,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_2_5__shape")
@@ -434,7 +434,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_2_0__shape")
@@ -447,7 +447,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_2_1__shape")
@@ -460,7 +460,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_2_2__shape")
@@ -473,7 +473,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_2_3__shape")
@@ -486,7 +486,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_3_0__shape")
@@ -499,7 +499,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_3_1__shape")
@@ -512,7 +512,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3_0__shape")
@@ -525,7 +525,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3_1__shape")
@@ -538,7 +538,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3_2__shape")
@@ -551,7 +551,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3_3__shape")
@@ -564,7 +564,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3_4__shape")
@@ -577,7 +577,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_3_5__shape")
@@ -590,7 +590,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_3_0__shape")
@@ -603,7 +603,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_3_1__shape")
@@ -616,7 +616,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_3_2__shape")
@@ -629,7 +629,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_3_3__shape")
@@ -642,7 +642,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//angle_motor_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_4_0__shape")
@@ -655,7 +655,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/helbow_sasm_4_1__shape")
@@ -668,7 +668,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4_0__shape")
@@ -681,7 +681,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//rmdx8v3.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4_1__shape")
@@ -694,7 +694,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_main.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4_2__shape")
@@ -707,7 +707,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//upperleg_cover.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4_3__shape")
@@ -720,7 +720,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//inline_connect.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4_4__shape")
@@ -733,7 +733,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//motor_pulley.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/upperleg_sasm_4_5__shape")
@@ -746,7 +746,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_4_0__shape")
@@ -759,7 +759,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//foot_ball.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_4_1__shape")
@@ -772,7 +772,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//lower_leg.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_4_2__shape")
@@ -785,7 +785,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//61804-2rs.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/lowerleg_sasm_4_3__shape")
@@ -798,7 +798,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//5015.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//5015.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/arm1_sasm_0__shape")
@@ -811,7 +811,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//7015.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//7015.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/arm2_sasm_0__shape")
@@ -824,7 +824,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//link.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//link.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/arm2_sasm_1__shape")
@@ -837,7 +837,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//5015.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//5015.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/arm2_sasm_2__shape")
@@ -850,7 +850,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//link.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//link.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/arm3_sasm_0__shape")
@@ -863,7 +863,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//end_effector.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//end_effector.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/end_effector_sasm_0__shape")
@@ -876,7 +876,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//t265.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//t265.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/end_effector_sasm_1__shape")
@@ -889,7 +889,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//2408.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//2408.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/end_effector_sasm_2__shape")
@@ -902,7 +902,7 @@ setLocQuatSca(obj)
 currentShape.parent = obj
 if obj_stack: obj.parent = obj_stack[-1]
 tagObjects()
-bpy.ops.import_scene.obj (filepath="/home/antoine/Documents/GitHub/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//gripper.obj", axis_forward='Y', axis_up='Z')
+bpy.ops.import_scene.obj (filepath="/home/alevanen/Documents/StageM1/robot-arm-controller-for-quadrupede-robot/urdf/sassa-robot-short-arm//gripper.obj", axis_forward='Y', axis_up='Z')
 imported_objects = getNonTaggedObjects ()
 print(imported_objects)
 currentShape = makeEmpty("world/pinocchio/visuals/gripper_0__shape")

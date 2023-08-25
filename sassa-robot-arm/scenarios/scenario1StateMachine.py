@@ -27,9 +27,11 @@ class StateMahineScenario1:
         else:
             IDX_Gripper = self.robot.model.getFrameId('framegripper')
             frame_EF = self.robot.data.oMf[IDX_Gripper].homogeneous[:3, -1]
-            self.control_point1 = [[0.35, 0.045, 0.4], [0.35, 0.05, 0.05]] #  frame_EF,
-            self.control_point2 = [self.control_point1[-1], [0.35, 0.0, 0.11], [0.35, -0.05, 0.05]]
-            self.control_point3 = [[0.35, -0.05, 0.05], [0.35, 0.0, 0.11], self.control_point1[-1]]
+            x_offset = 0.0
+            z_offset = 0.1
+            self.control_point1 = [frame_EF, [0.35 + x_offset, 0.05, 0.05+z_offset]] #  [0.35 + x_offset, 0.045, 0.4],
+            self.control_point2 = [self.control_point1[-1], [0.35 + x_offset, 0.0, 0.11+z_offset], [0.35 + x_offset, -0.05, 0.05+z_offset]]
+            self.control_point3 = [[0.35 + x_offset, -0.05, 0.05+z_offset], [0.35 + x_offset, 0.0, 0.11+z_offset], self.control_point1[-1]]
         self.end_time = 6
         self.end_time2 = 5
         init_vel = [0, 0, 0]
@@ -145,8 +147,8 @@ class StateMahineScenario1:
             
             self.init = False
             
-            if self.trajectory_i <= 0:
-                self.current_state = 2
+            if self.trajectory_i >= int(self.end_time2 / self.dt) - 1:
+                self.current_state = 1
                 self.trajectory_i = 0
                 self.init = True
 

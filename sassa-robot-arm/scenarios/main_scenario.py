@@ -25,18 +25,18 @@ class MainScenario:
         # pick and place
         if scenario_num == 1:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=True)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario1(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Pick and place"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_1"
 
         # Look on top of a table
         elif scenario_num == 2:
-            self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+            # self.log_com_1, self.log_goal_1, self.log_end_effector_1\
+            #      = scenario2(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario2(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Look on top of a table"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_2"
 
@@ -45,7 +45,7 @@ class MainScenario:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
                  = scenario3(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario3(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=False)
             self.plot_title = "Move a box around"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_3"
 
@@ -62,18 +62,18 @@ class MainScenario:
         # actuate lever and button
         elif scenario_num == 5:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=True)
             self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario5(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
             self.plot_title = "Actuate lever and button"
             self.plot_path = "/home/alevanen/Documents/StageM1/ressources/scenario_5"
 
         # actuate lever and button
         elif scenario_num == 6:
             self.log_com_1, self.log_goal_1, self.log_end_effector_1\
-                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=False, export_to_blender=False)
-            self.log_com_2, self.log_goal_2, self.log_end_effector_2\
-                 = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=False, export_to_blender=False)
+                 = scenario6(robot_urdf_path=urdf1, robot_file_path=model1, enable_viz=1, export_to_blender=True)
+            # self.log_com_2, self.log_goal_2, self.log_end_effector_2\
+            #      = scenario6(robot_urdf_path=urdf2, robot_file_path=model2, enable_viz=1, export_to_blender=True)
 
     def plot_figure(self, info, save_image=False):
         """
@@ -88,9 +88,9 @@ class MainScenario:
             # Position error of the CoM
             fig = plt.figure()
             plt.subplot(3, 2, 1)
-            e1 = [point[0] for point in self.log_com_1]
-            plt.plot(x_time_axis, e1, label='X CoM position')
-            plt.plot(x_time_axis, np.zeros(len(e1)), label='X CoM desired position', linestyle='dashed')
+            e1 = [point[0][0] for point in self.log_end_effector_1]
+            plt.plot(x_time_axis, e1, label='X end effector position')
+            plt.plot(x_time_axis, np.ones(len(e1))*0.4, label='X end effector desired position', linestyle='dashed')
             plt.legend()
             # plt.ylim([-0.03, 0.042])
             plt.title("Sassa with long arm")
@@ -98,17 +98,18 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 3)
-            e2 = [point[1] for point in self.log_com_1]
-            plt.plot(x_time_axis, e2, label='Y CoM position')
-            plt.plot(x_time_axis, np.zeros(len(e2)), label='Y CoM desired position', linestyle='dashed')
+            e2 = [point[0][1] for point in self.log_end_effector_1]
+            plt.plot(x_time_axis, e2, label='Y end effector position')
+            plt.plot(x_time_axis, -np.ones(len(e1))*0.015, label='Y end effector desired position', linestyle='dashed')
             plt.legend()
             # plt.ylim([-0.01, 0.016])
             plt.xlabel("time (s)")
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 5)
-            e3 = [point[2] for point in self.log_com_1]
-            plt.plot(x_time_axis, e3, label='Z CoM position')
+            e3 = [point[0][2] for point in self.log_end_effector_1]
+            plt.plot(x_time_axis, e3, label='Z end effector position')
+            plt.plot(x_time_axis, np.ones(len(e1))*0.35, label='Z end effector desired position', linestyle='dashed')
             plt.legend()
             # plt.ylim([0.275, 0.4])
             plt.xlabel("time (s)")
@@ -116,9 +117,9 @@ class MainScenario:
 
             # log test 2
             plt.subplot(3, 2, 2)
-            e1 = [point[0] for point in self.log_com_2]
-            plt.plot(x_time_axis, e1, label='X CoM position')
-            plt.plot(x_time_axis, np.zeros(len(e1)), label='X CoM desired position', linestyle='dashed')
+            e1 = [point[0][0] for point in self.log_end_effector_2]
+            plt.plot(x_time_axis, e1, label='X end effector position')
+            plt.plot(x_time_axis, np.ones(len(e1))*0.4, label='X end effector desired position', linestyle='dashed')
             plt.legend()
             # plt.ylim([-0.03, 0.042])
             plt.title("Sassa with short arm")
@@ -126,23 +127,24 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 4)
-            e2 = [point[1] for point in self.log_com_2]
-            plt.plot(x_time_axis, e2, label='Y CoM position')
-            plt.plot(x_time_axis, np.zeros(len(e2)), label='Y CoM desired position', linestyle='dashed')
+            e2 = [point[0][1] for point in self.log_end_effector_2]
+            plt.plot(x_time_axis, e2, label='Y end effector position')
+            plt.plot(x_time_axis, -np.ones(len(e1))*0.015, label='Y end effector desired position', linestyle='dashed')
             plt.legend()
             # plt.ylim([-0.01, 0.016])
             plt.xlabel("time (s)")
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 6)
-            e3 = [point[2] for point in self.log_com_2]
+            e3 = [point[0][2] for point in self.log_end_effector_2]
             plt.plot(x_time_axis, e3, label='Z CoM position')
+            plt.plot(x_time_axis, np.ones(len(e1))*0.35, label='Z end effector desired position', linestyle='dashed')
             plt.legend()
             # plt.ylim([0.275, 0.4])
             plt.xlabel("time (s)")
             plt.ylabel("meters")
 
-            plt.suptitle(self.plot_title)
+            plt.suptitle(" ")
 
             plt.subplots_adjust(left=0.2,
                 bottom=0.075,
@@ -163,8 +165,8 @@ class MainScenario:
             fig = plt.figure()
 
             plt.subplot(3, 2, 1)
-            e1 = [point[0][0]for point in self.log_end_effector_1]
-            plt.plot(x_time_axis, e1, label='X end effector position')
+            e1 = [point[0]for point in self.log_com_1]
+            plt.plot(x_time_axis, e1, label='X CoM position')
             e1 = [point[0][0] for point in self.log_goal_1]
             plt.plot(x_time_axis, e1, label='X goal position', linestyle='dashed')
             plt.legend()
@@ -174,8 +176,8 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 3)
-            e2 = [point[0][1] for point in self.log_end_effector_1]
-            plt.plot(x_time_axis, e2, label='Y end effector position')
+            e2 = [point[1] for point in self.log_com_1]
+            plt.plot(x_time_axis, e2, label='Y CoM position')
             e2 = [point[0][1] for point in self.log_goal_1]
             plt.plot(x_time_axis, e2, label='Y goal position', linestyle='dashed')
             plt.legend()
@@ -184,8 +186,8 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 5)
-            e3 = [point[0][2] for point in self.log_end_effector_1]
-            plt.plot(x_time_axis, e3, label='Z end effector position')
+            e3 = [point[2] for point in self.log_com_1]
+            plt.plot(x_time_axis, e3, label='Z CoM position')
             e3 = [point[0][2] for point in self.log_goal_1]
             plt.plot(x_time_axis, e3, label='Z goal position', linestyle='dashed')
             plt.legend()
@@ -196,8 +198,8 @@ class MainScenario:
 
             # log test 2
             plt.subplot(3, 2, 2)
-            e1 = [point[0][0] for point in self.log_end_effector_2]
-            plt.plot(x_time_axis, e1, label='X end effector position')
+            e1 = [point[0] for point in self.log_com_2]
+            plt.plot(x_time_axis, e1, label='X CoM position')
             e1 = [point[0][0] for point in self.log_goal_2]
             plt.plot(x_time_axis, e1, label='X goal position', linestyle='dashed')
             plt.legend()
@@ -207,8 +209,8 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 4)
-            e2 = [point[0][1] for point in self.log_end_effector_2]
-            plt.plot(x_time_axis, e2, label='Y end effector position')
+            e2 = [point[1] for point in self.log_com_2]
+            plt.plot(x_time_axis, e2, label='Y CoM position')
             e2 = [point[0][1] for point in self.log_goal_2]
             plt.plot(x_time_axis, e2, label='Y goal position', linestyle='dashed')
             plt.legend()
@@ -217,8 +219,8 @@ class MainScenario:
             plt.ylabel("meters")
 
             plt.subplot(3, 2, 6)
-            e3 = [point[0][2] for point in self.log_end_effector_2]
-            plt.plot(x_time_axis, e3, label='Z end effector position')
+            e3 = [point[2] for point in self.log_com_2]
+            plt.plot(x_time_axis, e3, label='Z CoM position')
             e3 = [point[0][2] for point in self.log_goal_2]
             plt.plot(x_time_axis, e3, label='Z goal position', linestyle='dashed')
             plt.legend()
@@ -245,8 +247,8 @@ class MainScenario:
             fig = plt.figure()
 
             plt.subplot(3, 2, 1)
-            e1 = [point[1][0]for point in self.log_end_effector_1]
-            plt.plot(x_time_axis, e1, label='X end effector velocity')
+            e1 = [point[1][0]for point in self.log_com_1]
+            plt.plot(x_time_axis, e1, label='X CoM velocity')
             e1 = [point[1][0] for point in self.log_goal_1]
             plt.plot(x_time_axis, e1, label='X goal velocity', linestyle='dashed')
             plt.legend()
@@ -254,16 +256,16 @@ class MainScenario:
             plt.title("Sassa with long arm")
 
             plt.subplot(3, 2, 3)
-            e2 = [point[1][1] for point in self.log_end_effector_1]
-            plt.plot(x_time_axis, e2, label='Y end effector velocity')
+            e2 = [point[1][1] for point in self.log_com_1]
+            plt.plot(x_time_axis, e2, label='Y CoM velocity')
             e2 = [point[1][1] for point in self.log_goal_1]
             plt.plot(x_time_axis, e2, label='Y goal velocity', linestyle='dashed')
             plt.legend()
             # plt.ylim([-0.01, 0.016])
 
             plt.subplot(3, 2, 5)
-            e3 = [point[1][2] for point in self.log_end_effector_1]
-            plt.plot(x_time_axis, e3, label='Z end effector velocity')
+            e3 = [point[1][2] for point in self.log_com_1]
+            plt.plot(x_time_axis, e3, label='Z CoM velocity')
             e3 = [point[1][2] for point in self.log_goal_1]
             plt.plot(x_time_axis, e3, label='Z goal velocity', linestyle='dashed')
             plt.legend()
@@ -271,8 +273,8 @@ class MainScenario:
 
             # log test 2
             plt.subplot(3, 2, 2)
-            e1 = [point[1][0] for point in self.log_end_effector_2]
-            plt.plot(x_time_axis, e1, label='X end effector velocity')
+            e1 = [point[1][0] for point in self.log_com_2]
+            plt.plot(x_time_axis, e1, label='X CoM velocity')
             e1 = [point[1][0] for point in self.log_goal_2]
             plt.plot(x_time_axis, e1, label='X goal velocity', linestyle='dashed')
             plt.legend()
@@ -280,16 +282,16 @@ class MainScenario:
             plt.title("Sassa with short arm")
 
             plt.subplot(3, 2, 4)
-            e2 = [point[1][1] for point in self.log_end_effector_2]
-            plt.plot(x_time_axis, e2, label='Y end effector velocity')
+            e2 = [point[1][1] for point in self.log_com_2]
+            plt.plot(x_time_axis, e2, label='Y CoM velocity')
             e2 = [point[1][1] for point in self.log_goal_2]
             plt.plot(x_time_axis, e2, label='Y goal velocity', linestyle='dashed')
             plt.legend()
             # plt.ylim([-0.01, 0.016])
 
             plt.subplot(3, 2, 6)
-            e3 = [point[1][2] for point in self.log_end_effector_2]
-            plt.plot(x_time_axis, e3, label='Z end effector velocity')
+            e3 = [point[1][2] for point in self.log_com_2]
+            plt.plot(x_time_axis, e3, label='Z CoM velocity')
             e3 = [point[1][2] for point in self.log_goal_2]
             plt.plot(x_time_axis, e3, label='Z goal velocity', linestyle='dashed')
             plt.legend()
@@ -393,7 +395,7 @@ class MainScenario:
 
         elif info == 2:
             plt.subplot(3, 2, 1)
-            e1 = [point[0][0] for point in self.log_end_effector_1]
+            e1 = [point[0] for point in self.log_com_1]
             e2 = [point[0][0] for point in self.log_goal_1]
             error_x = np.square(np.subtract(e2, e1))
             plt.plot(x_time_axis, error_x, label='X axis error')
@@ -404,7 +406,7 @@ class MainScenario:
             plt.ylabel("meter")
 
             plt.subplot(3, 2, 3)
-            e1 = [point[0][1] for point in self.log_end_effector_1]
+            e1 = [point[1] for point in self.log_com_1]
             e2 = [point[0][1] for point in self.log_goal_1]
             error_y = np.square(np.subtract(e2, e1))
             plt.plot(x_time_axis, error_y, label='Y axis error')
@@ -414,7 +416,7 @@ class MainScenario:
             plt.ylabel("meter")
 
             plt.subplot(3, 2, 5)
-            e1 = [point[0][2] for point in self.log_end_effector_1]
+            e1 = [point[2] for point in self.log_com_1]
             e2 = [point[0][2] for point in self.log_goal_1]
             error_z = np.square(np.subtract(e2, e1))
             plt.plot(x_time_axis, error_z, label='Z axis error')
@@ -425,7 +427,7 @@ class MainScenario:
 
             # log test 2
             plt.subplot(3, 2, 2)
-            e1 = [point[0][0] for point in self.log_end_effector_2]
+            e1 = [point[0] for point in self.log_com_2]
             e2 = [point[0][0] for point in self.log_goal_2]
             error_x = np.square(np.subtract(e2, e1))
             plt.plot(x_time_axis, error_x, label='X axis error')
@@ -435,7 +437,7 @@ class MainScenario:
             plt.ylabel("meter")
 
             plt.subplot(3, 2, 4)
-            e1 = [point[0][1] for point in self.log_end_effector_2]
+            e1 = [point[1] for point in self.log_com_2]
             e2 = [point[0][1] for point in self.log_goal_2]
             error_y = np.square(np.subtract(e2, e1))
             plt.plot(x_time_axis, error_y, label='Y axis error')
@@ -445,7 +447,7 @@ class MainScenario:
             plt.ylabel("meter")
 
             plt.subplot(3, 2, 6)
-            e1 = [point[0][2] for point in self.log_end_effector_2]
+            e1 = [point[2] for point in self.log_com_2]
             e2 = [point[0][2] for point in self.log_goal_2]
             error_z = np.square(np.subtract(e2, e1))
             plt.plot(x_time_axis, error_z, label='Z axis error')
@@ -471,8 +473,8 @@ class MainScenario:
             pass
 
 if __name__ == "__main__":
-    test1 = MainScenario(scenario_num=1)
+    test1 = MainScenario(scenario_num=2)
     # for i in range(3):
     #     info_to_plot = i+1
-    test1.plot_figure(2, save_image=False)
+    #     test1.plot_figure(i, save_image=False)
     #     test1.plot_Error(i, save_image=False)

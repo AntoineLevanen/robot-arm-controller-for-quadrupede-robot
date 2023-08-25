@@ -165,16 +165,17 @@ def controllerCLIK2ndorder(q, q_dot, dt, robot, init, viz, q0_ref, goal, orienta
 
     ### base part
     index_base = robot.model.getFrameId('body_sasm')
-    J_base = pin.computeFrameJacobian(robot.model, robot.data, q, index_base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)[:3,:]
-    Jdot_qdot_base = pin.getFrameClassicalAcceleration(robot.model, robot.data, index_base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).linear
+    J_base = pin.computeFrameJacobian(robot.model, robot.data, q, index_base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
+    Jdot_qdot_base = pin.getFrameClassicalAcceleration(robot.model, robot.data, index_base, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED).vector
     x_base = robot.data.oMf[index_base]
     x_star_base = pin.SE3(np.eye(3), np.array([0, 0, 0.35]))
-    x_dot_base = J_base @ q_dot
+    x_dot_base = J_base[:3,:] @ q_dot
     x_star_dot_base = np.zeros(3)
     # x_ddot_base is indeed the term Jdot_qdot computed by Pinocchio
     x_star_ddot_base = np.zeros(3)
 
     error_base = x_star_base.translation - x_base.translation
+    error_base2 = pin.log(x_base.inverse() * x_star_base).vector
     error_dot_base = x_star_dot_base - x_dot_base
 
     ### end effector part
@@ -203,7 +204,7 @@ def controllerCLIK2ndorder(q, q_dot, dt, robot, init, viz, q0_ref, goal, orienta
     error_dot_end_effector = x_star_dot_end_effector - x_dot_end_effector
     
     ### computing the acceleration vector
-    kp = 30
+    kp = 1
     kd = 2*np.sqrt(kp)
 
     # combining end effector task with the feet one
@@ -218,18 +219,22 @@ def controllerCLIK2ndorder(q, q_dot, dt, robot, init, viz, q0_ref, goal, orienta
     # P0 = np.eye(robot.model.nv) - pinv(J_end_effector) @ J_end_effector
     # q_ddot += pinv(J_feet @ P0) @ (x_star_ddot_feet - Jdot_qdot_feet + kd * error_dot_feet + kp * error_feet)
     # P1 = P0 - pinv(J_feet @ P0) @ J_feet @ P0
+
     q_ddot = pinv(J) @ (x_star_ddot - Jdot_qdot + kd * error_dot + kp * error)
     P1 = np.eye(robot.model.nv) - pinv(J) @ J
-    kp = 10
+    kp = 1
     kd = 2*np.sqrt(kp)
     q_ddot += pinv(J_base[:3] @ P1) @ (x_star_ddot_base[:3] - Jdot_qdot_base[:3] + kd * error_dot_base[:3] + kp * error_base[:3])
+    P2 = P1 - pinv(J_base[:3] @ P1) @ J_base[:3] @ P1
+    q_ddot += pinv(J_base[3:] @ P2) @ (x_star_ddot_base - Jdot_qdot_base[3:] + kd * np.zeros(3) + kp * error_base2[3:])
+
 
     # regulation task
-    # q_error = pin.difference(robot.model, q, q0_ref)
-    # q_error[-1] = 0
-    # J_regulation = np.eye(robot.model.nv)
-    # J_regulation[:6,:6] = 0
-    # K3 = 0.1
+    q_error = pin.difference(robot.model, q, q0_ref)
+    q_error[-1] = 0
+    J_regulation = np.eye(robot.model.nv)
+    J_regulation[:6,:6] = 0
+    K3 = 0.1
     # q_ddot += K3 * J_regulation @ q_error
 
     # integrate the acceleration to get the velocity
